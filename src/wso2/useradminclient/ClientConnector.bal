@@ -241,12 +241,79 @@ public connector ClientConnector (string base64UserNamePasswword, string ipAndPo
         return group, Error;
 
     }
+
+    action removeUserFromGroup(string userName, string groupName) (Group, error){
+        http:OutRequest request = {};
+        http:InResponse response = {};
+        http:OutRequest groupRequest = {};
+        http:InResponse groupResponse = {};
+        error Error;
+        http:HttpConnectorError httpError;
+        Group group = {};
+        error groupError;
+
+        groupRequest.addHeader("Authorization","Basic "+base64UserNamePasswword);
+        groupResponse, httpError = scim2EP.get("/Groups?attributes=displayName,id,members&filter=displayName+Eq+"+groupName, groupRequest);
+        group, groupError = verifyingGroup(groupName, groupResponse, httpError);
+        if (group ==null){
+            return null,groupError;
+        }
+
+        json body = {
+                        "schemas": ["urn:ietf:params:scim:api:messages:2.0:PatchOp"],
+                        "Operations": [{
+                                           "op": "remove",
+                                           "path": ""
+                                       }]
+                    };
+        string path = "members[display eq "+userName+"]";
+        body.Operations[0].path = path;
+        string url = "/Groups/"+group.id;
+
+        request.addHeader("Authorization","Basic "+base64UserNamePasswword);
+        request.addHeader("Content-Type", "application/json");
+        request.setJsonPayload(body);
+
+        response, httpError = scim2EP.patch(url,request);
+
+        if(httpError != null){
+            Error = {message:httpError.message,cause:httpError.cause};
+            return null,Error;
+        }
+        try{
+            var stringPayload = response.getBinaryPayload().toString("UTF-8");
+            var payload, e = <json>stringPayload;
+            if(payload.schemas.toString().equalsIgnoreCase("urn:ietf:params:scim:api:messages:2.0:Error")){
+                var det = payload["detail"];
+                Error = {message:det.toString(),cause:null};
+                return null,Error;
+            }
+            string[] groupKeyList = payload.getKeys();
+            if(lengthof groupKeyList <5){
+                var tempGroup = <Group,convertGroupInRemoveResponse()>payload;
+                return tempGroup,Error;
+            }else{
+                group, Error = <Group>payload;
+                return group, Error;
+            }
+        }catch (error e){
+            Error = {message:e.message,cause:e.cause};
+            return null, Error;
+        }
+
+        return group,Error;
+    }
 }
 
-transformer <json j, Group g> convert() {
+transformer <json j, Group g> convertGroupInUser() {
     g.displayName = j.display.toString();
     g.id = j.value.toString();
 }
+transformer <json j, Group g> convertGroupInRemoveResponse() {
+    g.displayName = j.displayName.toString();
+    g.id = j.id.toString();
+}
+
 
 function verifyingUser(string userName, http:InResponse response, http:HttpConnectorError httpError)(User,error){
     User user ={};
@@ -280,7 +347,7 @@ function verifyingUser(string userName, http:InResponse response, http:HttpConne
                     int i = 0;
                     user.groups = [];
                     foreach group in payload[key]{
-                        var tempGroup = <Group,convert()>group;
+                        var tempGroup = <Group,convertGroupInUser()>group;
                         user.groups[i]=tempGroup;
                         i=i+1;
                     }

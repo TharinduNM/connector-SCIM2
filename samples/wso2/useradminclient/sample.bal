@@ -10,7 +10,7 @@ public function main(string[] args){
     }
 
 
-    ////Create a Group in the IS user store using createUser action////////////////////////////////
+    ////Create a Group in the IS user store using createUser action
     //useradminclient:Group getRespondingGroup;
     //error e;
     //useradminclient:Group group = {};
@@ -23,9 +23,9 @@ public function main(string[] args){
     //
     //io:println(getRespondingGroup);
     //io:println(e);
-    ////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////
 
-    ////Get a Group from the IS user store by it's name using getGroupbyName aciton/////////////////////////
+    ////Get a Group from the IS user store by it's name using getGroupbyName aciton
     //useradminclient:Group group = {};
     //error e;
     //group,e = userAdminConnector.getGroupbyName("prime");
@@ -33,7 +33,7 @@ public function main(string[] args){
     //io:println("after received");
     //io:println(group);
     //io:println(e);
-    ///////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////
 
     ///// Create a User in the IS user store using createUser action
     //useradminclient:User user = {};
@@ -65,7 +65,7 @@ public function main(string[] args){
     //s,e= userAdminConnector.createUser(user);
     //io:println(s);
     //io:println(e);
-
+    //////////////////////////////////////////////////////////////////////////////////////////
 
     /////Get an user in the IS user store using getUserbyUserName action
     //useradminclient:User user = {};
@@ -75,17 +75,28 @@ public function main(string[] args){
     //
     //io:println(user);
     //io:println(e);
+    /////////////////////////////////////////////////////////////////////////////////////////
 
     //////Add an existing user to a existing group
-    useradminclient:Group group = {};
-    useradminclient:User user = {};
-    string userName = "donOmar2";
-    string groupName = "TourGuides";
-    error e;
+    // useradminclient:Group group = {};
+    // useradminclient:User user = {};
+    // string userName = "donOmar2";
+    // string groupName = "TourGuides";
+    // error e;
+    // group,e = userAdminConnector.addUserToGroup(userName, groupName);
+    // io:println(e);
+    // io:println(group.members);
+    ///////////////////////////////////////////////////////////////////////////////////////////
 
-    group,e = userAdminConnector.addUserToGroup(userName, groupName);
-    io:println(e);
-    io:println(group.members);
+    //////Remove an user from a given group
+    //useradminclient:Group group = {};
+    //string userName = "donOar2";
+    //string groupName = "TourGides";
+    //error e;
+    //group,e = userAdminConnector.removeUserFromGroup(userName, groupName);
+    //io:println(e);
+    //io:println(group);
+    ///////////////////////////////////////////////////////////////////////////////////////////
 
 }
 
