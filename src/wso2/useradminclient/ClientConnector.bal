@@ -171,7 +171,7 @@ public connector ClientConnector (string base64UserNamePasswword, string ipAndPo
 
         response, httpError = scim2EP.get("/Users?filter=userName+Eq+" + userName, request);
 
-        user, Error = resloveUser(userName, response, httpError);
+        user, Error = resolveUser(userName, response, httpError);
         return user, Error;
 
     }
@@ -199,7 +199,7 @@ public connector ClientConnector (string base64UserNamePasswword, string ipAndPo
         requestGroup.addHeader("Authorization","Basic "+base64UserNamePasswword);
 
         responseUser, httpError = scim2EP.get("/Users?filter=userName+Eq+" + userName, requestUser);
-        user, userError = resloveUser(userName, responseUser, httpError);
+        user, userError = resolveUser(userName, responseUser, httpError);
         if (user == null){
             return null,userError;
         }
@@ -309,7 +309,7 @@ public connector ClientConnector (string base64UserNamePasswword, string ipAndPo
         return group,Error;
     }
 
-    @Description {vlaue: "Check whether an user is in a certain group"}
+    @Description {value: "Check whether an user is in a certain group"}
     @Param {value: "userName: User name of the user"}
     @Param {value: "groupName: Display name of the group"}
     @Param {value: "boolean: true/false"}
@@ -325,7 +325,7 @@ public connector ClientConnector (string base64UserNamePasswword, string ipAndPo
 
         response, httpError = scim2EP.get("/Users?filter=userName+Eq+" + userName, request);
 
-        user, Error = resloveUser(userName, response, httpError);
+        user, Error = resolveUser(userName, response, httpError);
 
         if(user == null){
             Error = {message:"There is no user with user name: "+userName,cause: null};
@@ -356,7 +356,7 @@ transformer <json j, Group g> convertGroupInRemoveResponse() {
 }
 
 
-function resloveUser (string userName, http:InResponse response, http:HttpConnectorError httpError) (User, error) {
+function resolveUser (string userName, http:InResponse response, http:HttpConnectorError httpError) (User, error) {
     User user ={};
     error Error;
     if (httpError != null) {
