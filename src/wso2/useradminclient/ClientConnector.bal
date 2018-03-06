@@ -315,20 +315,22 @@ public connector ClientConnector (string base64UserNamePasswword, string ipAndPo
     @Param {value: "boolean: true/false"}
     @Param {value: "error: Error"}
     action isUserInGroup(string userName, string groupName) (boolean, error){
+        /////////////////////////////////////////////////////////////////////////////////////////////////
         http:OutRequest request = {};
         http:InResponse response = {};
         http:HttpConnectorError httpError;
         error Error;
         User user = {};
+        error userE;
 
         request.addHeader("Authorization", "Basic " + base64UserNamePasswword);
 
         response, httpError = scim2EP.get("/Users?filter=userName+Eq+" + userName, request);
 
-        user, Error = resolveUser(userName, response, httpError);
-
+        user, userE = resolveUser(userName, response, httpError);
+        //////////////////////////////////////////////////////////////////////////////////////////////////
         if(user == null){
-            Error = {message:"There is no user with user name: "+userName,cause: null};
+            Error = {message:userE.message,cause:userE.cause};
             return false,Error;
         }else{
             if(user.groups == null){
@@ -343,6 +345,52 @@ public connector ClientConnector (string base64UserNamePasswword, string ipAndPo
             }
             return false, null;
         }
+    }
+
+    @Description {value: "Delete an user from user store using his user name"}
+    @Param {value: "userName: User name of the user"}
+    @Param {value: "string: string literal"}
+    @Param {value: "error: Error"}
+    action deleteUserByUsername(string userName) (string, error){
+        http:OutRequest request = {};
+        http:InResponse response = {};
+        http:HttpConnectorError httpError;
+        error Error;
+
+        /////////////
+        http:OutRequest userRequest = {};
+        http:InResponse userResponse = {};
+        http:HttpConnectorError userError;
+        User user = {};
+        error userE;
+
+        userRequest.addHeader("Authorization", "Basic " + base64UserNamePasswword);
+
+        userResponse, userError = scim2EP.get("/Users?filter=userName+Eq+" + userName, userRequest);
+
+        user, userE = resolveUser(userName, userResponse, userError);
+        ////////////////////
+
+        if(user == null){
+            Error = {message:userE.message,cause:userE.cause};
+            return "failed",Error;
+        }
+        try{
+            string userId = user.id;
+
+            request.addHeader("Authorization", "Basic " + base64UserNamePasswword);
+            response,httpError = scim2EP.delete("/Users/"+userId, request);
+            io:println(response);
+            return "successful",Error;
+        }catch (error e){
+            Error = {message:e.message,cause:e.cause};
+            return "failed",Error;
+        }
+
+        return "successful",Error;
+
+
+
     }
 }
 
@@ -369,7 +417,7 @@ function resolveUser (string userName, http:InResponse response, http:HttpConnec
         var payload, _ = <json>receivedPayload;
         var noOfResults= payload["totalResults"].toString();
         if (noOfResults.equalsIgnoreCase("0")){
-            Error = {message:"No user named "+userName,cause:null};
+            Error = {message:"No user with user name "+userName,cause:null};
             return null,Error;
         }else{
             payload = payload["Resources"][0];

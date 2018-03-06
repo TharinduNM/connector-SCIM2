@@ -99,13 +99,23 @@ public function main(string[] args){
     ///////////////////////////////////////////////////////////////////////////////////////////
 
     ///////Check whether a user with certain user name is in a certain group
-    string userName = "donOmar2";
-    string groupname = "rime";
-    error e;
-    boolean x;
-    x,e = userAdminConnector.isUserInGroup(userName,groupname);
-    io:println(x);
-    io:println(e);
+    //string userName = "donOmar2";
+    //string groupname = "rime";
+    //error e;
+    //boolean x;
+    //x,e = userAdminConnector.isUserInGroup(userName,groupname);
+    //io:println(x);
+    //io:println(e);
+    ////////////////////////////////////////////////////////////////////////////////////////////
+
+    ////////Delete a user from the user store
+    //string userName = "tnm";
+    //error e;
+    //string indicator;
+    //indicator,e = userAdminConnector.deleteUserByUsername(userName);
+    //io:println(indicator);
+    //io:println(e);
+    ////////////////////////////////////////////////////////////////////////////////////////////
 
 }
 
