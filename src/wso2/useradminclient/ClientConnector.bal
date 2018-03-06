@@ -380,7 +380,6 @@ public connector ClientConnector (string base64UserNamePasswword, string ipAndPo
 
             request.addHeader("Authorization", "Basic " + base64UserNamePasswword);
             response,httpError = scim2EP.delete("/Users/"+userId, request);
-            io:println(response);
             return "successful",Error;
         }catch (error e){
             Error = {message:e.message,cause:e.cause};
@@ -388,8 +387,49 @@ public connector ClientConnector (string base64UserNamePasswword, string ipAndPo
         }
 
         return "successful",Error;
+    }
 
+    @Description {value: "Delete group using its name"}
+    @Param {value: "groupName: Display name of the group"}
+    @Param {value: "string: string literal"}
+    @Param {value: "error: Error"}
+    action deleteGroupByName(string groupName) (string, error){
+        http:OutRequest request = {};
+        http:InResponse response = {};
+        http:HttpConnectorError httpError;
+        error Error;
 
+        /////////////////////////////////
+        http:OutRequest groupRequest = {};
+        http:InResponse groupResponse = {};
+        error groupE;
+        http:HttpConnectorError groupError;
+        Group group = {};
+
+        groupRequest.addHeader("Authorization","Basic "+base64UserNamePasswword);
+
+        string s = "/Groups?attributes=displayName,id,members&filter=displayName+Eq+"+groupName;
+        groupResponse, groupError = scim2EP.get(s,groupRequest);
+
+        group,groupE = resolveGroup(groupName, groupResponse, groupError);
+        /////////////////////////////////////////////
+
+        if(group == null){
+            Error = {message:groupE.message,cause:groupE.cause};
+            return "failed",Error;
+        }
+        try{
+            string groupId = group.id;
+
+            request.addHeader("Authorization", "Basic " + base64UserNamePasswword);
+            response,httpError = scim2EP.delete("/Groups/"+groupId, request);
+            return "successful",Error;
+        }catch (error e){
+            Error = {message:e.message,cause:e.cause};
+            return "failed",Error;
+        }
+
+        return "successful",Error;
 
     }
 }
@@ -413,6 +453,10 @@ function resolveUser (string userName, http:InResponse response, http:HttpConnec
     }
 
     try {
+        if(response.statusCode==400){
+            Error = {message:response.reasonPhrase,cause:null};
+            return null, Error;
+        }
         string receivedPayload = response.getBinaryPayload().toString("UTF-8");
         var payload, _ = <json>receivedPayload;
         var noOfResults= payload["totalResults"].toString();
@@ -463,6 +507,10 @@ function resolveGroup (string groupName, http:InResponse response, http:HttpConn
     }
 
     try{
+        if(response.statusCode==400){
+            Error = {message:response.reasonPhrase,cause:null};
+            return null, Error;
+        }
         string receivedPayload = response.getBinaryPayload().toString("UTF-8");
         var payload, _ = <json>receivedPayload;
 

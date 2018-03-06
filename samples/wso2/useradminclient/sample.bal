@@ -117,6 +117,14 @@ public function main(string[] args){
     //io:println(e);
     ////////////////////////////////////////////////////////////////////////////////////////////
 
+    ////////Delete a user from the user store
+    string groupName = "readonly";
+    error e;
+    string indicator;
+    indicator,e = userAdminConnector.deleteGroupByName(groupName);
+    io:println(indicator);
+    io:println(e);
+    ////////////////////////////////////////////////////////////////////////////////////////////
 }
 
 
