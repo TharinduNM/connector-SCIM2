@@ -86,7 +86,7 @@ public connector ClientConnector (string base64UserNamePasswword, string ipAndPo
         string s = "/Groups?attributes=displayName,id,members&filter=displayName+Eq+"+groupName;
         response, httpError = scim2EP.get(s,request);
 
-        receivedGroup,Error = verifyingGroup(groupName, response, httpError);
+        receivedGroup,Error = resolveGroup(groupName, response, httpError);
         return receivedGroup, Error;
     }
 
@@ -171,7 +171,7 @@ public connector ClientConnector (string base64UserNamePasswword, string ipAndPo
 
         response, httpError = scim2EP.get("/Users?filter=userName+Eq+" + userName, request);
 
-        user, Error = verifyingUser(userName, response, httpError);
+        user, Error = resloveUser(userName, response, httpError);
         return user, Error;
 
     }
@@ -199,13 +199,13 @@ public connector ClientConnector (string base64UserNamePasswword, string ipAndPo
         requestGroup.addHeader("Authorization","Basic "+base64UserNamePasswword);
 
         responseUser, httpError = scim2EP.get("/Users?filter=userName+Eq+" + userName, requestUser);
-        user, userError = verifyingUser(userName, responseUser, httpError);
+        user, userError = resloveUser(userName, responseUser, httpError);
         if (user == null){
             return null,userError;
         }
 
         responseGroup, httpError = scim2EP.get("/Groups?attributes=displayName,id,members&filter=displayName+Eq+"+groupName, requestGroup);
-        group, groupError = verifyingGroup(groupName, responseGroup, httpError);
+        group, groupError = resolveGroup(groupName, responseGroup, httpError);
         if (group ==null){
             return null,groupError;
         }
@@ -242,6 +242,11 @@ public connector ClientConnector (string base64UserNamePasswword, string ipAndPo
 
     }
 
+    @Description {value: "Remove an user from a group"}
+    @Param {value: "userName: User name of the user"}
+    @Param {value: "groupName: Display name of the group"}
+    @Param {value: "Group: Group struct"}
+    @Param {value: "error: Error"}
     action removeUserFromGroup(string userName, string groupName) (Group, error){
         http:OutRequest request = {};
         http:InResponse response = {};
@@ -254,7 +259,7 @@ public connector ClientConnector (string base64UserNamePasswword, string ipAndPo
 
         groupRequest.addHeader("Authorization","Basic "+base64UserNamePasswword);
         groupResponse, httpError = scim2EP.get("/Groups?attributes=displayName,id,members&filter=displayName+Eq+"+groupName, groupRequest);
-        group, groupError = verifyingGroup(groupName, groupResponse, httpError);
+        group, groupError = resolveGroup(groupName, groupResponse, httpError);
         if (group ==null){
             return null,groupError;
         }
@@ -315,7 +320,7 @@ transformer <json j, Group g> convertGroupInRemoveResponse() {
 }
 
 
-function verifyingUser(string userName, http:InResponse response, http:HttpConnectorError httpError)(User,error){
+function resloveUser (string userName, http:InResponse response, http:HttpConnectorError httpError) (User, error) {
     User user ={};
     error Error;
     if (httpError != null) {
@@ -365,7 +370,7 @@ function verifyingUser(string userName, http:InResponse response, http:HttpConne
     return user, Error;
 }
 
-function verifyingGroup(string groupName, http:InResponse response, http:HttpConnectorError httpError)(Group,error){
+function resolveGroup (string groupName, http:InResponse response, http:HttpConnectorError httpError) (Group, error) {
     Group receivedGroup = {};
     error Error;
     if (httpError != null){
@@ -382,7 +387,7 @@ function verifyingGroup(string groupName, http:InResponse response, http:HttpCon
             Error = {message:"No Group named "+groupName,cause:null};
             return null,Error;
         }
-        //adding a empty group array to the incoming json payload if there is no members in the group
+            //adding a empty group array to the incoming json payload if there is no members in the group
         else{
             payload = payload["Resources"][0];
             string[] groupKeys = payload.getKeys();
@@ -426,7 +431,7 @@ public struct Member{
     string value;
 }
 
-public struct User{
+public struct User {
     string userName;
     string id;
     json details;

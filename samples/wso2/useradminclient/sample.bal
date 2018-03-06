@@ -89,14 +89,23 @@ public function main(string[] args){
     ///////////////////////////////////////////////////////////////////////////////////////////
 
     //////Remove an user from a given group
-    //useradminclient:Group group = {};
-    //string userName = "donOar2";
-    //string groupName = "TourGides";
-    //error e;
-    //group,e = userAdminConnector.removeUserFromGroup(userName, groupName);
-    //io:println(e);
-    //io:println(group);
+    useradminclient:Group group = {};
+    string userName = "ashan";
+    string groupName = "readonly";
+    error e;
+    group,e = userAdminConnector.removeUserFromGroup(userName, groupName);
+    io:println(e);
+    io:println(group);
     ///////////////////////////////////////////////////////////////////////////////////////////
+
+    ///////Check whether a user with certain user name is in a certain group
+    //string userName = "tnm";
+    //string groupname = "prime";
+    //error e;
+    //boolean x;
+    //x,e = userAdminConnector.isBelongToGroup(userName,groupname);
+    //io:println(x);
+
 
 }
 
