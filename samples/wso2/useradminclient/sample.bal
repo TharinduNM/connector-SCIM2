@@ -14,7 +14,7 @@ public function main(string[] args){
     //useradminclient:Group getRespondingGroup;
     //error e;
     //useradminclient:Group group = {};
-    //group.displayName = "Leader";
+    //group.displayName = "LeaderIllegal";
     //useradminclient:Member mem = {};
     //mem.display = "ashan";
     //mem.value = "55332c36-1717-4e25-ae11-0322a418a20c";
@@ -66,7 +66,26 @@ public function main(string[] args){
     //io:println(s);
     //io:println(e);
 
-    ///////Get an user in the IS user store using getUserbyUserName action
+
+    /////Get an user in the IS user store using getUserbyUserName action
+    //useradminclient:User user = {};
+    //string userName = "ashan";
+    //error e;
+    //user,e =userAdminConnector.getUserbyUserName(userName);
+    //
+    //io:println(user);
+    //io:println(e);
+
+    //////Add an existing user to a existing group
+    useradminclient:Group group = {};
+    useradminclient:User user = {};
+    string userName = "donOmar2";
+    string groupName = "TourGuides";
+    error e;
+
+    group,e = userAdminConnector.addUserToGroup(userName, groupName);
+    io:println(e);
+    io:println(group.members);
 
 }
 

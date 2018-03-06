@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="dc5eb830-7394-4598-99d1-89169fa26d0e" name="Default" comment="" />
+    <list default="true" id="dc5eb830-7394-4598-99d1-89169fa26d0e" name="Default" comment="">
+      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/samples/wso2/useradminclient/sample.bal" afterPath="$PROJECT_DIR$/samples/wso2/useradminclient/sample.bal" />
+      <change beforePath="$PROJECT_DIR$/src/wso2/useradminclient/ClientConnector.bal" afterPath="$PROJECT_DIR$/src/wso2/useradminclient/ClientConnector.bal" />
+    </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -15,25 +20,29 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="ClientConnector.bal" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ClientConnector.bal" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/ClientConnector.bal">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1008">
-              <caret line="215" column="4" lean-forward="true" selection-start-line="215" selection-start-column="4" selection-end-line="215" selection-end-column="4" />
+            <state relative-caret-position="466">
+              <caret line="182" column="34" lean-forward="false" selection-start-line="182" selection-start-column="34" selection-end-line="182" selection-end-column="34" />
               <folding>
-                <element signature="e#960#2529#0" expanded="false" />
-                <element signature="e#2749#4809#0" expanded="false" />
-                <element signature="e#5071#7071#0" expanded="false" />
+                <element signature="e#952#2521#0" expanded="false" />
+                <element signature="e#2733#3314#0" expanded="false" />
+                <element signature="e#3568#5572#0" expanded="false" />
+                <element signature="e#5781#6283#0" expanded="false" />
+                <element signature="e#6557#9285#0" expanded="false" />
+                <element signature="e#9407#11211#1" expanded="false" />
+                <element signature="e#11213#13143#1" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="sample.bal" pinned="false" current-in-tab="false">
+      <file leaf-file-name="sample.bal" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/samples/wso2/useradminclient/sample.bal">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="126">
-              <caret line="69" column="0" lean-forward="false" selection-start-line="69" selection-start-column="0" selection-end-line="69" selection-end-column="0" />
+            <state relative-caret-position="304">
+              <caret line="82" column="27" lean-forward="false" selection-start-line="82" selection-start-column="27" selection-end-line="82" selection-end-column="27" />
               <folding />
             </state>
           </provider>
@@ -47,6 +56,9 @@
         <option value="Ballerina File" />
       </list>
     </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GradleLocalSettings">
     <option name="externalProjectsViewState">
@@ -80,6 +92,7 @@
     <option name="width" value="1853" />
     <option name="height" value="1084" />
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
       <flattenPackages />
@@ -95,7 +108,10 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scratches" />
       <pane id="Scope" />
+      <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -112,9 +128,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="AndroidView" />
-      <pane id="PackagesPane" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -262,16 +275,24 @@
       <workItem from="1519978392949" duration="4597000" />
       <workItem from="1519983236643" duration="9821000" />
       <workItem from="1520226404632" duration="5300000" />
-      <workItem from="1520231868423" duration="4506000" />
+      <workItem from="1520231868423" duration="7554000" />
+      <workItem from="1520248732746" duration="2449000" />
+      <workItem from="1520251768631" duration="2974000" />
+      <workItem from="1520254913210" duration="6356000" />
+      <workItem from="1520274478842" duration="1596000" />
+      <workItem from="1520300782428" duration="226000" />
+      <workItem from="1520301192378" duration="830000" />
+      <workItem from="1520302102014" duration="2000" />
+      <workItem from="1520302123153" duration="3952000" />
+      <workItem from="1520311922780" duration="2132000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="54172000" />
+    <option name="totallyTimeSpent" value="77737000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1987" y="-4" width="1853" height="1084" extended-state="6" />
-    <editor active="true" />
+    <frame x="1987" y="-4" width="1855" height="1092" extended-state="6" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -280,20 +301,20 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3916309" sideWeight="0.5041505" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32982844" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32939914" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4109442" sideWeight="0.49584946" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32903227" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31505376" sideWeight="0.49584946" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14831212" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16325401" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Learn" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -310,7 +331,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="3" />
+      <option name="time" value="4" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -320,9 +341,229 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#960#2529#0" expanded="false" />
-            <element signature="e#2749#4809#0" expanded="false" />
-            <element signature="e#5071#7071#0" expanded="false" />
+            <element signature="e#952#2521#0" expanded="false" />
+            <element signature="e#2733#3314#0" expanded="false" />
+            <element signature="e#3568#5572#0" expanded="false" />
+            <element signature="e#5781#6283#0" expanded="false" />
+            <element signature="e#6557#9285#0" expanded="false" />
+            <element signature="e#9407#11211#1" expanded="false" />
+            <element signature="e#11213#13143#1" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/samples/wso2/useradminclient/sample.bal">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1458">
+          <caret line="81" column="29" lean-forward="false" selection-start-line="81" selection-start-column="29" selection-end-line="81" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/ClientConnector.bal">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1980">
+          <caret line="110" column="32" lean-forward="false" selection-start-line="110" selection-start-column="32" selection-end-line="110" selection-end-column="32" />
+          <folding>
+            <element signature="e#952#2521#0" expanded="false" />
+            <element signature="e#2733#3314#0" expanded="false" />
+            <element signature="e#3568#5572#0" expanded="false" />
+            <element signature="e#5781#6283#0" expanded="false" />
+            <element signature="e#6557#9285#0" expanded="false" />
+            <element signature="e#9407#11211#1" expanded="false" />
+            <element signature="e#11213#13143#1" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/samples/wso2/useradminclient/sample.bal">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="522">
+          <caret line="29" column="12" lean-forward="false" selection-start-line="29" selection-start-column="12" selection-end-line="29" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/ClientConnector.bal">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1980">
+          <caret line="110" column="32" lean-forward="true" selection-start-line="110" selection-start-column="32" selection-end-line="110" selection-end-column="32" />
+          <folding>
+            <element signature="e#952#2521#0" expanded="false" />
+            <element signature="e#2733#3314#0" expanded="false" />
+            <element signature="e#3568#5572#0" expanded="false" />
+            <element signature="e#5781#6283#0" expanded="false" />
+            <element signature="e#6557#9285#0" expanded="false" />
+            <element signature="e#9407#11211#1" expanded="false" />
+            <element signature="e#11213#13143#1" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/samples/wso2/useradminclient/sample.bal">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="522">
+          <caret line="29" column="12" lean-forward="true" selection-start-line="29" selection-start-column="12" selection-end-line="29" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/ClientConnector.bal">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#952#2521#0" expanded="false" />
+            <element signature="e#2733#3314#0" expanded="false" />
+            <element signature="e#3568#5572#0" expanded="false" />
+            <element signature="e#5781#6283#0" expanded="false" />
+            <element signature="e#6557#9285#0" expanded="false" />
+            <element signature="e#9407#11211#1" expanded="false" />
+            <element signature="e#11213#13143#1" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/samples/wso2/useradminclient/sample.bal">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="16" column="31" lean-forward="false" selection-start-line="16" selection-start-column="31" selection-end-line="16" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/ClientConnector.bal">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3762">
+          <caret line="209" column="10" lean-forward="false" selection-start-line="209" selection-start-column="10" selection-end-line="209" selection-end-column="10" />
+          <folding>
+            <element signature="e#952#2521#0" expanded="false" />
+            <element signature="e#2733#3314#0" expanded="false" />
+            <element signature="e#3568#5572#0" expanded="false" />
+            <element signature="e#5781#6283#0" expanded="false" />
+            <element signature="e#6557#9285#0" expanded="false" />
+            <element signature="e#9407#11211#1" expanded="false" />
+            <element signature="e#11213#13143#1" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/samples/wso2/useradminclient/sample.bal">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="504">
+          <caret line="28" column="4" lean-forward="false" selection-start-line="28" selection-start-column="4" selection-end-line="34" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/ClientConnector.bal">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#952#2521#0" expanded="false" />
+            <element signature="e#2733#3314#0" expanded="false" />
+            <element signature="e#3568#5572#0" expanded="false" />
+            <element signature="e#5781#6283#0" expanded="false" />
+            <element signature="e#6557#9285#0" expanded="false" />
+            <element signature="e#9407#11211#1" expanded="false" />
+            <element signature="e#11213#13143#1" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/samples/wso2/useradminclient/sample.bal">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1386">
+          <caret line="77" column="1" lean-forward="true" selection-start-line="77" selection-start-column="1" selection-end-line="77" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/ClientConnector.bal">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#952#2521#0" expanded="false" />
+            <element signature="e#2733#3314#0" expanded="false" />
+            <element signature="e#3568#5572#0" expanded="false" />
+            <element signature="e#5781#6283#0" expanded="false" />
+            <element signature="e#6557#9285#0" expanded="false" />
+            <element signature="e#9407#11211#1" expanded="false" />
+            <element signature="e#11213#13143#1" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/samples/wso2/useradminclient/sample.bal">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1350">
+          <caret line="75" column="19" lean-forward="false" selection-start-line="75" selection-start-column="19" selection-end-line="75" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/ClientConnector.bal">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#952#2521#0" expanded="false" />
+            <element signature="e#2733#3314#0" expanded="false" />
+            <element signature="e#3568#5572#0" expanded="false" />
+            <element signature="e#5781#6283#0" expanded="false" />
+            <element signature="e#6557#9285#0" expanded="false" />
+            <element signature="e#9407#11211#1" expanded="false" />
+            <element signature="e#11213#13143#1" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/samples/wso2/useradminclient/sample.bal">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1368">
+          <caret line="76" column="18" lean-forward="false" selection-start-line="76" selection-start-column="18" selection-end-line="76" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/ClientConnector.bal">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#952#2521#0" expanded="false" />
+            <element signature="e#2733#3314#0" expanded="false" />
+            <element signature="e#3568#5572#0" expanded="false" />
+            <element signature="e#5781#6283#0" expanded="false" />
+            <element signature="e#6557#9285#0" expanded="false" />
+            <element signature="e#9407#11211#1" expanded="false" />
+            <element signature="e#11213#13143#1" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/samples/wso2/useradminclient/sample.bal">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1116">
+          <caret line="62" column="30" lean-forward="false" selection-start-line="62" selection-start-column="30" selection-end-line="62" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/ClientConnector.bal">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#952#2521#0" expanded="false" />
+            <element signature="e#2733#3314#0" expanded="false" />
+            <element signature="e#3568#5572#0" expanded="false" />
+            <element signature="e#5781#6283#0" expanded="false" />
+            <element signature="e#6557#9285#0" expanded="false" />
+            <element signature="e#9407#11211#1" expanded="false" />
+            <element signature="e#11213#13143#1" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -340,9 +581,13 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#960#2529#0" expanded="false" />
-            <element signature="e#2749#4809#0" expanded="false" />
-            <element signature="e#5071#7071#0" expanded="false" />
+            <element signature="e#952#2521#0" expanded="false" />
+            <element signature="e#2733#3314#0" expanded="false" />
+            <element signature="e#3568#5572#0" expanded="false" />
+            <element signature="e#5781#6283#0" expanded="false" />
+            <element signature="e#6557#9285#0" expanded="false" />
+            <element signature="e#9407#11211#1" expanded="false" />
+            <element signature="e#11213#13143#1" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -360,9 +605,13 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#960#2529#0" expanded="false" />
-            <element signature="e#2749#4809#0" expanded="false" />
-            <element signature="e#5071#7071#0" expanded="false" />
+            <element signature="e#952#2521#0" expanded="false" />
+            <element signature="e#2733#3314#0" expanded="false" />
+            <element signature="e#3568#5572#0" expanded="false" />
+            <element signature="e#5781#6283#0" expanded="false" />
+            <element signature="e#6557#9285#0" expanded="false" />
+            <element signature="e#9407#11211#1" expanded="false" />
+            <element signature="e#11213#13143#1" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -380,9 +629,13 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#960#2529#0" expanded="false" />
-            <element signature="e#2749#4809#0" expanded="false" />
-            <element signature="e#5071#7071#0" expanded="false" />
+            <element signature="e#952#2521#0" expanded="false" />
+            <element signature="e#2733#3314#0" expanded="false" />
+            <element signature="e#3568#5572#0" expanded="false" />
+            <element signature="e#5781#6283#0" expanded="false" />
+            <element signature="e#6557#9285#0" expanded="false" />
+            <element signature="e#9407#11211#1" expanded="false" />
+            <element signature="e#11213#13143#1" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -392,9 +645,13 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#960#2529#0" expanded="false" />
-            <element signature="e#2749#4809#0" expanded="false" />
-            <element signature="e#5071#7071#0" expanded="false" />
+            <element signature="e#952#2521#0" expanded="false" />
+            <element signature="e#2733#3314#0" expanded="false" />
+            <element signature="e#3568#5572#0" expanded="false" />
+            <element signature="e#5781#6283#0" expanded="false" />
+            <element signature="e#6557#9285#0" expanded="false" />
+            <element signature="e#9407#11211#1" expanded="false" />
+            <element signature="e#11213#13143#1" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -404,9 +661,13 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#960#2529#0" expanded="false" />
-            <element signature="e#2749#4809#0" expanded="false" />
-            <element signature="e#5071#7071#0" expanded="false" />
+            <element signature="e#952#2521#0" expanded="false" />
+            <element signature="e#2733#3314#0" expanded="false" />
+            <element signature="e#3568#5572#0" expanded="false" />
+            <element signature="e#5781#6283#0" expanded="false" />
+            <element signature="e#6557#9285#0" expanded="false" />
+            <element signature="e#9407#11211#1" expanded="false" />
+            <element signature="e#11213#13143#1" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -416,9 +677,13 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#960#2529#0" expanded="false" />
-            <element signature="e#2749#4809#0" expanded="false" />
-            <element signature="e#5071#7071#0" expanded="false" />
+            <element signature="e#952#2521#0" expanded="false" />
+            <element signature="e#2733#3314#0" expanded="false" />
+            <element signature="e#3568#5572#0" expanded="false" />
+            <element signature="e#5781#6283#0" expanded="false" />
+            <element signature="e#6557#9285#0" expanded="false" />
+            <element signature="e#9407#11211#1" expanded="false" />
+            <element signature="e#11213#13143#1" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -433,27 +698,31 @@
     <entry file="file://$APPLICATION_CONFIG_DIR$/idea64.vmoptions">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="54">
-          <caret line="3" column="8" lean-forward="false" selection-start-line="3" selection-start-column="8" selection-end-line="3" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/samples/wso2/useradminclient/sample.bal">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="69" column="0" lean-forward="false" selection-start-line="69" selection-start-column="0" selection-end-line="69" selection-end-column="0" />
-          <folding />
+          <caret line="3" column="6" lean-forward="false" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="6" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/ClientConnector.bal">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1008">
-          <caret line="215" column="4" lean-forward="true" selection-start-line="215" selection-start-column="4" selection-end-line="215" selection-end-column="4" />
+        <state relative-caret-position="466">
+          <caret line="182" column="34" lean-forward="false" selection-start-line="182" selection-start-column="34" selection-end-line="182" selection-end-column="34" />
           <folding>
-            <element signature="e#960#2529#0" expanded="false" />
-            <element signature="e#2749#4809#0" expanded="false" />
-            <element signature="e#5071#7071#0" expanded="false" />
+            <element signature="e#952#2521#0" expanded="false" />
+            <element signature="e#2733#3314#0" expanded="false" />
+            <element signature="e#3568#5572#0" expanded="false" />
+            <element signature="e#5781#6283#0" expanded="false" />
+            <element signature="e#6557#9285#0" expanded="false" />
+            <element signature="e#9407#11211#1" expanded="false" />
+            <element signature="e#11213#13143#1" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/samples/wso2/useradminclient/sample.bal">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="304">
+          <caret line="82" column="27" lean-forward="false" selection-start-line="82" selection-start-column="27" selection-end-line="82" selection-end-column="27" />
+          <folding />
         </state>
       </provider>
     </entry>

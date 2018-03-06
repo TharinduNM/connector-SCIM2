@@ -14,10 +14,10 @@ public connector ClientConnector (string base64UserNamePasswword, string ipAndPo
         create http:HttpClient("https://"+ipAndPort+"/scim2",option);
     }
 
-    @Description { value : "Create a group in the user store"}
-    @Param { value : "group: Group struct with group details"}
-    @Param { value : "Group: Group struct"}
-    @Param { value : "error: Error"}
+    @Description {value: "Create a group in the user store"}
+    @Param {value: "group: Group struct with group details"}
+    @Param {value: "Group: Group struct"}
+    @Param {value: "error: Error"}
     action createGroup(Group group)(Group, error){
         http:OutRequest request = {};
         http:InResponse response = {};
@@ -70,10 +70,10 @@ public connector ClientConnector (string base64UserNamePasswword, string ipAndPo
 
     }
 
-    @Description { value : "Get a group in the user store by name"}
-    @Param { value : "groupName: The display Name of the group"}
-    @Param { value : "Group: Group struct"}
-    @Param { value : "error: Error"}
+    @Description {value: "Get a group in the user store by name"}
+    @Param {value: "groupName: The display Name of the group"}
+    @Param {value: "Group: Group struct"}
+    @Param {value: "error: Error"}
     action getGroupbyName(string groupName)(Group, error){
         http:OutRequest request = {};
         http:InResponse response = {};
@@ -86,49 +86,14 @@ public connector ClientConnector (string base64UserNamePasswword, string ipAndPo
         string s = "/Groups?attributes=displayName,id,members&filter=displayName+Eq+"+groupName;
         response, httpError = scim2EP.get(s,request);
 
-        if (httpError != null){
-            Error = {message:httpError.message,cause:httpError.cause};
-            return receivedGroup, Error;
-        }
-
-        try{
-            string receivedPayload = response.getBinaryPayload().toString("UTF-8");
-            var payload, _ = <json>receivedPayload;
-            payload = payload["Resources"][0];
-            //adding a empty group array to the incoming json payload if there is no members in the group
-            string[] groupKeys = payload.getKeys();
-            if (lengthof groupKeys == 2){
-                string temporaryString = payload.toString();
-                string temporaryPayload = temporaryString.subString(0,temporaryString.length()-1);
-                temporaryPayload = temporaryPayload + ",\"members\":[]}";
-                payload, _ = <json>temporaryPayload;
-            }
-            /////////////////////////////////////////////////////////////////////////////////////////////
-            var receivedResponse, conversionError = <Group>payload;
-            receivedGroup = receivedResponse;
-            if(conversionError != null){
-                if(payload == null) {
-                    log:printError(conversionError.message);
-                }
-                log:printError(conversionError.message);
-                Error = {message:payload["detail"].toString(),cause:null};
-            }
-
-
-        }catch (error e) {
-            Error = {message:e.message, cause:e.cause};
-            log:printError(Error.message);
-            return receivedGroup, Error;
-        }
-
-
+        receivedGroup,Error = verifyingGroup(groupName, response, httpError);
         return receivedGroup, Error;
     }
 
-    @Description { value : "Create a user in the user store"}
-    @Param { value : "user: user struct with user details"}
-    @Param { value : "string: string indicating whether user creation was successful or failed"}
-    @Param { value : "error: Error"}
+    @Description {value: "Create a user in the user store"}
+    @Param {value: "user: user struct with user details"}
+    @Param {value: "string: string indicating whether user creation was successful or failed"}
+    @Param {value: "error: Error"}
     action createUser(User user)(string, error){
         http:OutRequest request = {};
         http:InResponse response = {};
@@ -155,7 +120,7 @@ public connector ClientConnector (string base64UserNamePasswword, string ipAndPo
             }
 
         }
-        //////////
+            //////////
 
         else{
             try{
@@ -191,13 +156,196 @@ public connector ClientConnector (string base64UserNamePasswword, string ipAndPo
 
     }
 
-    @Description { value : "Get a user in the user store by his user name"}
-    @Param { value : "userName: User name of the user"}
-    @Param { value : "User: User struct"}
-    @Param { value : "error: Error"}
-    action getUserbyUserName(string userName)(User, error){
+    @Description {value: "Get a user in the user store by his user name"}
+    @Param {value: "userName: User name of the user"}
+    @Param {value: "User: User struct"}
+    @Param {value: "error: Error"}
+    action getUserbyUserName (string userName) (User, error) {
+        http:OutRequest request = {};
+        http:InResponse response = {};
+        http:HttpConnectorError httpError;
+        error Error;
+        User user = {};
+
+        request.addHeader("Authorization", "Basic " + base64UserNamePasswword);
+
+        response, httpError = scim2EP.get("/Users?filter=userName+Eq+" + userName, request);
+
+        user, Error = verifyingUser(userName, response, httpError);
+        return user, Error;
 
     }
+
+    @Description {value: "Add an user in the user store to a existing group"}
+    @Param {value: "userName: User name of the user"}
+    @Param {value: "groupName: Display name of the group"}
+    @Param {value: "Group: Group struct"}
+    @Param {value: "error: Error"}
+    action addUserToGroup(string userName, string groupName) (Group, error){
+        http:OutRequest requestUser = {};
+        http:OutRequest requestGroup = {};
+        http:InResponse responseUser = {};
+        http:InResponse responseGroup = {};
+        http:OutRequest request = {};
+        http:InResponse response = {};
+        http:HttpConnectorError httpError;
+        error userError;
+        User user = {};
+        error groupError;
+        Group group = {};
+        error Error;
+
+        requestUser.addHeader("Authorization","Basic "+base64UserNamePasswword);
+        requestGroup.addHeader("Authorization","Basic "+base64UserNamePasswword);
+
+        responseUser, httpError = scim2EP.get("/Users?filter=userName+Eq+" + userName, requestUser);
+        user, userError = verifyingUser(userName, responseUser, httpError);
+        if (user == null){
+            return null,userError;
+        }
+
+        responseGroup, httpError = scim2EP.get("/Groups?attributes=displayName,id,members&filter=displayName+Eq+"+groupName, requestGroup);
+        group, groupError = verifyingGroup(groupName, responseGroup, httpError);
+        if (group ==null){
+            return null,groupError;
+        }
+
+        string value = user.id;
+        string ref = "https://localhost:9443/scim2/Users/" + value;
+        string url = "/Groups/"+group.id;
+        json body = {
+                        "schemas": ["urn:ietf:params:scim:api:messages:2.0:PatchOp"],
+                        "Operations": [{
+                                           "op": "add",
+                                           "value": {
+                                                        "members": [{
+                                                                        "display": "",
+                                                                        "$ref": "",
+                                                                        "value": ""
+                                                                    }]
+                                                    }
+                                       }]
+                    };
+        body.Operations[0].value.members[0].display = userName;
+        body.Operations[0].value.members[0]["$ref"] = ref;
+        body.Operations[0].value.members[0].value = value;
+
+        request.addHeader("Authorization","Basic "+base64UserNamePasswword);
+        request.addHeader("Content-Type", "application/json");
+        request.setJsonPayload(body);
+
+        response, httpError = scim2EP.patch(url,request);
+        var stringPayload = response.getBinaryPayload().toString("UTF-8");
+        var payload, e = <json>stringPayload;
+        group, Error = <Group>payload;
+        return group, Error;
+
+    }
+}
+
+transformer <json j, Group g> convert() {
+    g.displayName = j.display.toString();
+    g.id = j.value.toString();
+}
+
+function verifyingUser(string userName, http:InResponse response, http:HttpConnectorError httpError)(User,error){
+    User user ={};
+    error Error;
+    if (httpError != null) {
+        Error = {message:httpError.message, cause:httpError.cause};
+        return null, Error;
+    }
+
+    try {
+        string receivedPayload = response.getBinaryPayload().toString("UTF-8");
+        var payload, _ = <json>receivedPayload;
+        var noOfResults= payload["totalResults"].toString();
+        if (noOfResults.equalsIgnoreCase("0")){
+            Error = {message:"No user named "+userName,cause:null};
+            return null,Error;
+        }else{
+            payload = payload["Resources"][0];
+            string[] userKeyList = payload.getKeys();
+            foreach key in userKeyList{
+                string k = key;
+                if (key.equalsIgnoreCase("userName")){
+                    user.userName = payload["userName"].toString();
+                    payload.remove("userName");
+                }
+                if (key.equalsIgnoreCase("id")){
+                    user.id = payload["id"].toString();
+                    payload.remove("id");
+                }
+                if (key.equalsIgnoreCase("groups")){
+                    int i = 0;
+                    user.groups = [];
+                    foreach group in payload[key]{
+                        var tempGroup = <Group,convert()>group;
+                        user.groups[i]=tempGroup;
+                        i=i+1;
+                    }
+                    payload.remove(key);
+                }
+            }
+            user.details = payload;
+        }
+
+    } catch (error e) {
+        Error = {message:e.message, cause:e.cause};
+        log:printError(Error.message);
+        return null, Error;
+    }
+    return user, Error;
+}
+
+function verifyingGroup(string groupName, http:InResponse response, http:HttpConnectorError httpError)(Group,error){
+    Group receivedGroup = {};
+    error Error;
+    if (httpError != null){
+        Error = {message:httpError.message,cause:httpError.cause};
+        return null, Error;
+    }
+
+    try{
+        string receivedPayload = response.getBinaryPayload().toString("UTF-8");
+        var payload, _ = <json>receivedPayload;
+
+        var noOfResults= payload["totalResults"].toString();
+        if (noOfResults.equalsIgnoreCase("0")){
+            Error = {message:"No Group named "+groupName,cause:null};
+            return null,Error;
+        }
+        //adding a empty group array to the incoming json payload if there is no members in the group
+        else{
+            payload = payload["Resources"][0];
+            string[] groupKeys = payload.getKeys();
+            if (lengthof groupKeys == 2){
+                string temporaryString = payload.toString();
+                string temporaryPayload = temporaryString.subString(0,temporaryString.length()-1);
+                temporaryPayload = temporaryPayload + ",\"members\":[]}";
+                payload, _ = <json>temporaryPayload;
+            }
+            /////////////////////////////////////////////////////////////////////////////////////////////
+            var receivedResponse, conversionError = <Group>payload;
+            receivedGroup = receivedResponse;
+            if(conversionError != null){
+                if(payload == null) {
+                    log:printError(conversionError.message);
+                }
+                log:printError(conversionError.message);
+                Error = {message:payload["detail"].toString(),cause:null};
+            }
+
+        }
+
+
+    }catch (error e) {
+        Error = {message:e.message, cause:e.cause};
+        log:printError(Error.message);
+        return null, Error;
+    }
+
+    return receivedGroup, Error;
 }
 
 public struct Group{
