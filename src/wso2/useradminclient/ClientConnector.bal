@@ -308,6 +308,42 @@ public connector ClientConnector (string base64UserNamePasswword, string ipAndPo
 
         return group,Error;
     }
+
+    @Description {vlaue: "Check whether an user is in a certain group"}
+    @Param {value: "userName: User name of the user"}
+    @Param {value: "groupName: Display name of the group"}
+    @Param {value: "boolean: true/false"}
+    @Param {value: "error: Error"}
+    action isUserInGroup(string userName, string groupName) (boolean, error){
+        http:OutRequest request = {};
+        http:InResponse response = {};
+        http:HttpConnectorError httpError;
+        error Error;
+        User user = {};
+
+        request.addHeader("Authorization", "Basic " + base64UserNamePasswword);
+
+        response, httpError = scim2EP.get("/Users?filter=userName+Eq+" + userName, request);
+
+        user, Error = resloveUser(userName, response, httpError);
+
+        if(user == null){
+            Error = {message:"There is no user with user name: "+userName,cause: null};
+            return false,Error;
+        }else{
+            if(user.groups == null){
+                return false, null;
+            }else{
+                foreach group in user.groups{
+                    if(group.displayName.equalsIgnoreCase(groupName)){
+                        return true, null;
+                    }
+                }
+
+            }
+            return false, null;
+        }
+    }
 }
 
 transformer <json j, Group g> convertGroupInUser() {
