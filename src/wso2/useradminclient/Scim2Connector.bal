@@ -8,7 +8,7 @@ import ballerina.log;
 @Param { value : "base64UserNamePassword : The base 64 encoded string in the format username:password"}
 @Param { value : "ipAndPort: The string containing IP and the Port of the service in the format IP:Port"}
 @Param { value : "option: The http option object with the location and password of the Identity Server trust store file"}
-public connector ClientConnector (string base64UserNamePasswword, string ipAndPort, http:Options option){
+public connector Scim2Connector (string base64UserNamePasswword, string ipAndPort, http:Options option) {
 
     endpoint<http:HttpClient> scim2EP{
         create http:HttpClient("https://"+ipAndPort+"/scim2",option);
@@ -74,7 +74,7 @@ public connector ClientConnector (string base64UserNamePasswword, string ipAndPo
     @Param {value: "groupName: The display Name of the group"}
     @Param {value: "Group: Group struct"}
     @Param {value: "error: Error"}
-    action getGroupbyName(string groupName)(Group, error){
+    action getGroupByName (string groupName) (Group, error) {
         http:OutRequest request = {};
         http:InResponse response = {};
         error Error;
@@ -117,7 +117,7 @@ public connector ClientConnector (string base64UserNamePasswword, string ipAndPo
                 var payload, e = <json>user;
                 payload.remove("details");
             }catch (error e){
-                Error = {message:"userName and id should be strings",cause:e.cause};
+                Error = {message:"userName,password and id should be strings",cause:e.cause};
                 log:printError(e.message);
                 return "failed",Error;
             }
@@ -154,7 +154,11 @@ public connector ClientConnector (string base64UserNamePasswword, string ipAndPo
             Error = {message:httpError.message, cause:httpError.cause};
             return "failed", Error;
         }
-        return response.reasonPhrase,Error;
+        if (response.statusCode==201){
+            return "created",Error;
+        }
+        Error = {message:response.reasonPhrase,cause:null};
+        return "failed",Error;
 
     }
 
@@ -571,177 +575,3 @@ public connector ClientConnector (string base64UserNamePasswword, string ipAndPo
     }
 }
 
-transformer <json j, Group g> convertGroupInUser() {
-    g.displayName = j.display.toString();
-    g.id = j.value.toString();
-}
-transformer <json j, Group g> convertGroupInRemoveResponse() {
-    g.displayName = j.displayName.toString();
-    g.id = j.id.toString();
-}
-transformer <json j, Name n> convertName(){
-    n.givenName = j.givenName != null ? j.givenName.toString() : "";
-    n.familyName = j.familyName.toString();
-    n.formatted = j.formatted != null ? j.formatted.toString() : "";
-    n.middleName = j.middleName != null ? j.middleName.toString() : "";
-    n.honorificPrefix = j.honorificPrefix != null ? j.honorificPrefix.toString() : "";
-    n.honorificSuffix = j.honorificSuffix != null ? j.honorificSuffix.toString() : "";
-}
-
-function resolveUser (string userName, http:InResponse response, http:HttpConnectorError httpError) (User, error) {
-    User user ={};
-    error Error;
-    if (httpError != null) {
-        Error = {message:httpError.message, cause:httpError.cause};
-        return null, Error;
-    }
-
-    try {
-        if(response.statusCode==400){
-            Error = {message:response.reasonPhrase,cause:null};
-            return null, Error;
-        }
-        if(response.statusCode==404){
-            Error = {message:"Valid users are not found",cause:null};
-            return null, Error;
-        }
-        string receivedPayload = response.getBinaryPayload().toString("UTF-8");
-        var payload, _ = <json>receivedPayload;
-        var noOfResults= payload["totalResults"].toString();
-        if (noOfResults.equalsIgnoreCase("0")){
-            Error = {message:"No user with user name "+userName,cause:null};
-            return null,Error;
-        }else{
-            payload = payload["Resources"][0];
-            string[] userKeyList = payload.getKeys();
-            foreach key in userKeyList{
-                string k = key;
-                if (key.equalsIgnoreCase("userName")){
-                    user.userName = payload["userName"].toString();
-                    payload.remove("userName");
-                }
-                if (key.equalsIgnoreCase("id")){
-                    user.id = payload["id"].toString();
-                    payload.remove("id");
-                }
-                if (key.equalsIgnoreCase("name")){
-                    user.name = <Name,convertName()>payload["name"];
-                    payload.remove("name");
-                }
-                if (key.equalsIgnoreCase("groups")){
-                    int i = 0;
-                    user.groups = [];
-                    foreach group in payload[key]{
-                        var tempGroup = <Group,convertGroupInUser()>group;
-                        user.groups[i]=tempGroup;
-                        i=i+1;
-                    }
-                    payload.remove(key);
-                }
-            }
-            user.details = payload;
-        }
-
-    } catch (error e) {
-        Error = {message:e.message, cause:e.cause};
-        log:printError(Error.message);
-        return null, Error;
-    }
-    return user, Error;
-}
-
-function resolveGroup (string groupName, http:InResponse response, http:HttpConnectorError httpError) (Group, error) {
-    Group receivedGroup = {};
-    error Error;
-    if (httpError != null){
-        Error = {message:httpError.message,cause:httpError.cause};
-        return null, Error;
-    }
-
-    try{
-        if(response.statusCode==400){
-            Error = {message:response.reasonPhrase,cause:null};
-            return null, Error;
-        }
-        if(response.statusCode==404){
-            Error = {message:"Valid groups are not found",cause:null};
-            return null, Error;
-        }
-        string receivedPayload = response.getBinaryPayload().toString("UTF-8");
-        var payload, _ = <json>receivedPayload;
-
-        var noOfResults= payload["totalResults"].toString();
-        if (noOfResults.equalsIgnoreCase("0")){
-            Error = {message:"No Group named "+groupName,cause:null};
-            return null,Error;
-        }
-            //adding a empty group array to the incoming json payload if there is no members in the group
-        else{
-            payload = payload["Resources"][0];
-            string[] groupKeys = payload.getKeys();
-            if (lengthof groupKeys == 2){
-                string temporaryString = payload.toString();
-                string temporaryPayload = temporaryString.subString(0,temporaryString.length()-1);
-                temporaryPayload = temporaryPayload + ",\"members\":[]}";
-                payload, _ = <json>temporaryPayload;
-            }
-            /////////////////////////////////////////////////////////////////////////////////////////////
-            var receivedResponse, conversionError = <Group>payload;
-            receivedGroup = receivedResponse;
-            if(conversionError != null){
-                if(payload == null) {
-                    log:printError(conversionError.message);
-                }
-                log:printError(conversionError.message);
-                Error = {message:payload["detail"].toString(),cause:null};
-            }
-
-        }
-
-
-    }catch (error e) {
-        Error = {message:e.message, cause:e.cause};
-        log:printError(Error.message);
-        return null, Error;
-    }
-
-    return receivedGroup, Error;
-}
-
-function isMembersPresent (json group) (boolean){
-    string[] groupKeyList = group.getKeys();
-    foreach key in groupKeyList{
-        if(key.equalsIgnoreCase("members")){
-            return true;
-        }
-    }
-    return false;
-}
-
-public struct Group{
-    string displayName;
-    string id;
-    Member[] members;
-}
-
-public struct Member{
-    string display;
-    string value;
-}
-
-public struct User {
-    string userName;
-    string id;
-    json details;
-    Group[] groups;
-    Name name;
-}
-
-public struct Name{
-    string formatted;
-    string givenName;
-    string familyName;
-    string middleName;
-    string honorificPrefix;
-    string honorificSuffix;
-}

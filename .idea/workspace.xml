@@ -4,7 +4,9 @@
     <list default="true" id="dc5eb830-7394-4598-99d1-89169fa26d0e" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/samples/wso2/useradminclient/sample.bal" afterPath="$PROJECT_DIR$/samples/wso2/useradminclient/sample.bal" />
-      <change beforePath="$PROJECT_DIR$/src/wso2/useradminclient/ClientConnector.bal" afterPath="$PROJECT_DIR$/src/wso2/useradminclient/ClientConnector.bal" />
+      <change beforePath="$PROJECT_DIR$/src/wso2/useradminclient/Scim2Connector.bal" afterPath="$PROJECT_DIR$/src/wso2/useradminclient/Scim2Connector.bal" />
+      <change beforePath="$PROJECT_DIR$/src/wso2/useradminclient/Scim2Connector_utils.bal" afterPath="$PROJECT_DIR$/src/wso2/useradminclient/Scim2Connector_utils.bal" />
+      <change beforePath="$PROJECT_DIR$/src/wso2/useradminclient/Scim2_structs.bal" afterPath="$PROJECT_DIR$/src/wso2/useradminclient/Scim2_structs.bal" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -19,34 +21,53 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="ClientConnector.bal" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/ClientConnector.bal">
+      <file leaf-file-name="Scim2Connector.bal" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/Scim2Connector.bal">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="141">
-              <caret line="733" column="5" lean-forward="false" selection-start-line="731" selection-start-column="0" selection-end-line="737" selection-end-column="1" />
+            <state relative-caret-position="286">
+              <caret line="76" column="25" lean-forward="false" selection-start-line="76" selection-start-column="11" selection-end-line="76" selection-end-column="25" />
               <folding>
                 <element signature="e#952#2521#0" expanded="false" />
-                <element signature="e#2733#3312#0" expanded="false" />
-                <element signature="e#3566#5638#0" expanded="false" />
-                <element signature="e#5847#6347#0" expanded="false" />
-                <element signature="e#6621#9345#0" expanded="false" />
-                <element signature="e#9597#12075#0" expanded="false" />
-                <element signature="e#12343#13548#0" expanded="false" />
-                <element signature="e#13767#15005#0" expanded="false" />
-                <element signature="e#15206#16565#0" expanded="false" />
-                <element signature="e#19869#21960#0" expanded="false" />
-                <element signature="e#25010#27241#1" expanded="false" />
-                <element signature="e#27243#27476#1" expanded="false" />
+                <element signature="e#2733#3315#0" expanded="false" />
+                <element signature="e#3569#5782#0" expanded="false" />
+                <element signature="e#5991#6491#0" expanded="false" />
+                <element signature="e#6765#9489#0" expanded="false" />
+                <element signature="e#9741#12219#0" expanded="false" />
+                <element signature="e#12487#13692#0" expanded="false" />
+                <element signature="e#13911#15149#0" expanded="false" />
+                <element signature="e#15350#16709#0" expanded="false" />
+                <element signature="e#16876#19861#0" expanded="false" />
+                <element signature="e#20013#22104#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="sample.bal" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Scim2_structs.bal" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/Scim2_structs.bal">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="306">
+              <caret line="17" column="19" lean-forward="true" selection-start-line="17" selection-start-column="12" selection-end-line="17" selection-end-column="19" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Scim2Connector_utils.bal" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/Scim2Connector_utils.bal">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="216">
+              <caret line="36" column="53" lean-forward="true" selection-start-line="36" selection-start-column="53" selection-end-line="36" selection-end-column="53" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="sample.bal" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/samples/wso2/useradminclient/sample.bal">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="249">
-              <caret line="129" column="0" lean-forward="false" selection-start-line="129" selection-start-column="0" selection-end-line="133" selection-end-column="18" />
+            <state relative-caret-position="486">
+              <caret line="27" column="39" lean-forward="true" selection-start-line="27" selection-start-column="39" selection-end-line="27" selection-end-column="39" />
               <folding />
             </state>
           </provider>
@@ -82,8 +103,12 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$APPLICATION_CONFIG_DIR$/idea64.vmoptions" />
-        <option value="$PROJECT_DIR$/samples/wso2/useradminclient/sample.bal" />
         <option value="$PROJECT_DIR$/src/wso2/useradminclient/ClientConnector.bal" />
+        <option value="$PROJECT_DIR$/src/wso2/useradminclient/Scim2_transformers.bal" />
+        <option value="$PROJECT_DIR$/src/wso2/useradminclient/Scim2Connector_utils.bal" />
+        <option value="$PROJECT_DIR$/src/wso2/useradminclient/Scim2_structs.bal" />
+        <option value="$PROJECT_DIR$/samples/wso2/useradminclient/sample.bal" />
+        <option value="$PROJECT_DIR$/src/wso2/useradminclient/Scim2Connector.bal" />
       </list>
     </option>
   </component>
@@ -100,10 +125,10 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1578" />
+    <option name="x" value="1987" />
     <option name="y" value="-4" />
-    <option name="width" value="1849" />
-    <option name="height" value="1068" />
+    <option name="width" value="1853" />
+    <option name="height" value="1084" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -121,6 +146,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -137,10 +163,9 @@
           <select />
         </subPane>
       </pane>
-      <pane id="AndroidView" />
       <pane id="Scope" />
+      <pane id="AndroidView" />
       <pane id="Scratches" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -306,15 +331,16 @@
       <workItem from="1520387801028" duration="4170000" />
       <workItem from="1520397629247" duration="3772000" />
       <workItem from="1520404157726" duration="4970000" />
-      <workItem from="1520412324938" duration="1811000" />
+      <workItem from="1520412324938" duration="5777000" />
+      <workItem from="1520420827957" duration="5111000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="116794000" />
+    <option name="totallyTimeSpent" value="125871000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1578" y="-4" width="1855" height="1092" extended-state="6" />
+    <frame x="1987" y="-4" width="1853" height="1084" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -324,12 +350,12 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3916309" sideWeight="0.5041505" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32982844" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32903227" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4516129" sideWeight="0.49584946" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32903227" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27419356" sideWeight="0.49584946" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1793027" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18151632" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32903227" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Learn" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -337,8 +363,8 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -354,61 +380,11 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="9" />
+      <option name="time" value="10" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/ClientConnector.bal">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#952#2521#0" expanded="false" />
-            <element signature="e#2733#3312#0" expanded="false" />
-            <element signature="e#3566#5638#0" expanded="false" />
-            <element signature="e#5847#6347#0" expanded="false" />
-            <element signature="e#6621#9345#0" expanded="false" />
-            <element signature="e#9597#12075#0" expanded="false" />
-            <element signature="e#12343#13548#0" expanded="false" />
-            <element signature="e#13767#15005#0" expanded="false" />
-            <element signature="e#15206#16565#0" expanded="false" />
-            <element signature="e#19869#21960#0" expanded="false" />
-            <element signature="e#25010#27241#1" expanded="false" />
-            <element signature="e#27243#27476#1" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/samples/wso2/useradminclient/sample.bal">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1314">
-          <caret line="73" column="49" lean-forward="false" selection-start-line="73" selection-start-column="49" selection-end-line="73" selection-end-column="49" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/ClientConnector.bal">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#952#2521#0" expanded="false" />
-            <element signature="e#2733#3312#0" expanded="false" />
-            <element signature="e#3566#5638#0" expanded="false" />
-            <element signature="e#5847#6347#0" expanded="false" />
-            <element signature="e#6621#9345#0" expanded="false" />
-            <element signature="e#9597#12075#0" expanded="false" />
-            <element signature="e#12343#13548#0" expanded="false" />
-            <element signature="e#13767#15005#0" expanded="false" />
-            <element signature="e#15206#16565#0" expanded="false" />
-            <element signature="e#19869#21960#0" expanded="false" />
-            <element signature="e#25010#27241#1" expanded="false" />
-            <element signature="e#27243#27476#1" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/samples/wso2/useradminclient/sample.bal">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2466">
@@ -417,23 +393,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/ClientConnector.bal">
+    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/Scim2Connector.bal">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#952#2521#0" expanded="false" />
-            <element signature="e#2733#3312#0" expanded="false" />
-            <element signature="e#3566#5638#0" expanded="false" />
-            <element signature="e#5847#6347#0" expanded="false" />
-            <element signature="e#6621#9345#0" expanded="false" />
-            <element signature="e#9597#12075#0" expanded="false" />
-            <element signature="e#12343#13548#0" expanded="false" />
-            <element signature="e#13767#15005#0" expanded="false" />
-            <element signature="e#15206#16565#0" expanded="false" />
-            <element signature="e#19869#21960#0" expanded="false" />
-            <element signature="e#25010#27241#1" expanded="false" />
-            <element signature="e#27243#27476#1" expanded="false" />
+            <element signature="e#2733#3315#0" expanded="false" />
+            <element signature="e#3569#5782#0" expanded="false" />
+            <element signature="e#5991#6491#0" expanded="false" />
+            <element signature="e#6765#9489#0" expanded="false" />
+            <element signature="e#9741#12219#0" expanded="false" />
+            <element signature="e#12487#13692#0" expanded="false" />
+            <element signature="e#13911#15149#0" expanded="false" />
+            <element signature="e#15350#16709#0" expanded="false" />
+            <element signature="e#16876#19861#0" expanded="false" />
+            <element signature="e#20013#22104#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -446,23 +421,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/ClientConnector.bal">
+    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/Scim2Connector.bal">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#952#2521#0" expanded="false" />
-            <element signature="e#2733#3312#0" expanded="false" />
-            <element signature="e#3566#5638#0" expanded="false" />
-            <element signature="e#5847#6347#0" expanded="false" />
-            <element signature="e#6621#9345#0" expanded="false" />
-            <element signature="e#9597#12075#0" expanded="false" />
-            <element signature="e#12343#13548#0" expanded="false" />
-            <element signature="e#13767#15005#0" expanded="false" />
-            <element signature="e#15206#16565#0" expanded="false" />
-            <element signature="e#19869#21960#0" expanded="false" />
-            <element signature="e#25010#27241#1" expanded="false" />
-            <element signature="e#27243#27476#1" expanded="false" />
+            <element signature="e#2733#3315#0" expanded="false" />
+            <element signature="e#3569#5782#0" expanded="false" />
+            <element signature="e#5991#6491#0" expanded="false" />
+            <element signature="e#6765#9489#0" expanded="false" />
+            <element signature="e#9741#12219#0" expanded="false" />
+            <element signature="e#12487#13692#0" expanded="false" />
+            <element signature="e#13911#15149#0" expanded="false" />
+            <element signature="e#15350#16709#0" expanded="false" />
+            <element signature="e#16876#19861#0" expanded="false" />
+            <element signature="e#20013#22104#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -475,23 +449,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/ClientConnector.bal">
+    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/Scim2Connector.bal">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#952#2521#0" expanded="false" />
-            <element signature="e#2733#3312#0" expanded="false" />
-            <element signature="e#3566#5638#0" expanded="false" />
-            <element signature="e#5847#6347#0" expanded="false" />
-            <element signature="e#6621#9345#0" expanded="false" />
-            <element signature="e#9597#12075#0" expanded="false" />
-            <element signature="e#12343#13548#0" expanded="false" />
-            <element signature="e#13767#15005#0" expanded="false" />
-            <element signature="e#15206#16565#0" expanded="false" />
-            <element signature="e#19869#21960#0" expanded="false" />
-            <element signature="e#25010#27241#1" expanded="false" />
-            <element signature="e#27243#27476#1" expanded="false" />
+            <element signature="e#2733#3315#0" expanded="false" />
+            <element signature="e#3569#5782#0" expanded="false" />
+            <element signature="e#5991#6491#0" expanded="false" />
+            <element signature="e#6765#9489#0" expanded="false" />
+            <element signature="e#9741#12219#0" expanded="false" />
+            <element signature="e#12487#13692#0" expanded="false" />
+            <element signature="e#13911#15149#0" expanded="false" />
+            <element signature="e#15350#16709#0" expanded="false" />
+            <element signature="e#16876#19861#0" expanded="false" />
+            <element signature="e#20013#22104#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -504,23 +477,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/ClientConnector.bal">
+    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/Scim2Connector.bal">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#952#2521#0" expanded="false" />
-            <element signature="e#2733#3312#0" expanded="false" />
-            <element signature="e#3566#5638#0" expanded="false" />
-            <element signature="e#5847#6347#0" expanded="false" />
-            <element signature="e#6621#9345#0" expanded="false" />
-            <element signature="e#9597#12075#0" expanded="false" />
-            <element signature="e#12343#13548#0" expanded="false" />
-            <element signature="e#13767#15005#0" expanded="false" />
-            <element signature="e#15206#16565#0" expanded="false" />
-            <element signature="e#19869#21960#0" expanded="false" />
-            <element signature="e#25010#27241#1" expanded="false" />
-            <element signature="e#27243#27476#1" expanded="false" />
+            <element signature="e#2733#3315#0" expanded="false" />
+            <element signature="e#3569#5782#0" expanded="false" />
+            <element signature="e#5991#6491#0" expanded="false" />
+            <element signature="e#6765#9489#0" expanded="false" />
+            <element signature="e#9741#12219#0" expanded="false" />
+            <element signature="e#12487#13692#0" expanded="false" />
+            <element signature="e#13911#15149#0" expanded="false" />
+            <element signature="e#15350#16709#0" expanded="false" />
+            <element signature="e#16876#19861#0" expanded="false" />
+            <element signature="e#20013#22104#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -533,23 +505,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/ClientConnector.bal">
+    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/Scim2Connector.bal">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="6084">
           <caret line="338" column="27" lean-forward="false" selection-start-line="338" selection-start-column="26" selection-end-line="338" selection-end-column="27" />
           <folding>
             <element signature="e#952#2521#0" expanded="false" />
-            <element signature="e#2733#3312#0" expanded="false" />
-            <element signature="e#3566#5638#0" expanded="false" />
-            <element signature="e#5847#6347#0" expanded="false" />
-            <element signature="e#6621#9345#0" expanded="false" />
-            <element signature="e#9597#12075#0" expanded="false" />
-            <element signature="e#12343#13548#0" expanded="false" />
-            <element signature="e#13767#15005#0" expanded="false" />
-            <element signature="e#15206#16565#0" expanded="false" />
-            <element signature="e#19869#21960#0" expanded="false" />
-            <element signature="e#25010#27241#1" expanded="false" />
-            <element signature="e#27243#27476#1" expanded="false" />
+            <element signature="e#2733#3315#0" expanded="false" />
+            <element signature="e#3569#5782#0" expanded="false" />
+            <element signature="e#5991#6491#0" expanded="false" />
+            <element signature="e#6765#9489#0" expanded="false" />
+            <element signature="e#9741#12219#0" expanded="false" />
+            <element signature="e#12487#13692#0" expanded="false" />
+            <element signature="e#13911#15149#0" expanded="false" />
+            <element signature="e#15350#16709#0" expanded="false" />
+            <element signature="e#16876#19861#0" expanded="false" />
+            <element signature="e#20013#22104#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -562,23 +533,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/ClientConnector.bal">
+    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/Scim2Connector.bal">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#952#2521#0" expanded="false" />
-            <element signature="e#2733#3312#0" expanded="false" />
-            <element signature="e#3566#5638#0" expanded="false" />
-            <element signature="e#5847#6347#0" expanded="false" />
-            <element signature="e#6621#9345#0" expanded="false" />
-            <element signature="e#9597#12075#0" expanded="false" />
-            <element signature="e#12343#13548#0" expanded="false" />
-            <element signature="e#13767#15005#0" expanded="false" />
-            <element signature="e#15206#16565#0" expanded="false" />
-            <element signature="e#19869#21960#0" expanded="false" />
-            <element signature="e#25010#27241#1" expanded="false" />
-            <element signature="e#27243#27476#1" expanded="false" />
+            <element signature="e#2733#3315#0" expanded="false" />
+            <element signature="e#3569#5782#0" expanded="false" />
+            <element signature="e#5991#6491#0" expanded="false" />
+            <element signature="e#6765#9489#0" expanded="false" />
+            <element signature="e#9741#12219#0" expanded="false" />
+            <element signature="e#12487#13692#0" expanded="false" />
+            <element signature="e#13911#15149#0" expanded="false" />
+            <element signature="e#15350#16709#0" expanded="false" />
+            <element signature="e#16876#19861#0" expanded="false" />
+            <element signature="e#20013#22104#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -599,44 +569,42 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/ClientConnector.bal">
+    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/Scim2Connector.bal">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="432">
           <caret line="74" column="41" lean-forward="true" selection-start-line="74" selection-start-column="41" selection-end-line="74" selection-end-column="41" />
           <folding>
             <element signature="e#952#2521#0" expanded="false" />
-            <element signature="e#2733#3312#0" expanded="false" />
-            <element signature="e#3566#5638#0" expanded="false" />
-            <element signature="e#5847#6347#0" expanded="false" />
-            <element signature="e#6621#9345#0" expanded="false" />
-            <element signature="e#9597#12075#0" expanded="false" />
-            <element signature="e#12343#13548#0" expanded="false" />
-            <element signature="e#13767#15005#0" expanded="false" />
-            <element signature="e#15206#16565#0" expanded="false" />
-            <element signature="e#19869#21960#0" expanded="false" />
-            <element signature="e#25010#27241#1" expanded="false" />
-            <element signature="e#27243#27476#1" expanded="false" />
+            <element signature="e#2733#3315#0" expanded="false" />
+            <element signature="e#3569#5782#0" expanded="false" />
+            <element signature="e#5991#6491#0" expanded="false" />
+            <element signature="e#6765#9489#0" expanded="false" />
+            <element signature="e#9741#12219#0" expanded="false" />
+            <element signature="e#12487#13692#0" expanded="false" />
+            <element signature="e#13911#15149#0" expanded="false" />
+            <element signature="e#15350#16709#0" expanded="false" />
+            <element signature="e#16876#19861#0" expanded="false" />
+            <element signature="e#20013#22104#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/ClientConnector.bal">
+    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/Scim2Connector.bal">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#952#2521#0" expanded="false" />
-            <element signature="e#2733#3312#0" expanded="false" />
-            <element signature="e#3566#5638#0" expanded="false" />
-            <element signature="e#5847#6347#0" expanded="false" />
-            <element signature="e#6621#9345#0" expanded="false" />
-            <element signature="e#9597#12075#0" expanded="false" />
-            <element signature="e#12343#13548#0" expanded="false" />
-            <element signature="e#13767#15005#0" expanded="false" />
-            <element signature="e#15206#16565#0" expanded="false" />
-            <element signature="e#19869#21960#0" expanded="false" />
-            <element signature="e#25010#27241#1" expanded="false" />
-            <element signature="e#27243#27476#1" expanded="false" />
+            <element signature="e#2733#3315#0" expanded="false" />
+            <element signature="e#3569#5782#0" expanded="false" />
+            <element signature="e#5991#6491#0" expanded="false" />
+            <element signature="e#6765#9489#0" expanded="false" />
+            <element signature="e#9741#12219#0" expanded="false" />
+            <element signature="e#12487#13692#0" expanded="false" />
+            <element signature="e#13911#15149#0" expanded="false" />
+            <element signature="e#15350#16709#0" expanded="false" />
+            <element signature="e#16876#19861#0" expanded="false" />
+            <element signature="e#20013#22104#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -649,23 +617,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/ClientConnector.bal">
+    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/Scim2Connector.bal">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1980">
           <caret line="110" column="32" lean-forward="false" selection-start-line="110" selection-start-column="32" selection-end-line="110" selection-end-column="32" />
           <folding>
             <element signature="e#952#2521#0" expanded="false" />
-            <element signature="e#2733#3312#0" expanded="false" />
-            <element signature="e#3566#5638#0" expanded="false" />
-            <element signature="e#5847#6347#0" expanded="false" />
-            <element signature="e#6621#9345#0" expanded="false" />
-            <element signature="e#9597#12075#0" expanded="false" />
-            <element signature="e#12343#13548#0" expanded="false" />
-            <element signature="e#13767#15005#0" expanded="false" />
-            <element signature="e#15206#16565#0" expanded="false" />
-            <element signature="e#19869#21960#0" expanded="false" />
-            <element signature="e#25010#27241#1" expanded="false" />
-            <element signature="e#27243#27476#1" expanded="false" />
+            <element signature="e#2733#3315#0" expanded="false" />
+            <element signature="e#3569#5782#0" expanded="false" />
+            <element signature="e#5991#6491#0" expanded="false" />
+            <element signature="e#6765#9489#0" expanded="false" />
+            <element signature="e#9741#12219#0" expanded="false" />
+            <element signature="e#12487#13692#0" expanded="false" />
+            <element signature="e#13911#15149#0" expanded="false" />
+            <element signature="e#15350#16709#0" expanded="false" />
+            <element signature="e#16876#19861#0" expanded="false" />
+            <element signature="e#20013#22104#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -678,23 +645,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/ClientConnector.bal">
+    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/Scim2Connector.bal">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1980">
           <caret line="110" column="32" lean-forward="true" selection-start-line="110" selection-start-column="32" selection-end-line="110" selection-end-column="32" />
           <folding>
             <element signature="e#952#2521#0" expanded="false" />
-            <element signature="e#2733#3312#0" expanded="false" />
-            <element signature="e#3566#5638#0" expanded="false" />
-            <element signature="e#5847#6347#0" expanded="false" />
-            <element signature="e#6621#9345#0" expanded="false" />
-            <element signature="e#9597#12075#0" expanded="false" />
-            <element signature="e#12343#13548#0" expanded="false" />
-            <element signature="e#13767#15005#0" expanded="false" />
-            <element signature="e#15206#16565#0" expanded="false" />
-            <element signature="e#19869#21960#0" expanded="false" />
-            <element signature="e#25010#27241#1" expanded="false" />
-            <element signature="e#27243#27476#1" expanded="false" />
+            <element signature="e#2733#3315#0" expanded="false" />
+            <element signature="e#3569#5782#0" expanded="false" />
+            <element signature="e#5991#6491#0" expanded="false" />
+            <element signature="e#6765#9489#0" expanded="false" />
+            <element signature="e#9741#12219#0" expanded="false" />
+            <element signature="e#12487#13692#0" expanded="false" />
+            <element signature="e#13911#15149#0" expanded="false" />
+            <element signature="e#15350#16709#0" expanded="false" />
+            <element signature="e#16876#19861#0" expanded="false" />
+            <element signature="e#20013#22104#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -707,23 +673,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/ClientConnector.bal">
+    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/Scim2Connector.bal">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#952#2521#0" expanded="false" />
-            <element signature="e#2733#3312#0" expanded="false" />
-            <element signature="e#3566#5638#0" expanded="false" />
-            <element signature="e#5847#6347#0" expanded="false" />
-            <element signature="e#6621#9345#0" expanded="false" />
-            <element signature="e#9597#12075#0" expanded="false" />
-            <element signature="e#12343#13548#0" expanded="false" />
-            <element signature="e#13767#15005#0" expanded="false" />
-            <element signature="e#15206#16565#0" expanded="false" />
-            <element signature="e#19869#21960#0" expanded="false" />
-            <element signature="e#25010#27241#1" expanded="false" />
-            <element signature="e#27243#27476#1" expanded="false" />
+            <element signature="e#2733#3315#0" expanded="false" />
+            <element signature="e#3569#5782#0" expanded="false" />
+            <element signature="e#5991#6491#0" expanded="false" />
+            <element signature="e#6765#9489#0" expanded="false" />
+            <element signature="e#9741#12219#0" expanded="false" />
+            <element signature="e#12487#13692#0" expanded="false" />
+            <element signature="e#13911#15149#0" expanded="false" />
+            <element signature="e#15350#16709#0" expanded="false" />
+            <element signature="e#16876#19861#0" expanded="false" />
+            <element signature="e#20013#22104#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -736,23 +701,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/ClientConnector.bal">
+    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/Scim2Connector.bal">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3762">
           <caret line="209" column="10" lean-forward="false" selection-start-line="209" selection-start-column="10" selection-end-line="209" selection-end-column="10" />
           <folding>
             <element signature="e#952#2521#0" expanded="false" />
-            <element signature="e#2733#3312#0" expanded="false" />
-            <element signature="e#3566#5638#0" expanded="false" />
-            <element signature="e#5847#6347#0" expanded="false" />
-            <element signature="e#6621#9345#0" expanded="false" />
-            <element signature="e#9597#12075#0" expanded="false" />
-            <element signature="e#12343#13548#0" expanded="false" />
-            <element signature="e#13767#15005#0" expanded="false" />
-            <element signature="e#15206#16565#0" expanded="false" />
-            <element signature="e#19869#21960#0" expanded="false" />
-            <element signature="e#25010#27241#1" expanded="false" />
-            <element signature="e#27243#27476#1" expanded="false" />
+            <element signature="e#2733#3315#0" expanded="false" />
+            <element signature="e#3569#5782#0" expanded="false" />
+            <element signature="e#5991#6491#0" expanded="false" />
+            <element signature="e#6765#9489#0" expanded="false" />
+            <element signature="e#9741#12219#0" expanded="false" />
+            <element signature="e#12487#13692#0" expanded="false" />
+            <element signature="e#13911#15149#0" expanded="false" />
+            <element signature="e#15350#16709#0" expanded="false" />
+            <element signature="e#16876#19861#0" expanded="false" />
+            <element signature="e#20013#22104#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -765,23 +729,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/ClientConnector.bal">
+    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/Scim2Connector.bal">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#952#2521#0" expanded="false" />
-            <element signature="e#2733#3312#0" expanded="false" />
-            <element signature="e#3566#5638#0" expanded="false" />
-            <element signature="e#5847#6347#0" expanded="false" />
-            <element signature="e#6621#9345#0" expanded="false" />
-            <element signature="e#9597#12075#0" expanded="false" />
-            <element signature="e#12343#13548#0" expanded="false" />
-            <element signature="e#13767#15005#0" expanded="false" />
-            <element signature="e#15206#16565#0" expanded="false" />
-            <element signature="e#19869#21960#0" expanded="false" />
-            <element signature="e#25010#27241#1" expanded="false" />
-            <element signature="e#27243#27476#1" expanded="false" />
+            <element signature="e#2733#3315#0" expanded="false" />
+            <element signature="e#3569#5782#0" expanded="false" />
+            <element signature="e#5991#6491#0" expanded="false" />
+            <element signature="e#6765#9489#0" expanded="false" />
+            <element signature="e#9741#12219#0" expanded="false" />
+            <element signature="e#12487#13692#0" expanded="false" />
+            <element signature="e#13911#15149#0" expanded="false" />
+            <element signature="e#15350#16709#0" expanded="false" />
+            <element signature="e#16876#19861#0" expanded="false" />
+            <element signature="e#20013#22104#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -794,23 +757,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/ClientConnector.bal">
+    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/Scim2Connector.bal">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#952#2521#0" expanded="false" />
-            <element signature="e#2733#3312#0" expanded="false" />
-            <element signature="e#3566#5638#0" expanded="false" />
-            <element signature="e#5847#6347#0" expanded="false" />
-            <element signature="e#6621#9345#0" expanded="false" />
-            <element signature="e#9597#12075#0" expanded="false" />
-            <element signature="e#12343#13548#0" expanded="false" />
-            <element signature="e#13767#15005#0" expanded="false" />
-            <element signature="e#15206#16565#0" expanded="false" />
-            <element signature="e#19869#21960#0" expanded="false" />
-            <element signature="e#25010#27241#1" expanded="false" />
-            <element signature="e#27243#27476#1" expanded="false" />
+            <element signature="e#2733#3315#0" expanded="false" />
+            <element signature="e#3569#5782#0" expanded="false" />
+            <element signature="e#5991#6491#0" expanded="false" />
+            <element signature="e#6765#9489#0" expanded="false" />
+            <element signature="e#9741#12219#0" expanded="false" />
+            <element signature="e#12487#13692#0" expanded="false" />
+            <element signature="e#13911#15149#0" expanded="false" />
+            <element signature="e#15350#16709#0" expanded="false" />
+            <element signature="e#16876#19861#0" expanded="false" />
+            <element signature="e#20013#22104#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -823,23 +785,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/ClientConnector.bal">
+    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/Scim2Connector.bal">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#952#2521#0" expanded="false" />
-            <element signature="e#2733#3312#0" expanded="false" />
-            <element signature="e#3566#5638#0" expanded="false" />
-            <element signature="e#5847#6347#0" expanded="false" />
-            <element signature="e#6621#9345#0" expanded="false" />
-            <element signature="e#9597#12075#0" expanded="false" />
-            <element signature="e#12343#13548#0" expanded="false" />
-            <element signature="e#13767#15005#0" expanded="false" />
-            <element signature="e#15206#16565#0" expanded="false" />
-            <element signature="e#19869#21960#0" expanded="false" />
-            <element signature="e#25010#27241#1" expanded="false" />
-            <element signature="e#27243#27476#1" expanded="false" />
+            <element signature="e#2733#3315#0" expanded="false" />
+            <element signature="e#3569#5782#0" expanded="false" />
+            <element signature="e#5991#6491#0" expanded="false" />
+            <element signature="e#6765#9489#0" expanded="false" />
+            <element signature="e#9741#12219#0" expanded="false" />
+            <element signature="e#12487#13692#0" expanded="false" />
+            <element signature="e#13911#15149#0" expanded="false" />
+            <element signature="e#15350#16709#0" expanded="false" />
+            <element signature="e#16876#19861#0" expanded="false" />
+            <element signature="e#20013#22104#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -852,23 +813,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/ClientConnector.bal">
+    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/Scim2Connector.bal">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#952#2521#0" expanded="false" />
-            <element signature="e#2733#3312#0" expanded="false" />
-            <element signature="e#3566#5638#0" expanded="false" />
-            <element signature="e#5847#6347#0" expanded="false" />
-            <element signature="e#6621#9345#0" expanded="false" />
-            <element signature="e#9597#12075#0" expanded="false" />
-            <element signature="e#12343#13548#0" expanded="false" />
-            <element signature="e#13767#15005#0" expanded="false" />
-            <element signature="e#15206#16565#0" expanded="false" />
-            <element signature="e#19869#21960#0" expanded="false" />
-            <element signature="e#25010#27241#1" expanded="false" />
-            <element signature="e#27243#27476#1" expanded="false" />
+            <element signature="e#2733#3315#0" expanded="false" />
+            <element signature="e#3569#5782#0" expanded="false" />
+            <element signature="e#5991#6491#0" expanded="false" />
+            <element signature="e#6765#9489#0" expanded="false" />
+            <element signature="e#9741#12219#0" expanded="false" />
+            <element signature="e#12487#13692#0" expanded="false" />
+            <element signature="e#13911#15149#0" expanded="false" />
+            <element signature="e#15350#16709#0" expanded="false" />
+            <element signature="e#16876#19861#0" expanded="false" />
+            <element signature="e#20013#22104#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -881,23 +841,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/ClientConnector.bal">
+    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/Scim2Connector.bal">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#952#2521#0" expanded="false" />
-            <element signature="e#2733#3312#0" expanded="false" />
-            <element signature="e#3566#5638#0" expanded="false" />
-            <element signature="e#5847#6347#0" expanded="false" />
-            <element signature="e#6621#9345#0" expanded="false" />
-            <element signature="e#9597#12075#0" expanded="false" />
-            <element signature="e#12343#13548#0" expanded="false" />
-            <element signature="e#13767#15005#0" expanded="false" />
-            <element signature="e#15206#16565#0" expanded="false" />
-            <element signature="e#19869#21960#0" expanded="false" />
-            <element signature="e#25010#27241#1" expanded="false" />
-            <element signature="e#27243#27476#1" expanded="false" />
+            <element signature="e#2733#3315#0" expanded="false" />
+            <element signature="e#3569#5782#0" expanded="false" />
+            <element signature="e#5991#6491#0" expanded="false" />
+            <element signature="e#6765#9489#0" expanded="false" />
+            <element signature="e#9741#12219#0" expanded="false" />
+            <element signature="e#12487#13692#0" expanded="false" />
+            <element signature="e#13911#15149#0" expanded="false" />
+            <element signature="e#15350#16709#0" expanded="false" />
+            <element signature="e#16876#19861#0" expanded="false" />
+            <element signature="e#20013#22104#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -910,23 +869,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/ClientConnector.bal">
+    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/Scim2Connector.bal">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#952#2521#0" expanded="false" />
-            <element signature="e#2733#3312#0" expanded="false" />
-            <element signature="e#3566#5638#0" expanded="false" />
-            <element signature="e#5847#6347#0" expanded="false" />
-            <element signature="e#6621#9345#0" expanded="false" />
-            <element signature="e#9597#12075#0" expanded="false" />
-            <element signature="e#12343#13548#0" expanded="false" />
-            <element signature="e#13767#15005#0" expanded="false" />
-            <element signature="e#15206#16565#0" expanded="false" />
-            <element signature="e#19869#21960#0" expanded="false" />
-            <element signature="e#25010#27241#1" expanded="false" />
-            <element signature="e#27243#27476#1" expanded="false" />
+            <element signature="e#2733#3315#0" expanded="false" />
+            <element signature="e#3569#5782#0" expanded="false" />
+            <element signature="e#5991#6491#0" expanded="false" />
+            <element signature="e#6765#9489#0" expanded="false" />
+            <element signature="e#9741#12219#0" expanded="false" />
+            <element signature="e#12487#13692#0" expanded="false" />
+            <element signature="e#13911#15149#0" expanded="false" />
+            <element signature="e#15350#16709#0" expanded="false" />
+            <element signature="e#16876#19861#0" expanded="false" />
+            <element signature="e#20013#22104#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -939,23 +897,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/ClientConnector.bal">
+    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/Scim2Connector.bal">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#952#2521#0" expanded="false" />
-            <element signature="e#2733#3312#0" expanded="false" />
-            <element signature="e#3566#5638#0" expanded="false" />
-            <element signature="e#5847#6347#0" expanded="false" />
-            <element signature="e#6621#9345#0" expanded="false" />
-            <element signature="e#9597#12075#0" expanded="false" />
-            <element signature="e#12343#13548#0" expanded="false" />
-            <element signature="e#13767#15005#0" expanded="false" />
-            <element signature="e#15206#16565#0" expanded="false" />
-            <element signature="e#19869#21960#0" expanded="false" />
-            <element signature="e#25010#27241#1" expanded="false" />
-            <element signature="e#27243#27476#1" expanded="false" />
+            <element signature="e#2733#3315#0" expanded="false" />
+            <element signature="e#3569#5782#0" expanded="false" />
+            <element signature="e#5991#6491#0" expanded="false" />
+            <element signature="e#6765#9489#0" expanded="false" />
+            <element signature="e#9741#12219#0" expanded="false" />
+            <element signature="e#12487#13692#0" expanded="false" />
+            <element signature="e#13911#15149#0" expanded="false" />
+            <element signature="e#15350#16709#0" expanded="false" />
+            <element signature="e#16876#19861#0" expanded="false" />
+            <element signature="e#20013#22104#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -968,86 +925,82 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/ClientConnector.bal">
+    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/Scim2Connector.bal">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#952#2521#0" expanded="false" />
-            <element signature="e#2733#3312#0" expanded="false" />
-            <element signature="e#3566#5638#0" expanded="false" />
-            <element signature="e#5847#6347#0" expanded="false" />
-            <element signature="e#6621#9345#0" expanded="false" />
-            <element signature="e#9597#12075#0" expanded="false" />
-            <element signature="e#12343#13548#0" expanded="false" />
-            <element signature="e#13767#15005#0" expanded="false" />
-            <element signature="e#15206#16565#0" expanded="false" />
-            <element signature="e#19869#21960#0" expanded="false" />
-            <element signature="e#25010#27241#1" expanded="false" />
-            <element signature="e#27243#27476#1" expanded="false" />
+            <element signature="e#2733#3315#0" expanded="false" />
+            <element signature="e#3569#5782#0" expanded="false" />
+            <element signature="e#5991#6491#0" expanded="false" />
+            <element signature="e#6765#9489#0" expanded="false" />
+            <element signature="e#9741#12219#0" expanded="false" />
+            <element signature="e#12487#13692#0" expanded="false" />
+            <element signature="e#13911#15149#0" expanded="false" />
+            <element signature="e#15350#16709#0" expanded="false" />
+            <element signature="e#16876#19861#0" expanded="false" />
+            <element signature="e#20013#22104#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/ClientConnector.bal">
+    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/Scim2Connector.bal">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#952#2521#0" expanded="false" />
-            <element signature="e#2733#3312#0" expanded="false" />
-            <element signature="e#3566#5638#0" expanded="false" />
-            <element signature="e#5847#6347#0" expanded="false" />
-            <element signature="e#6621#9345#0" expanded="false" />
-            <element signature="e#9597#12075#0" expanded="false" />
-            <element signature="e#12343#13548#0" expanded="false" />
-            <element signature="e#13767#15005#0" expanded="false" />
-            <element signature="e#15206#16565#0" expanded="false" />
-            <element signature="e#19869#21960#0" expanded="false" />
-            <element signature="e#25010#27241#1" expanded="false" />
-            <element signature="e#27243#27476#1" expanded="false" />
+            <element signature="e#2733#3315#0" expanded="false" />
+            <element signature="e#3569#5782#0" expanded="false" />
+            <element signature="e#5991#6491#0" expanded="false" />
+            <element signature="e#6765#9489#0" expanded="false" />
+            <element signature="e#9741#12219#0" expanded="false" />
+            <element signature="e#12487#13692#0" expanded="false" />
+            <element signature="e#13911#15149#0" expanded="false" />
+            <element signature="e#15350#16709#0" expanded="false" />
+            <element signature="e#16876#19861#0" expanded="false" />
+            <element signature="e#20013#22104#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/ClientConnector.bal">
+    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/Scim2Connector.bal">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#952#2521#0" expanded="false" />
-            <element signature="e#2733#3312#0" expanded="false" />
-            <element signature="e#3566#5638#0" expanded="false" />
-            <element signature="e#5847#6347#0" expanded="false" />
-            <element signature="e#6621#9345#0" expanded="false" />
-            <element signature="e#9597#12075#0" expanded="false" />
-            <element signature="e#12343#13548#0" expanded="false" />
-            <element signature="e#13767#15005#0" expanded="false" />
-            <element signature="e#15206#16565#0" expanded="false" />
-            <element signature="e#19869#21960#0" expanded="false" />
-            <element signature="e#25010#27241#1" expanded="false" />
-            <element signature="e#27243#27476#1" expanded="false" />
+            <element signature="e#2733#3315#0" expanded="false" />
+            <element signature="e#3569#5782#0" expanded="false" />
+            <element signature="e#5991#6491#0" expanded="false" />
+            <element signature="e#6765#9489#0" expanded="false" />
+            <element signature="e#9741#12219#0" expanded="false" />
+            <element signature="e#12487#13692#0" expanded="false" />
+            <element signature="e#13911#15149#0" expanded="false" />
+            <element signature="e#15350#16709#0" expanded="false" />
+            <element signature="e#16876#19861#0" expanded="false" />
+            <element signature="e#20013#22104#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/ClientConnector.bal">
+    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/Scim2Connector.bal">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#952#2521#0" expanded="false" />
-            <element signature="e#2733#3312#0" expanded="false" />
-            <element signature="e#3566#5638#0" expanded="false" />
-            <element signature="e#5847#6347#0" expanded="false" />
-            <element signature="e#6621#9345#0" expanded="false" />
-            <element signature="e#9597#12075#0" expanded="false" />
-            <element signature="e#12343#13548#0" expanded="false" />
-            <element signature="e#13767#15005#0" expanded="false" />
-            <element signature="e#15206#16565#0" expanded="false" />
-            <element signature="e#19869#21960#0" expanded="false" />
-            <element signature="e#25010#27241#1" expanded="false" />
-            <element signature="e#27243#27476#1" expanded="false" />
+            <element signature="e#2733#3315#0" expanded="false" />
+            <element signature="e#3569#5782#0" expanded="false" />
+            <element signature="e#5991#6491#0" expanded="false" />
+            <element signature="e#6765#9489#0" expanded="false" />
+            <element signature="e#9741#12219#0" expanded="false" />
+            <element signature="e#12487#13692#0" expanded="false" />
+            <element signature="e#13911#15149#0" expanded="false" />
+            <element signature="e#15350#16709#0" expanded="false" />
+            <element signature="e#16876#19861#0" expanded="false" />
+            <element signature="e#20013#22104#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1066,32 +1019,66 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/samples/wso2/useradminclient/sample.bal">
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="0">
+            <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/Scim2_transformers.bal">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="249">
-          <caret line="129" column="0" lean-forward="false" selection-start-line="129" selection-start-column="0" selection-end-line="133" selection-end-column="18" />
+        <state relative-caret-position="288">
+          <caret line="16" column="26" lean-forward="false" selection-start-line="16" selection-start-column="25" selection-end-line="16" selection-end-column="26" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/ClientConnector.bal">
+    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/Scim2_structs.bal">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="141">
-          <caret line="733" column="5" lean-forward="false" selection-start-line="731" selection-start-column="0" selection-end-line="737" selection-end-column="1" />
+        <state relative-caret-position="306">
+          <caret line="17" column="19" lean-forward="true" selection-start-line="17" selection-start-column="12" selection-end-line="17" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/Scim2Connector_utils.bal">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="36" column="53" lean-forward="true" selection-start-line="36" selection-start-column="53" selection-end-line="36" selection-end-column="53" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/wso2/useradminclient/Scim2Connector.bal">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="76" column="25" lean-forward="false" selection-start-line="76" selection-start-column="11" selection-end-line="76" selection-end-column="25" />
           <folding>
             <element signature="e#952#2521#0" expanded="false" />
-            <element signature="e#2733#3312#0" expanded="false" />
-            <element signature="e#3566#5638#0" expanded="false" />
-            <element signature="e#5847#6347#0" expanded="false" />
-            <element signature="e#6621#9345#0" expanded="false" />
-            <element signature="e#9597#12075#0" expanded="false" />
-            <element signature="e#12343#13548#0" expanded="false" />
-            <element signature="e#13767#15005#0" expanded="false" />
-            <element signature="e#15206#16565#0" expanded="false" />
-            <element signature="e#19869#21960#0" expanded="false" />
-            <element signature="e#25010#27241#1" expanded="false" />
-            <element signature="e#27243#27476#1" expanded="false" />
+            <element signature="e#2733#3315#0" expanded="false" />
+            <element signature="e#3569#5782#0" expanded="false" />
+            <element signature="e#5991#6491#0" expanded="false" />
+            <element signature="e#6765#9489#0" expanded="false" />
+            <element signature="e#9741#12219#0" expanded="false" />
+            <element signature="e#12487#13692#0" expanded="false" />
+            <element signature="e#13911#15149#0" expanded="false" />
+            <element signature="e#15350#16709#0" expanded="false" />
+            <element signature="e#16876#19861#0" expanded="false" />
+            <element signature="e#20013#22104#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/samples/wso2/useradminclient/sample.bal">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="486">
+          <caret line="27" column="39" lean-forward="true" selection-start-line="27" selection-start-column="39" selection-end-line="27" selection-end-column="39" />
+          <folding />
         </state>
       </provider>
     </entry>
