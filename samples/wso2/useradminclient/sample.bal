@@ -14,10 +14,10 @@ public function main(string[] args){
     //useradminclient:Group getRespondingGroup;
     //error e;
     //useradminclient:Group group = {};
-    //group.displayName = "LeaderIllegal";
+    //group.displayName = "Leader";
     //useradminclient:Member mem = {};
     //mem.display = "ashan";
-    //mem.value = "55332c36-1717-4e25-ae11-0322a418a20c";
+    //mem.value = "327e5486-fc3b-4f96-b6ed-237befca6fb4";
     //group.members = [mem];
     //getRespondingGroup,e = userAdminConnector.createGroup(group);
     //

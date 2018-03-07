@@ -543,7 +543,13 @@ public connector ClientConnector (string base64UserNamePasswword, string ipAndPo
                 foreach element in payload{
                     Group group = {};
                     error er;
-                    group = <Group,convertGroupInRemoveResponse()>element;
+                    if(isMembersPresent(element)){
+                        group, er = <Group>element;
+                    }
+                    else{
+                        group = <Group,convertGroupInRemoveResponse()>element;
+                    }
+
                     if(er != null){
                         Error = {message:er.message,cause:er.cause};
                     }
@@ -568,7 +574,6 @@ transformer <json j, Group g> convertGroupInRemoveResponse() {
     g.displayName = j.displayName.toString();
     g.id = j.id.toString();
 }
-
 
 function resolveUser (string userName, http:InResponse response, http:HttpConnectorError httpError) (User, error) {
     User user ={};
@@ -684,6 +689,16 @@ function resolveGroup (string groupName, http:InResponse response, http:HttpConn
     }
 
     return receivedGroup, Error;
+}
+
+function isMembersPresent (json group) (boolean){
+    string[] groupKeyList = group.getKeys();
+    foreach key in groupKeyList{
+        if(key.equalsIgnoreCase("members")){
+            return true;
+        }
+    }
+    return false;
 }
 
 public struct Group{
