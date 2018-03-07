@@ -432,6 +432,78 @@ public connector ClientConnector (string base64UserNamePasswword, string ipAndPo
         return "successful",Error;
 
     }
+
+    @Description {value: "Get the whole list of users in the user store"}
+    @Param {value: "User[]: Array of User structs"}
+    @Param {value: "error: Error"}
+    action getListOfUsers() (User[], error) {
+        http:OutRequest request = {};
+        http:InResponse response = {};
+        http:HttpConnectorError httpError;
+        error Error;
+        User[] userList = [];
+
+        request.addHeader("Authorization", "Basic " + base64UserNamePasswword);
+        response, httpError = scim2EP.get("/Users", request);
+        if (httpError != null) {
+            Error = {message:httpError.message, cause:httpError.cause};
+            return userList, Error;
+        }
+        try {
+            if (response.statusCode == 400) {
+                Error = {message:response.reasonPhrase, cause:null};
+                return userList, Error;
+            }
+            if (response.statusCode == 404) {
+                Error = {message:"Valid users are not found", cause:null};
+                return userList, Error;
+            }
+
+            string receivedPayload = response.getBinaryPayload().toString("UTF-8");
+            var payload, _ = <json>receivedPayload;
+            var noOfResults = payload["totalResults"].toString();
+            if (noOfResults.equalsIgnoreCase("1")) {
+                Error = {message:"There are no users other than Admin", cause:null};
+                return null, Error;
+            } else {
+                payload = payload["Resources"];
+                int k = 0;
+                foreach element in payload{
+                    string[] userKeyList = element.getKeys();
+                    User user = {};
+                    foreach key in userKeyList{
+                        //io:println(key);
+                        if (key.equalsIgnoreCase("userName")){
+                            user.userName = element["userName"].toString();
+                            element.remove("userName");
+                        }
+                        if (key.equalsIgnoreCase("id")){
+                            user.id = element["id"].toString();
+                            element.remove("id");
+                        }
+                        if (key.equalsIgnoreCase("groups")){
+                            int i = 0;
+                            user.groups = [];
+                            foreach group in element[key]{
+                                var tempGroup = <Group,convertGroupInUser()>group;
+                                user.groups[i]=tempGroup;
+                                i=i+1;
+                            }
+                            element.remove(key);
+                        }
+                    }
+                    user.details = element;
+                    userList[k] = user;
+                    k = k+1;
+                }
+
+            }
+        } catch (error e) {
+            Error = {message:e.message, cause:e.cause};
+            return userList, Error;
+        }
+        return userList, Error;
+    }
 }
 
 transformer <json j, Group g> convertGroupInUser() {
@@ -455,6 +527,10 @@ function resolveUser (string userName, http:InResponse response, http:HttpConnec
     try {
         if(response.statusCode==400){
             Error = {message:response.reasonPhrase,cause:null};
+            return null, Error;
+        }
+        if(response.statusCode==404){
+            Error = {message:"Valid users are not found",cause:null};
             return null, Error;
         }
         string receivedPayload = response.getBinaryPayload().toString("UTF-8");
@@ -509,6 +585,10 @@ function resolveGroup (string groupName, http:InResponse response, http:HttpConn
     try{
         if(response.statusCode==400){
             Error = {message:response.reasonPhrase,cause:null};
+            return null, Error;
+        }
+        if(response.statusCode==404){
+            Error = {message:"Valid groups are not found",cause:null};
             return null, Error;
         }
         string receivedPayload = response.getBinaryPayload().toString("UTF-8");

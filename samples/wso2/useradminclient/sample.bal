@@ -108,7 +108,7 @@ public function main(string[] args){
     //io:println(e);
     ////////////////////////////////////////////////////////////////////////////////////////////
 
-    ////////Delete a user from the user store
+    ////////Delete an user from the user store
     //string userName = "tnm";
     //error e;
     //string indicator;
@@ -117,12 +117,20 @@ public function main(string[] args){
     //io:println(e);
     ////////////////////////////////////////////////////////////////////////////////////////////
 
-    ////////Delete a user from the user store
-    string groupName = "readonly";
+    ////////Delete a group
+    //string groupName = "readonly";
+    //error e;
+    //string indicator;
+    //indicator,e = userAdminConnector.deleteGroupByName(groupName);
+    //io:println(indicator);
+    //io:println(e);
+    ////////////////////////////////////////////////////////////////////////////////////////////
+
+    ////////Get the list of users in the user store ////////////////////////////////////////////
+    useradminclient:User[] userList;
     error e;
-    string indicator;
-    indicator,e = userAdminConnector.deleteGroupByName(groupName);
-    io:println(indicator);
+    userList,e = userAdminConnector.getListOfUsers();
+    io:println(userList);
     io:println(e);
     ////////////////////////////////////////////////////////////////////////////////////////////
 }
