@@ -504,6 +504,60 @@ public connector ClientConnector (string base64UserNamePasswword, string ipAndPo
         }
         return userList, Error;
     }
+
+    @Description {value: "Get the whole list of groups"}
+    @Param {value: "Group[]: Array of Group structs"}
+    @Param {value: "error: Error"}
+    action getListOfGroups() (Group[], error){
+        http:OutRequest request = {};
+        http:InResponse response = {};
+        http:HttpConnectorError httpError;
+        error Error;
+        Group[] groupList = [];
+
+        request.addHeader("Authorization", "Basic " + base64UserNamePasswword);
+        response, httpError = scim2EP.get("/Groups", request);
+        if (httpError != null) {
+            Error = {message:httpError.message, cause:httpError.cause};
+            return groupList, Error;
+        }
+        try{
+            if (response.statusCode == 400) {
+                Error = {message:response.reasonPhrase, cause:null};
+                return groupList, Error;
+            }
+            if (response.statusCode == 404) {
+                Error = {message:"Valid groups are not found", cause:null};
+                return groupList, Error;
+            }
+
+            string receivedPayload = response.getBinaryPayload().toString("UTF-8");
+            var payload, _ = <json>receivedPayload;
+            var noOfResults = payload["totalResults"].toString();
+            if (noOfResults.equalsIgnoreCase("0")) {
+                Error = {message:"There are no groups", cause:null};
+                return groupList, Error;
+            }else {
+                payload = payload["Resources"];
+                int i = 0;
+                foreach element in payload{
+                    Group group = {};
+                    error er;
+                    group = <Group,convertGroupInRemoveResponse()>element;
+                    if(er != null){
+                        Error = {message:er.message,cause:er.cause};
+                    }
+                    groupList[i]=group;
+                    i = i+1;
+                }
+            }
+        }catch (error e){
+            Error = {message:e.message,cause:e.cause};
+            return groupList,Error;
+        }
+
+        return groupList,Error;
+    }
 }
 
 transformer <json j, Group g> convertGroupInUser() {
