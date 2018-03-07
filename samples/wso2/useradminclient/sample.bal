@@ -59,7 +59,7 @@ public function main(string[] args){
     //                                   ]
     //
     //               };
-    //user.userName="donOmar2";
+    //user.userName="donOmar";
     //error e;
     //string s;
     //s,e= userAdminConnector.createUser(user);
@@ -71,7 +71,7 @@ public function main(string[] args){
     //useradminclient:User user = {};
     //string userName = "ashan";
     //error e;
-    //user,e =userAdminConnector.getUserbyUserName(userName);
+    //user,e =userAdminConnector.getUserByUsername(userName);
     //
     //io:println(user);
     //io:println(e);
@@ -127,19 +127,19 @@ public function main(string[] args){
     ////////////////////////////////////////////////////////////////////////////////////////////
 
     ////////Get the list of users in the user store ////////////////////////////////////////////
-    //useradminclient:User[] userList;
-    //error e;
-    //userList,e = userAdminConnector.getListOfUsers();
-    //io:println(userList);
-    //io:println(e);
+    useradminclient:User[] userList;
+    error e;
+    userList,e = userAdminConnector.getListOfUsers();
+    io:println(userList);
+    io:println(e);
     ////////////////////////////////////////////////////////////////////////////////////////////
 
-    ////////Get the list of groups /////////////////////////////////////////////////////////////
-    useradminclient:Group[] groupList;
-    error e;
-    groupList,e = userAdminConnector.getListOfGroups();
-    io:println(groupList);
-    io:println(e);
+    //////////Get the list of groups /////////////////////////////////////////////////////////////
+    //useradminclient:Group[] groupList;
+    //error e;
+    //groupList,e = userAdminConnector.getListOfGroups();
+    //io:println(groupList);
+    //io:println(e);
     ////////////////////////////////////////////////////////////////////////////////////////////
 }
 

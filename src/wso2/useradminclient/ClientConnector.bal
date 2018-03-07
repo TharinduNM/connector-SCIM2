@@ -106,6 +106,9 @@ public connector ClientConnector (string base64UserNamePasswword, string ipAndPo
         if(user.groups == null){
             user.groups = [];
         }
+        if(user.name == null){
+            user.name = {};
+        }
         //remove details field if it is null
         json payload;
         if(user.details == null){
@@ -151,7 +154,6 @@ public connector ClientConnector (string base64UserNamePasswword, string ipAndPo
             Error = {message:httpError.message, cause:httpError.cause};
             return "failed", Error;
         }
-
         return response.reasonPhrase,Error;
 
     }
@@ -160,7 +162,7 @@ public connector ClientConnector (string base64UserNamePasswword, string ipAndPo
     @Param {value: "userName: User name of the user"}
     @Param {value: "User: User struct"}
     @Param {value: "error: Error"}
-    action getUserbyUserName (string userName) (User, error) {
+    action getUserByUsername (string userName) (User, error) {
         http:OutRequest request = {};
         http:InResponse response = {};
         http:HttpConnectorError httpError;
@@ -472,7 +474,6 @@ public connector ClientConnector (string base64UserNamePasswword, string ipAndPo
                     string[] userKeyList = element.getKeys();
                     User user = {};
                     foreach key in userKeyList{
-                        //io:println(key);
                         if (key.equalsIgnoreCase("userName")){
                             user.userName = element["userName"].toString();
                             element.remove("userName");
@@ -480,6 +481,10 @@ public connector ClientConnector (string base64UserNamePasswword, string ipAndPo
                         if (key.equalsIgnoreCase("id")){
                             user.id = element["id"].toString();
                             element.remove("id");
+                        }
+                        if (key.equalsIgnoreCase("name")){
+                            user.name = <Name,convertName()>element["name"];
+                            element.remove("name");
                         }
                         if (key.equalsIgnoreCase("groups")){
                             int i = 0;
@@ -574,6 +579,14 @@ transformer <json j, Group g> convertGroupInRemoveResponse() {
     g.displayName = j.displayName.toString();
     g.id = j.id.toString();
 }
+transformer <json j, Name n> convertName(){
+    n.givenName = j.givenName != null ? j.givenName.toString() : "";
+    n.familyName = j.familyName.toString();
+    n.formatted = j.formatted != null ? j.formatted.toString() : "";
+    n.middleName = j.middleName != null ? j.middleName.toString() : "";
+    n.honorificPrefix = j.honorificPrefix != null ? j.honorificPrefix.toString() : "";
+    n.honorificSuffix = j.honorificSuffix != null ? j.honorificSuffix.toString() : "";
+}
 
 function resolveUser (string userName, http:InResponse response, http:HttpConnectorError httpError) (User, error) {
     User user ={};
@@ -610,6 +623,10 @@ function resolveUser (string userName, http:InResponse response, http:HttpConnec
                 if (key.equalsIgnoreCase("id")){
                     user.id = payload["id"].toString();
                     payload.remove("id");
+                }
+                if (key.equalsIgnoreCase("name")){
+                    user.name = <Name,convertName()>payload["name"];
+                    payload.remove("name");
                 }
                 if (key.equalsIgnoreCase("groups")){
                     int i = 0;
@@ -717,4 +734,14 @@ public struct User {
     string id;
     json details;
     Group[] groups;
+    Name name;
+}
+
+public struct Name{
+    string formatted;
+    string givenName;
+    string familyName;
+    string middleName;
+    string honorificPrefix;
+    string honorificSuffix;
 }
