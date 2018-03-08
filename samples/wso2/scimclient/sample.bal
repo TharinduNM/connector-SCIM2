@@ -6,7 +6,7 @@ import src.wso2.scimclient;
 
 public function main(string[] args){
     endpoint<scimclient:ScimConnector> userAdminConnector {
-        create scimclient:ScimConnector("YWRtaW46YWRtaW4=", "localhost:9443", getConnectionConfigs());
+        create scimclient:ScimConnector("YWRtaW46YWRtaW4=");
     }
 
 
@@ -77,16 +77,37 @@ public function main(string[] args){
     //io:println(e);
     /////////////////////////////////////////////////////////////////////////////////////////
 
+    ///////Get an user in the IS user store using getUserbyUserName action
+    //scimclient:User user = {};
+    //scimclient:Group group;
+    //string userName = "ashan";
+    //error e;
+    //user,e =userAdminConnector.getUserByUsername(userName);
+    //io:println(user);
+    //io:println(e);
+    /////////////////////////////////////////////////////////////////////////////////////////
+
     //////Add an existing user to a existing group
     // scimclient:Group group = {};
     // scimclient:User user = {};
-    // string userName = "ashan";
-    // string groupName = "worker";
+    // string userName = "asan";
+    // string groupName = "Leader";
     // error e;
     // group,e = userAdminConnector.addUserToGroup(userName, groupName);
     // io:println(e);
     // io:println(group.members);
     ///////////////////////////////////////////////////////////////////////////////////////////
+
+    ////Add user to a group////////////////////////////////////////////////////////////////////
+    scimclient:User user = {};
+    scimclient:Group group = {};
+    string userName = "tnm";
+    string groupName = "Leader2";
+    error e;
+    user, e = userAdminConnector.getUserByUsername(userName);
+    group, e = user.removeFromGroup(groupName);
+    io:println(group);
+    io:println(e);
 
     //////Remove an user from a given group
     //scimclient:Group group = {};
@@ -118,7 +139,7 @@ public function main(string[] args){
     ////////////////////////////////////////////////////////////////////////////////////////////
 
     //////Delete a group
-    //string groupName = "worker";
+    //string groupName = "BOSS";
     //error e;
     //string indicator;
     //indicator,e = userAdminConnector.deleteGroupByName(groupName);
@@ -144,17 +165,3 @@ public function main(string[] args){
 }
 
 
-
-
-function getConnectionConfigs()(http:Options){
-    http:Options option = {
-                              ssl:{
-                                      trustStoreFile:"/home/tharindu/Documents/IS_HOME/repository/resources/security/truststore.p12",
-                                      trustStorePassword:"wso2carbon"
-                                  //hostNameVerificationEnabled:false
-                                  },
-                              followRedirects:{}
-
-                          };
-    return option;
-}

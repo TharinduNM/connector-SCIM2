@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/useradminclient.iml" filepath="$PROJECT_DIR$/useradminclient.iml" />
+      <module fileurl="file://$PROJECT_DIR$/scimclient.iml" filepath="$PROJECT_DIR$/scimclient.iml" />
     </modules>
   </component>
 </project>

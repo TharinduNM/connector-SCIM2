@@ -8,10 +8,10 @@ import ballerina.log;
 @Param { value : "base64UserNamePassword : The base 64 encoded string in the format username:password"}
 @Param { value : "ipAndPort: The string containing IP and the Port of the service in the format IP:Port"}
 @Param { value : "option: The http option object with the location and password of the Identity Server trust store file"}
-public connector ScimConnector (string base64UserNamePasswword, string ipAndPort, http:Options option) {
+public connector ScimConnector (string base64UserNamePasswword) {
 
     endpoint<http:HttpClient> scim2EP{
-        create http:HttpClient("https://"+ipAndPort+"/scim2",option);
+        create http:HttpClient(getURL(),getConnectionConfigs());
     }
 
     @Description {value: "Create a group in the user store"}
@@ -172,7 +172,7 @@ public connector ScimConnector (string base64UserNamePasswword, string ipAndPort
         return user, Error;
 
     }
-
+////////////////////////////////////////////////////////////////////////////////////////////////////
     @Description {value: "Add an user in the user store to a existing group"}
     @Param {value: "userName: User name of the user"}
     @Param {value: "groupName: Display name of the group"}
@@ -208,7 +208,7 @@ public connector ScimConnector (string base64UserNamePasswword, string ipAndPort
         }
 
         string value = user.id;
-        string ref = "https://"+ipAndPort+"/scim2"+SCIM_USER_END_POINT+"/" + value;
+        string ref = getURL()+SCIM_USER_END_POINT+"/" + value;
         string url = SCIM_GROUP_END_POINT+"/"+group.id;
         json body;
         body, _ = <json>SCIM_CREATE_USER_BODY;
@@ -227,7 +227,8 @@ public connector ScimConnector (string base64UserNamePasswword, string ipAndPort
         return group, Error;
 
     }
-
+/////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     @Description {value: "Remove an user from a group"}
     @Param {value: "userName: User name of the user"}
     @Param {value: "groupName: Display name of the group"}
@@ -289,7 +290,7 @@ public connector ScimConnector (string base64UserNamePasswword, string ipAndPort
 
         return group,Error;
     }
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////
     @Description {value: "Check whether an user is in a certain group"}
     @Param {value: "userName: User name of the user"}
     @Param {value: "groupName: Display name of the group"}

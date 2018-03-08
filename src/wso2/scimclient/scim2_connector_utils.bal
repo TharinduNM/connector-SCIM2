@@ -3,6 +3,35 @@ package src.wso2.scimclient;
 import ballerina.net.http;
 import ballerina.log;
 
+
+@Description {value: "Obtain the url of the server"}
+@Param {value: "URL of the server"}
+function getURL()(string){
+    string url;
+    url = "https://localhost:9443/scim2";
+    return url;
+}
+
+@Description {value: "Get the http:Option with the trust store file location to provide the http connector with the public certificate for ssl"}
+function getConnectionConfigs()(http:Options){
+    http:Options option = {
+                              ssl:{
+                                      trustStoreFile:"/home/tharindu/Documents/IS_HOME/repository/resources/security/truststore.p12",
+                                      trustStorePassword:"wso2carbon"
+                                  //hostNameVerificationEnabled:false
+                                  },
+                              followRedirects:{}
+
+                          };
+    return option;
+}
+
+function getAuthentication() (string){
+    string base64UserNamePasswword;
+    base64UserNamePasswword ="YWRtaW46YWRtaW4=";
+    return base64UserNamePasswword;
+}
+
 @Description {value: "Obtain User from the received http response"}
 @Param {value: "userName: User name of the user"}
 @Param {value: "response: The received http response"}
