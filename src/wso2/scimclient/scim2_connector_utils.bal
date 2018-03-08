@@ -134,8 +134,7 @@ function resolveGroup (string groupName, http:InResponse response, http:HttpConn
             //adding a empty group array to the incoming json payload if there is no members in the group
         else{
             payload = payload["Resources"][0];
-            string[] groupKeys = payload.getKeys();
-            if (lengthof groupKeys == 2){
+            if (!isMembersPresent(payload)){
                 string temporaryString = payload.toString();
                 string temporaryPayload = temporaryString.subString(0,temporaryString.length()-1);
                 temporaryPayload = temporaryPayload + ",\"members\":[]}";

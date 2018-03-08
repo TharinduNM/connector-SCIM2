@@ -27,7 +27,7 @@ public function main(string[] args){
     ////Get a Group from the IS user store by it's name using getGroupByName aciton
     //scimclient:Group group = {};
     //error e;
-    //group,e = userAdminConnector.getGroupByName("BOSS");
+    //group,e = userAdminConnector.getGroupByName("Leader3");
     //
     //io:println(group);
     //io:println(e);
@@ -35,6 +35,12 @@ public function main(string[] args){
 
     /////// Create a User in the IS user store using createUser action
     //scimclient:User user = {};
+    //scimclient:Group group1 = {};
+    //scimclient:Group group2 = {};
+    //group1.id = "dddef800-ef69-4241-be93-0d35b94d9932";
+    //group1.displayName = "BOSS";
+    //group2.id = "7bde19a3-642e-4f3c-985c-97c59ffc57ec";
+    //group2.displayName = "Leader";
     //user.details = {
     //                   "displayName": "Tharindu",
     //                   "nickName": "",
@@ -56,10 +62,12 @@ public function main(string[] args){
     //                                   ]
     //
     //               };
-    //user.userName="DULL";
+    //user.userName="hello";
     //user.password="killa";
     //user.name = {};
     //user.name.givenName = "Tharindu";
+    //user.groups = [group1,group2];
+    //
     //error e;
     //string s;
     //s,e= userAdminConnector.createUser(user);
@@ -99,15 +107,15 @@ public function main(string[] args){
     ///////////////////////////////////////////////////////////////////////////////////////////
 
     ////Add user to a group////////////////////////////////////////////////////////////////////
-    scimclient:User user = {};
-    scimclient:Group group = {};
-    string userName = "tnm";
-    string groupName = "Leader2";
-    error e;
-    user, e = userAdminConnector.getUserByUsername(userName);
-    group, e = user.removeFromGroup(groupName);
-    io:println(group);
-    io:println(e);
+    //scimclient:User user = {};
+    //scimclient:Group group = {};
+    //string userName = "tnm";
+    //string groupName = "Leader2";
+    //error e;
+    //user, e = userAdminConnector.getUserByUsername(userName);
+    //group, e = user.removeFromGroup(groupName);
+    //io:println(group);
+    //io:println(e);
 
     //////Remove an user from a given group
     //scimclient:Group group = {};

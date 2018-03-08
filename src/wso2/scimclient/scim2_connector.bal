@@ -27,13 +27,16 @@ public connector ScimConnector (string base64UserNamePasswword) {
 
         request.addHeader(SCIM_AUTHORIZATION,"Basic "+base64UserNamePasswword);
         request.addHeader(SCIM_CONTENT_TYPE, SCIM_JSON);
-        //validate the data fields in the incoming group struct
+
+        //replace the null members field with an empty array
         group.id="";
         if (group.members==null){
             group.members=[];
         }
 
+        group.meta = {};
         var jsonPayload, _ = <json>group;
+        jsonPayload.remove("meta");
         request.setJsonPayload(jsonPayload);
 
         response , httpError = scim2EP.post(SCIM_GROUP_END_POINT,request);
@@ -74,7 +77,7 @@ public connector ScimConnector (string base64UserNamePasswword) {
 
         request.addHeader(SCIM_AUTHORIZATION,"Basic "+base64UserNamePasswword);
 
-        string s = SCIM_GROUP_END_POINT+"?attributes=displayName,id,members&"+SCIM_FILTER_GROUP_BY_NAME+groupName;
+        string s = SCIM_GROUP_END_POINT+"?"+SCIM_FILTER_GROUP_BY_NAME+groupName;
         response, httpError = scim2EP.get(s,request);
 
         receivedGroup,Error = resolveGroup(groupName, response, httpError);
@@ -94,12 +97,21 @@ public connector ScimConnector (string base64UserNamePasswword) {
         request.addHeader(SCIM_AUTHORIZATION,"Basic "+base64UserNamePasswword);
         request.addHeader(SCIM_CONTENT_TYPE, SCIM_JSON);
 
+        json[] array = [];
         if(user.groups == null){
+            user.groups = [];
+        }else{
+            int i = 0;
+            foreach element in user.groups{
+                array[i] = <json,convertGroupToJson()>element;
+                i = i+1;
+            }
             user.groups = [];
         }
         if(user.name == null){
             user.name = {};
         }
+
         //remove details field if it is null
         json payload;
         if(user.details == null){
@@ -129,6 +141,8 @@ public connector ScimConnector (string base64UserNamePasswword) {
                 detailsLoad = detailsLoad.subString(1,detailsLoad.length());
                 realPayload = realPayload + "," + detailsLoad;
                 payload, e = <json>realPayload;
+                payload.groups = array;
+                io:println(payload);
             }catch (error e){
                 Error = {message:e.message,cause:e.cause};
                 log:printError(Error.message);
@@ -172,125 +186,125 @@ public connector ScimConnector (string base64UserNamePasswword) {
         return user, Error;
 
     }
-////////////////////////////////////////////////////////////////////////////////////////////////////
-    @Description {value: "Add an user in the user store to a existing group"}
-    @Param {value: "userName: User name of the user"}
-    @Param {value: "groupName: Display name of the group"}
-    @Param {value: "Group: Group struct"}
-    @Param {value: "error: Error"}
-    action addUserToGroup(string userName, string groupName) (Group, error){
-        http:OutRequest requestUser = {};
-        http:OutRequest requestGroup = {};
-        http:InResponse responseUser = {};
-        http:InResponse responseGroup = {};
-        http:OutRequest request = {};
-        http:InResponse response = {};
-        http:HttpConnectorError httpError;
-        error userError;
-        User user = {};
-        error groupError;
-        Group group = {};
-        error Error;
-
-        requestUser.addHeader(SCIM_AUTHORIZATION,"Basic "+base64UserNamePasswword);
-        requestGroup.addHeader(SCIM_AUTHORIZATION,"Basic "+base64UserNamePasswword);
-
-        responseUser, httpError = scim2EP.get(SCIM_USER_END_POINT + "?" + SCIM_FILTER_USER_BY_USERNAME + userName, requestUser);
-        user, userError = resolveUser(userName, responseUser, httpError);
-        if (user == null){
-            return null,userError;
-        }
-
-        responseGroup, httpError = scim2EP.get(SCIM_GROUP_END_POINT + "?attributes=displayName,id,members&" + SCIM_FILTER_GROUP_BY_NAME + groupName, requestGroup);
-        group, groupError = resolveGroup(groupName, responseGroup, httpError);
-        if (group ==null){
-            return null,groupError;
-        }
-
-        string value = user.id;
-        string ref = getURL()+SCIM_USER_END_POINT+"/" + value;
-        string url = SCIM_GROUP_END_POINT+"/"+group.id;
-        json body;
-        body, _ = <json>SCIM_CREATE_USER_BODY;
-        body.Operations[0].value.members[0].display = userName;
-        body.Operations[0].value.members[0]["$ref"] = ref;
-        body.Operations[0].value.members[0].value = value;
-
-        request.addHeader(SCIM_AUTHORIZATION,"Basic "+base64UserNamePasswword);
-        request.addHeader(SCIM_CONTENT_TYPE, SCIM_JSON);
-        request.setJsonPayload(body);
-
-        response, httpError = scim2EP.patch(url,request);
-        var stringPayload = response.getBinaryPayload().toString("UTF-8");
-        var payload, e = <json>stringPayload;
-        group, Error = <Group>payload;
-        return group, Error;
-
-    }
-/////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    @Description {value: "Remove an user from a group"}
-    @Param {value: "userName: User name of the user"}
-    @Param {value: "groupName: Display name of the group"}
-    @Param {value: "Group: Group struct"}
-    @Param {value: "error: Error"}
-    action removeUserFromGroup(string userName, string groupName) (Group, error){
-        http:OutRequest request = {};
-        http:InResponse response = {};
-        http:OutRequest groupRequest = {};
-        http:InResponse groupResponse = {};
-        error Error;
-        http:HttpConnectorError httpError;
-        Group group = {};
-        error groupError;
-
-        groupRequest.addHeader(SCIM_AUTHORIZATION,"Basic "+base64UserNamePasswword);
-        groupResponse, httpError = scim2EP.get(SCIM_GROUP_END_POINT+"?attributes=displayName,id,members&"+SCIM_FILTER_GROUP_BY_NAME+groupName, groupRequest);
-        group, groupError = resolveGroup(groupName, groupResponse, httpError);
-        if (group ==null){
-            return null,groupError;
-        }
-
-        json body;
-        body, _= <json>SCIM_REMOVE_USER_BODY;
-        string path = "members[display eq "+userName+"]";
-        body.Operations[0].path = path;
-        string url = SCIM_GROUP_END_POINT+"/"+group.id;
-
-        request.addHeader(SCIM_AUTHORIZATION,"Basic "+base64UserNamePasswword);
-        request.addHeader(SCIM_CONTENT_TYPE, SCIM_JSON);
-        request.setJsonPayload(body);
-
-        response, httpError = scim2EP.patch(url,request);
-
-        if(httpError != null){
-            Error = {message:httpError.message,cause:httpError.cause};
-            return null,Error;
-        }
-        try{
-            var stringPayload = response.getBinaryPayload().toString("UTF-8");
-            var payload, e = <json>stringPayload;
-            if(payload.schemas.toString().equalsIgnoreCase(SCIM_API_ERROR_MESSAGE)){
-                var det = payload[SCIM_PAYLOAD_DETAIL];
-                Error = {message:det.toString(),cause:null};
-                return null,Error;
-            }
-            string[] groupKeyList = payload.getKeys();
-            if(lengthof groupKeyList <5){
-                var tempGroup = <Group,convertGroupInRemoveResponse()>payload;
-                return tempGroup,Error;
-            }else{
-                group, Error = <Group>payload;
-                return group, Error;
-            }
-        }catch (error e){
-            Error = {message:e.message,cause:e.cause};
-            return null, Error;
-        }
-
-        return group,Error;
-    }
-/////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//    @Description {value: "Add an user in the user store to a existing group"}
+//    @Param {value: "userName: User name of the user"}
+//    @Param {value: "groupName: Display name of the group"}
+//    @Param {value: "Group: Group struct"}
+//    @Param {value: "error: Error"}
+//    action addUserToGroup(string userName, string groupName) (Group, error){
+//        http:OutRequest requestUser = {};
+//        http:OutRequest requestGroup = {};
+//        http:InResponse responseUser = {};
+//        http:InResponse responseGroup = {};
+//        http:OutRequest request = {};
+//        http:InResponse response = {};
+//        http:HttpConnectorError httpError;
+//        error userError;
+//        User user = {};
+//        error groupError;
+//        Group group = {};
+//        error Error;
+//
+//        requestUser.addHeader(SCIM_AUTHORIZATION,"Basic "+base64UserNamePasswword);
+//        requestGroup.addHeader(SCIM_AUTHORIZATION,"Basic "+base64UserNamePasswword);
+//
+//        responseUser, httpError = scim2EP.get(SCIM_USER_END_POINT + "?" + SCIM_FILTER_USER_BY_USERNAME + userName, requestUser);
+//        user, userError = resolveUser(userName, responseUser, httpError);
+//        if (user == null){
+//            return null,userError;
+//        }
+//
+//        responseGroup, httpError = scim2EP.get(SCIM_GROUP_END_POINT + "?attributes=displayName,id,members&" + SCIM_FILTER_GROUP_BY_NAME + groupName, requestGroup);
+//        group, groupError = resolveGroup(groupName, responseGroup, httpError);
+//        if (group ==null){
+//            return null,groupError;
+//        }
+//
+//        string value = user.id;
+//        string ref = getURL()+SCIM_USER_END_POINT+"/" + value;
+//        string url = SCIM_GROUP_END_POINT+"/"+group.id;
+//        json body;
+//        body, _ = <json>SCIM_CREATE_USER_BODY;
+//        body.Operations[0].value.members[0].display = userName;
+//        body.Operations[0].value.members[0]["$ref"] = ref;
+//        body.Operations[0].value.members[0].value = value;
+//
+//        request.addHeader(SCIM_AUTHORIZATION,"Basic "+base64UserNamePasswword);
+//        request.addHeader(SCIM_CONTENT_TYPE, SCIM_JSON);
+//        request.setJsonPayload(body);
+//
+//        response, httpError = scim2EP.patch(url,request);
+//        var stringPayload = response.getBinaryPayload().toString("UTF-8");
+//        var payload, e = <json>stringPayload;
+//        group, Error = <Group>payload;
+//        return group, Error;
+//
+//    }
+///////////////////////////////////////////////////////////////////////////////////
+//    ////////////////////////////////////////////////////////////////////////////////////////////////
+//    @Description {value: "Remove an user from a group"}
+//    @Param {value: "userName: User name of the user"}
+//    @Param {value: "groupName: Display name of the group"}
+//    @Param {value: "Group: Group struct"}
+//    @Param {value: "error: Error"}
+//    action removeUserFromGroup(string userName, string groupName) (Group, error){
+//        http:OutRequest request = {};
+//        http:InResponse response = {};
+//        http:OutRequest groupRequest = {};
+//        http:InResponse groupResponse = {};
+//        error Error;
+//        http:HttpConnectorError httpError;
+//        Group group = {};
+//        error groupError;
+//
+//        groupRequest.addHeader(SCIM_AUTHORIZATION,"Basic "+base64UserNamePasswword);
+//        groupResponse, httpError = scim2EP.get(SCIM_GROUP_END_POINT+"?attributes=displayName,id,members&"+SCIM_FILTER_GROUP_BY_NAME+groupName, groupRequest);
+//        group, groupError = resolveGroup(groupName, groupResponse, httpError);
+//        if (group ==null){
+//            return null,groupError;
+//        }
+//
+//        json body;
+//        body, _= <json>SCIM_REMOVE_USER_BODY;
+//        string path = "members[display eq "+userName+"]";
+//        body.Operations[0].path = path;
+//        string url = SCIM_GROUP_END_POINT+"/"+group.id;
+//
+//        request.addHeader(SCIM_AUTHORIZATION,"Basic "+base64UserNamePasswword);
+//        request.addHeader(SCIM_CONTENT_TYPE, SCIM_JSON);
+//        request.setJsonPayload(body);
+//
+//        response, httpError = scim2EP.patch(url,request);
+//
+//        if(httpError != null){
+//            Error = {message:httpError.message,cause:httpError.cause};
+//            return null,Error;
+//        }
+//        try{
+//            var stringPayload = response.getBinaryPayload().toString("UTF-8");
+//            var payload, e = <json>stringPayload;
+//            if(payload.schemas.toString().equalsIgnoreCase(SCIM_API_ERROR_MESSAGE)){
+//                var det = payload[SCIM_PAYLOAD_DETAIL];
+//                Error = {message:det.toString(),cause:null};
+//                return null,Error;
+//            }
+//            string[] groupKeyList = payload.getKeys();
+//            if(lengthof groupKeyList <5){
+//                var tempGroup = <Group,convertGroupInRemoveResponse()>payload;
+//                return tempGroup,Error;
+//            }else{
+//                group, Error = <Group>payload;
+//                return group, Error;
+//            }
+//        }catch (error e){
+//            Error = {message:e.message,cause:e.cause};
+//            return null, Error;
+//        }
+//
+//        return group,Error;
+//    }
+///////////////////////////////////////////////////////////////////////////////////////////////////////
     @Description {value: "Check whether an user is in a certain group"}
     @Param {value: "userName: User name of the user"}
     @Param {value: "groupName: Display name of the group"}

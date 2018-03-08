@@ -33,7 +33,3 @@ public const string SCIM_REMOVE_USER_BODY = "{" +
                                             "                                           \"path\": \"\"" +
                                             "                                       }]" +
                                             "                    }";
-
-
-
-

@@ -8,6 +8,7 @@ public struct Group{
     string displayName;
     string id;
     Member[] members;
+    Meta meta;
 }
 
 public struct Member{
@@ -33,6 +34,16 @@ public struct Name{
     string honorificSuffix;
 }
 
+public struct Meta{
+    string created;
+    string location;
+    string lastModified;
+}
+
+@Description {value: "Add the user to the group specified by its name"}
+@Param {value: "groupName: Name of the group"}
+@Param {value: "Group: Group struct"}
+@Param {value: "error: Error"}
 public function <User user> addToGroup (string groupName) (Group, error){
     endpoint <http:HttpClient> scimClient{
         scimHTTPClient;
@@ -81,6 +92,10 @@ public function <User user> addToGroup (string groupName) (Group, error){
 
 }
 
+@Description {value: "Remove the user from the group specified by its name"}
+@Param {value: "groupName: Name of the group"}
+@Param {value: "Group: Group struct"}
+@Param {value: "error: Error"}
 public function <User user> removeFromGroup(string groupName) (Group, error){
     endpoint <http:HttpClient> scimClient{
         scimHTTPClient;

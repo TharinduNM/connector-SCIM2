@@ -16,3 +16,7 @@ transformer <json j, Name n> convertName(){
     n.honorificPrefix = j.honorificPrefix != null ? j.honorificPrefix.toString() : "";
     n.honorificSuffix = j.honorificSuffix != null ? j.honorificSuffix.toString() : "";
 }
+transformer <Group g, json j> convertGroupToJson(){
+    j.display = g.displayName;
+    j.value = g.id;
+}
