@@ -8,7 +8,7 @@ import ballerina.log;
 @Param { value : "base64UserNamePassword : The base 64 encoded string in the format username:password"}
 @Param { value : "ipAndPort: The string containing IP and the Port of the service in the format IP:Port"}
 @Param { value : "option: The http option object with the location and password of the Identity Server trust store file"}
-public connector Scim2Connector (string base64UserNamePasswword, string ipAndPort, http:Options option) {
+public connector ScimConnector (string base64UserNamePasswword, string ipAndPort, http:Options option) {
 
     endpoint<http:HttpClient> scim2EP{
         create http:HttpClient("https://"+ipAndPort+"/scim2",option);
@@ -25,8 +25,8 @@ public connector Scim2Connector (string base64UserNamePasswword, string ipAndPor
         http:HttpConnectorError httpError;
         Group receivedGroup = {};
 
-        request.addHeader("Authorization","Basic "+base64UserNamePasswword);
-        request.addHeader("Content-Type", "application/json");
+        request.addHeader(SCIM_AUTHORIZATION,"Basic "+base64UserNamePasswword);
+        request.addHeader(SCIM_CONTENT_TYPE, SCIM_JSON);
         //validate the data fields in the incoming group struct
         group.id="";
         if (group.members==null){
@@ -36,7 +36,7 @@ public connector Scim2Connector (string base64UserNamePasswword, string ipAndPor
         var jsonPayload, _ = <json>group;
         request.setJsonPayload(jsonPayload);
 
-        response , httpError = scim2EP.post("/Groups",request);
+        response , httpError = scim2EP.post(SCIM_GROUP_END_POINT,request);
         if (httpError != null){
             Error = {message:httpError.message, cause:httpError.cause};
             return receivedGroup, Error;
@@ -50,7 +50,7 @@ public connector Scim2Connector (string base64UserNamePasswword, string ipAndPor
                 if(payload == null) {
                     log:printError(conversionError.message);
                 }
-                Error = {message:payload["detail"].toString(),cause:null};
+                Error = {message:payload[SCIM_PAYLOAD_DETAIL].toString(),cause:null};
             }
         }catch (error e) {
             Error = {message:e.message, cause:e.cause};
@@ -72,9 +72,9 @@ public connector Scim2Connector (string base64UserNamePasswword, string ipAndPor
         http:HttpConnectorError httpError;
         Group receivedGroup = {};
 
-        request.addHeader("Authorization","Basic "+base64UserNamePasswword);
+        request.addHeader(SCIM_AUTHORIZATION,"Basic "+base64UserNamePasswword);
 
-        string s = "/Groups?attributes=displayName,id,members&filter=displayName+Eq+"+groupName;
+        string s = SCIM_GROUP_END_POINT+"?attributes=displayName,id,members&"+SCIM_FILTER_GROUP_BY_NAME+groupName;
         response, httpError = scim2EP.get(s,request);
 
         receivedGroup,Error = resolveGroup(groupName, response, httpError);
@@ -91,8 +91,8 @@ public connector Scim2Connector (string base64UserNamePasswword, string ipAndPor
         error Error;
         http:HttpConnectorError httpError;
 
-        request.addHeader("Authorization","Basic "+base64UserNamePasswword);
-        request.addHeader("Content-Type", "application/json");
+        request.addHeader(SCIM_AUTHORIZATION,"Basic "+base64UserNamePasswword);
+        request.addHeader(SCIM_CONTENT_TYPE, SCIM_JSON);
 
         if(user.groups == null){
             user.groups = [];
@@ -110,7 +110,7 @@ public connector Scim2Connector (string base64UserNamePasswword, string ipAndPor
             }catch (error e){
                 Error = {message:"userName,password and id should be strings",cause:e.cause};
                 log:printError(e.message);
-                return "failed",Error;
+                return SCIM_FAIL_MESSAGE,Error;
             }
 
         }
@@ -132,24 +132,24 @@ public connector Scim2Connector (string base64UserNamePasswword, string ipAndPor
             }catch (error e){
                 Error = {message:e.message,cause:e.cause};
                 log:printError(Error.message);
-                return "failed",Error;
+                return SCIM_FAIL_MESSAGE,Error;
             }
 
         }
 
         request.setJsonPayload(payload);
 
-        response, httpError = scim2EP.post("/Users",request);
+        response, httpError = scim2EP.post(SCIM_USER_END_POINT,request);
 
         if (httpError != null){
             Error = {message:httpError.message, cause:httpError.cause};
-            return "failed", Error;
+            return SCIM_FAIL_MESSAGE, Error;
         }
         if (response.statusCode==201){
-            return "created",Error;
+            return SCIM_CREATE_MESSAGE,Error;
         }
         Error = {message:response.reasonPhrase,cause:null};
-        return "failed",Error;
+        return SCIM_FAIL_MESSAGE,Error;
 
     }
 
@@ -164,9 +164,9 @@ public connector Scim2Connector (string base64UserNamePasswword, string ipAndPor
         error Error;
         User user = {};
 
-        request.addHeader("Authorization", "Basic " + base64UserNamePasswword);
+        request.addHeader(SCIM_AUTHORIZATION, "Basic " + base64UserNamePasswword);
 
-        response, httpError = scim2EP.get("/Users?filter=userName+Eq+" + userName, request);
+        response, httpError = scim2EP.get(SCIM_USER_END_POINT+"?"+SCIM_FILTER_USER_BY_USERNAME + userName, request);
 
         user, Error = resolveUser(userName, response, httpError);
         return user, Error;
@@ -192,43 +192,32 @@ public connector Scim2Connector (string base64UserNamePasswword, string ipAndPor
         Group group = {};
         error Error;
 
-        requestUser.addHeader("Authorization","Basic "+base64UserNamePasswword);
-        requestGroup.addHeader("Authorization","Basic "+base64UserNamePasswword);
+        requestUser.addHeader(SCIM_AUTHORIZATION,"Basic "+base64UserNamePasswword);
+        requestGroup.addHeader(SCIM_AUTHORIZATION,"Basic "+base64UserNamePasswword);
 
-        responseUser, httpError = scim2EP.get("/Users?filter=userName+Eq+" + userName, requestUser);
+        responseUser, httpError = scim2EP.get(SCIM_USER_END_POINT + "?" + SCIM_FILTER_USER_BY_USERNAME + userName, requestUser);
         user, userError = resolveUser(userName, responseUser, httpError);
         if (user == null){
             return null,userError;
         }
 
-        responseGroup, httpError = scim2EP.get("/Groups?attributes=displayName,id,members&filter=displayName+Eq+"+groupName, requestGroup);
+        responseGroup, httpError = scim2EP.get(SCIM_GROUP_END_POINT + "?attributes=displayName,id,members&" + SCIM_FILTER_GROUP_BY_NAME + groupName, requestGroup);
         group, groupError = resolveGroup(groupName, responseGroup, httpError);
         if (group ==null){
             return null,groupError;
         }
 
         string value = user.id;
-        string ref = "https://localhost:9443/scim2/Users/" + value;
-        string url = "/Groups/"+group.id;
-        json body = {
-                        "schemas": ["urn:ietf:params:scim:api:messages:2.0:PatchOp"],
-                        "Operations": [{
-                                           "op": "add",
-                                           "value": {
-                                                        "members": [{
-                                                                        "display": "",
-                                                                        "$ref": "",
-                                                                        "value": ""
-                                                                    }]
-                                                    }
-                                       }]
-                    };
+        string ref = "https://"+ipAndPort+"/scim2"+SCIM_USER_END_POINT+"/" + value;
+        string url = SCIM_GROUP_END_POINT+"/"+group.id;
+        json body;
+        body, _ = <json>SCIM_CREATE_USER_BODY;
         body.Operations[0].value.members[0].display = userName;
         body.Operations[0].value.members[0]["$ref"] = ref;
         body.Operations[0].value.members[0].value = value;
 
-        request.addHeader("Authorization","Basic "+base64UserNamePasswword);
-        request.addHeader("Content-Type", "application/json");
+        request.addHeader(SCIM_AUTHORIZATION,"Basic "+base64UserNamePasswword);
+        request.addHeader(SCIM_CONTENT_TYPE, SCIM_JSON);
         request.setJsonPayload(body);
 
         response, httpError = scim2EP.patch(url,request);
@@ -254,26 +243,21 @@ public connector Scim2Connector (string base64UserNamePasswword, string ipAndPor
         Group group = {};
         error groupError;
 
-        groupRequest.addHeader("Authorization","Basic "+base64UserNamePasswword);
-        groupResponse, httpError = scim2EP.get("/Groups?attributes=displayName,id,members&filter=displayName+Eq+"+groupName, groupRequest);
+        groupRequest.addHeader(SCIM_AUTHORIZATION,"Basic "+base64UserNamePasswword);
+        groupResponse, httpError = scim2EP.get(SCIM_GROUP_END_POINT+"?attributes=displayName,id,members&"+SCIM_FILTER_GROUP_BY_NAME+groupName, groupRequest);
         group, groupError = resolveGroup(groupName, groupResponse, httpError);
         if (group ==null){
             return null,groupError;
         }
 
-        json body = {
-                        "schemas": ["urn:ietf:params:scim:api:messages:2.0:PatchOp"],
-                        "Operations": [{
-                                           "op": "remove",
-                                           "path": ""
-                                       }]
-                    };
+        json body;
+        body, _= <json>SCIM_REMOVE_USER_BODY;
         string path = "members[display eq "+userName+"]";
         body.Operations[0].path = path;
-        string url = "/Groups/"+group.id;
+        string url = SCIM_GROUP_END_POINT+"/"+group.id;
 
-        request.addHeader("Authorization","Basic "+base64UserNamePasswword);
-        request.addHeader("Content-Type", "application/json");
+        request.addHeader(SCIM_AUTHORIZATION,"Basic "+base64UserNamePasswword);
+        request.addHeader(SCIM_CONTENT_TYPE, SCIM_JSON);
         request.setJsonPayload(body);
 
         response, httpError = scim2EP.patch(url,request);
@@ -285,8 +269,8 @@ public connector Scim2Connector (string base64UserNamePasswword, string ipAndPor
         try{
             var stringPayload = response.getBinaryPayload().toString("UTF-8");
             var payload, e = <json>stringPayload;
-            if(payload.schemas.toString().equalsIgnoreCase("urn:ietf:params:scim:api:messages:2.0:Error")){
-                var det = payload["detail"];
+            if(payload.schemas.toString().equalsIgnoreCase(SCIM_API_ERROR_MESSAGE)){
+                var det = payload[SCIM_PAYLOAD_DETAIL];
                 Error = {message:det.toString(),cause:null};
                 return null,Error;
             }
@@ -320,9 +304,9 @@ public connector Scim2Connector (string base64UserNamePasswword, string ipAndPor
         User user = {};
         error userE;
 
-        request.addHeader("Authorization", "Basic " + base64UserNamePasswword);
+        request.addHeader(SCIM_AUTHORIZATION, "Basic " + base64UserNamePasswword);
 
-        response, httpError = scim2EP.get("/Users?filter=userName+Eq+" + userName, request);
+        response, httpError = scim2EP.get(SCIM_USER_END_POINT+"?"+SCIM_FILTER_USER_BY_USERNAME + userName, request);
 
         user, userE = resolveUser(userName, response, httpError);
         //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -361,26 +345,26 @@ public connector Scim2Connector (string base64UserNamePasswword, string ipAndPor
         User user = {};
         error userE;
 
-        userRequest.addHeader("Authorization", "Basic " + base64UserNamePasswword);
+        userRequest.addHeader(SCIM_AUTHORIZATION, "Basic " + base64UserNamePasswword);
 
-        userResponse, userError = scim2EP.get("/Users?filter=userName+Eq+" + userName, userRequest);
+        userResponse, userError = scim2EP.get(SCIM_USER_END_POINT+"?"+SCIM_FILTER_USER_BY_USERNAME + userName, userRequest);
 
         user, userE = resolveUser(userName, userResponse, userError);
         ////////////////////
         if(user == null){
             Error = {message:userE.message,cause:userE.cause};
-            return "failed",Error;
+            return SCIM_FAIL_MESSAGE,Error;
         }
         try{
             string userId = user.id;
-            request.addHeader("Authorization", "Basic " + base64UserNamePasswword);
-            response,httpError = scim2EP.delete("/Users/"+userId, request);
-            return "deleted",Error;
+            request.addHeader(SCIM_AUTHORIZATION, "Basic " + base64UserNamePasswword);
+            response,httpError = scim2EP.delete(SCIM_USER_END_POINT+"/"+userId, request);
+            return SCIM_DELETE_MESSEGE,Error;
         }catch (error e){
             Error = {message:e.message,cause:e.cause};
-            return "failed",Error;
+            return SCIM_FAIL_MESSAGE,Error;
         }
-        return "deleted",Error;
+        return SCIM_DELETE_MESSEGE,Error;
     }
 
     @Description {value: "Delete group using its name"}
@@ -399,9 +383,9 @@ public connector Scim2Connector (string base64UserNamePasswword, string ipAndPor
         http:HttpConnectorError groupError;
         Group group = {};
 
-        groupRequest.addHeader("Authorization","Basic "+base64UserNamePasswword);
+        groupRequest.addHeader(SCIM_AUTHORIZATION,"Basic "+base64UserNamePasswword);
 
-        string s = "/Groups?attributes=displayName,id,members&filter=displayName+Eq+"+groupName;
+        string s = SCIM_GROUP_END_POINT+"?attributes=displayName,id,members&"+SCIM_FILTER_GROUP_BY_NAME+groupName;
         groupResponse, groupError = scim2EP.get(s,groupRequest);
 
         group,groupE = resolveGroup(groupName, groupResponse, groupError);
@@ -409,19 +393,19 @@ public connector Scim2Connector (string base64UserNamePasswword, string ipAndPor
 
         if(group == null){
             Error = {message:groupE.message,cause:groupE.cause};
-            return "failed",Error;
+            return SCIM_FAIL_MESSAGE,Error;
         }
         try{
             string groupId = group.id;
 
-            request.addHeader("Authorization", "Basic " + base64UserNamePasswword);
-            response,httpError = scim2EP.delete("/Groups/"+groupId, request);
-            return "deleted",Error;
+            request.addHeader(SCIM_AUTHORIZATION, "Basic " + base64UserNamePasswword);
+            response,httpError = scim2EP.delete(SCIM_GROUP_END_POINT+"/"+groupId, request);
+            return SCIM_DELETE_MESSEGE,Error;
         }catch (error e){
             Error = {message:e.message,cause:e.cause};
-            return "failed",Error;
+            return SCIM_FAIL_MESSAGE,Error;
         }
-        return "deleted",Error;
+        return SCIM_DELETE_MESSEGE,Error;
     }
 
     @Description {value: "Get the whole list of users in the user store"}
@@ -434,8 +418,8 @@ public connector Scim2Connector (string base64UserNamePasswword, string ipAndPor
         error Error;
         User[] userList = [];
 
-        request.addHeader("Authorization", "Basic " + base64UserNamePasswword);
-        response, httpError = scim2EP.get("/Users", request);
+        request.addHeader(SCIM_AUTHORIZATION, "Basic " + base64UserNamePasswword);
+        response, httpError = scim2EP.get(SCIM_USER_END_POINT, request);
         if (httpError != null) {
             Error = {message:httpError.message, cause:httpError.cause};
             return userList, Error;
@@ -452,7 +436,7 @@ public connector Scim2Connector (string base64UserNamePasswword, string ipAndPor
 
             string receivedPayload = response.getBinaryPayload().toString("UTF-8");
             var payload, _ = <json>receivedPayload;
-            var noOfResults = payload["totalResults"].toString();
+            var noOfResults = payload[SCIM_TOTAL_RESULTS].toString();
             if (noOfResults.equalsIgnoreCase("1")) {
                 Error = {message:"There are no users other than Admin", cause:null};
                 return null, Error;
@@ -509,8 +493,8 @@ public connector Scim2Connector (string base64UserNamePasswword, string ipAndPor
         error Error;
         Group[] groupList = [];
 
-        request.addHeader("Authorization", "Basic " + base64UserNamePasswword);
-        response, httpError = scim2EP.get("/Groups", request);
+        request.addHeader(SCIM_AUTHORIZATION, "Basic " + base64UserNamePasswword);
+        response, httpError = scim2EP.get(SCIM_GROUP_END_POINT, request);
         if (httpError != null) {
             Error = {message:httpError.message, cause:httpError.cause};
             return groupList, Error;
@@ -527,7 +511,7 @@ public connector Scim2Connector (string base64UserNamePasswword, string ipAndPor
 
             string receivedPayload = response.getBinaryPayload().toString("UTF-8");
             var payload, _ = <json>receivedPayload;
-            var noOfResults = payload["totalResults"].toString();
+            var noOfResults = payload[SCIM_TOTAL_RESULTS].toString();
             if (noOfResults.equalsIgnoreCase("0")) {
                 Error = {message:"There are no groups", cause:null};
                 return groupList, Error;

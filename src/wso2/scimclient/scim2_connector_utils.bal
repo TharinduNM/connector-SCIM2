@@ -28,7 +28,7 @@ function resolveUser (string userName, http:InResponse response, http:HttpConnec
         }
         string receivedPayload = response.getBinaryPayload().toString("UTF-8");
         var payload, _ = <json>receivedPayload;
-        var noOfResults= payload["totalResults"].toString();
+        var noOfResults= payload[SCIM_TOTAL_RESULTS].toString();
         if (noOfResults.equalsIgnoreCase("0")){
             Error = {message:"No user with user name "+userName,cause:null};
             return null,Error;
@@ -97,7 +97,7 @@ function resolveGroup (string groupName, http:InResponse response, http:HttpConn
         string receivedPayload = response.getBinaryPayload().toString("UTF-8");
         var payload, _ = <json>receivedPayload;
 
-        var noOfResults= payload["totalResults"].toString();
+        var noOfResults= payload[SCIM_TOTAL_RESULTS].toString();
         if (noOfResults.equalsIgnoreCase("0")){
             Error = {message:"No Group named "+groupName,cause:null};
             return null,Error;
