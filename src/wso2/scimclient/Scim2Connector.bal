@@ -1,4 +1,4 @@
-package src.wso2.useradminclient;
+package src.wso2.scimclient;
 
 import ballerina.net.http;
 import ballerina.io;
@@ -27,26 +27,20 @@ public connector Scim2Connector (string base64UserNamePasswword, string ipAndPor
 
         request.addHeader("Authorization","Basic "+base64UserNamePasswword);
         request.addHeader("Content-Type", "application/json");
-
-
         //validate the data fields in the incoming group struct
         group.id="";
         if (group.members==null){
             group.members=[];
         }
 
-
         var jsonPayload, _ = <json>group;
         request.setJsonPayload(jsonPayload);
 
         response , httpError = scim2EP.post("/Groups",request);
-
         if (httpError != null){
             Error = {message:httpError.message, cause:httpError.cause};
             return receivedGroup, Error;
         }
-
-
         try{
             string receivedPayload = response.getBinaryPayload().toString("UTF-8");
             var payload, _ = <json>receivedPayload;
@@ -58,14 +52,11 @@ public connector Scim2Connector (string base64UserNamePasswword, string ipAndPor
                 }
                 Error = {message:payload["detail"].toString(),cause:null};
             }
-
         }catch (error e) {
             Error = {message:e.message, cause:e.cause};
             log:printError(Error.message);
             return receivedGroup, Error;
         }
-
-
         return receivedGroup, Error;
 
     }
@@ -376,23 +367,20 @@ public connector Scim2Connector (string base64UserNamePasswword, string ipAndPor
 
         user, userE = resolveUser(userName, userResponse, userError);
         ////////////////////
-
         if(user == null){
             Error = {message:userE.message,cause:userE.cause};
             return "failed",Error;
         }
         try{
             string userId = user.id;
-
             request.addHeader("Authorization", "Basic " + base64UserNamePasswword);
             response,httpError = scim2EP.delete("/Users/"+userId, request);
-            return "successful",Error;
+            return "deleted",Error;
         }catch (error e){
             Error = {message:e.message,cause:e.cause};
             return "failed",Error;
         }
-
-        return "successful",Error;
+        return "deleted",Error;
     }
 
     @Description {value: "Delete group using its name"}
@@ -404,7 +392,6 @@ public connector Scim2Connector (string base64UserNamePasswword, string ipAndPor
         http:InResponse response = {};
         http:HttpConnectorError httpError;
         error Error;
-
         /////////////////////////////////
         http:OutRequest groupRequest = {};
         http:InResponse groupResponse = {};
@@ -429,14 +416,12 @@ public connector Scim2Connector (string base64UserNamePasswword, string ipAndPor
 
             request.addHeader("Authorization", "Basic " + base64UserNamePasswword);
             response,httpError = scim2EP.delete("/Groups/"+groupId, request);
-            return "successful",Error;
+            return "deleted",Error;
         }catch (error e){
             Error = {message:e.message,cause:e.cause};
             return "failed",Error;
         }
-
-        return "successful",Error;
-
+        return "deleted",Error;
     }
 
     @Description {value: "Get the whole list of users in the user store"}

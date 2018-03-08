@@ -1,4 +1,4 @@
-package src.wso2.useradminclient;
+package src.wso2.scimclient;
 
 import ballerina.net.http;
 import ballerina.log;

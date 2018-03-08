@@ -1,4 +1,4 @@
-package src.wso2.useradminclient;
+package src.wso2.scimclient;
 
 public struct Group{
     string displayName;

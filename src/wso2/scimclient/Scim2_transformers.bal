@@ -1,4 +1,4 @@
-package src.wso2.useradminclient;
+package src.wso2.scimclient;
 
 transformer <json j, Group g> convertGroupInUser() {
     g.displayName = j.display.toString();

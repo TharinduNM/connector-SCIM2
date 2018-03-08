@@ -1,21 +1,21 @@
-package samples.wso2.useradminclient;
+package samples.wso2.scimclient;
 
 import ballerina.net.http;
 import ballerina.io;
-import src.wso2.useradminclient;
+import src.wso2.scimclient;
 
 public function main(string[] args){
-    endpoint<useradminclient:Scim2Connector> userAdminConnector {
-        create useradminclient:Scim2Connector("YWRtaW46YWRtaW4=", "localhost:9443", getConnectionConfigs());
+    endpoint<scimclient:Scim2Connector> userAdminConnector {
+        create scimclient:Scim2Connector("YWRtaW46YWRtaW4=", "localhost:9443", getConnectionConfigs());
     }
 
 
     ////Create a Group in the IS user store using createUser action
-    //useradminclient:Group getRespondingGroup;
+    //scimclient:Group getRespondingGroup;
     //error e;
-    //useradminclient:Group group = {};
-    //group.displayName = "Leader3";
-    //useradminclient:Member mem = {};
+    //scimclient:Group group = {};
+    //group.displayName = "worker";
+    //scimclient:Member mem = {};
     //mem.display = "ashan";
     //mem.value = "327e5486-fc3b-4f96-b6ed-237befca6fb4";
     //group.members = [mem];
@@ -25,7 +25,7 @@ public function main(string[] args){
     //////////////////////////////////////////////////////////////////////////////////////
 
     ////Get a Group from the IS user store by it's name using getGroupByName aciton
-    //useradminclient:Group group = {};
+    //scimclient:Group group = {};
     //error e;
     //group,e = userAdminConnector.getGroupByName("Leader");
     //
@@ -34,7 +34,7 @@ public function main(string[] args){
     //////////////////////////////////////////////////////////////////////////////////////
 
     /////// Create a User in the IS user store using createUser action
-    //useradminclient:User user = {};
+    //scimclient:User user = {};
     //user.details = {
     //                   "displayName": "Tharindu",
     //                   "nickName": "",
@@ -68,7 +68,7 @@ public function main(string[] args){
     //////////////////////////////////////////////////////////////////////////////////////////
 
     /////Get an user in the IS user store using getUserbyUserName action
-    //useradminclient:User user = {};
+    //scimclient:User user = {};
     //string userName = "donOmar";
     //error e;
     //user,e =userAdminConnector.getUserByUsername(userName);
@@ -78,8 +78,8 @@ public function main(string[] args){
     /////////////////////////////////////////////////////////////////////////////////////////
 
     //////Add an existing user to a existing group
-    // useradminclient:Group group = {};
-    // useradminclient:User user = {};
+    // scimclient:Group group = {};
+    // scimclient:User user = {};
     // string userName = "donOmar";
     // string groupName = "Leader";
     // error e;
@@ -89,7 +89,7 @@ public function main(string[] args){
     ///////////////////////////////////////////////////////////////////////////////////////////
 
     //////Remove an user from a given group
-    //useradminclient:Group group = {};
+    //scimclient:Group group = {};
     //string userName = "ashan";
     //string groupName = "Leader";
     //error e;
@@ -127,7 +127,7 @@ public function main(string[] args){
     ////////////////////////////////////////////////////////////////////////////////////////////
 
     ////////Get the list of users in the user store ////////////////////////////////////////////
-    //useradminclient:User[] userList;
+    //scimclient:User[] userList;
     //error e;
     //userList,e = userAdminConnector.getListOfUsers();
     //io:println(userList);
@@ -135,7 +135,7 @@ public function main(string[] args){
     ////////////////////////////////////////////////////////////////////////////////////////////
 
     //////////Get the list of groups /////////////////////////////////////////////////////////////
-    //useradminclient:Group[] groupList;
+    //scimclient:Group[] groupList;
     //error e;
     //groupList,e = userAdminConnector.getListOfGroups();
     //io:println(groupList);
