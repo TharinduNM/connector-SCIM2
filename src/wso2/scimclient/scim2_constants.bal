@@ -1,31 +1,30 @@
 package src.wso2.scimclient;
 
+//These are the constants that are used
+//Constants are arranged in alphabetical order
+
+//String constants
 public const string SCIM_AUTHORIZATION = "Authorization";
 public const string SCIM_CONTENT_TYPE = "Content-Type";
-public const string SCIM_JSON = "application/json";
-public const string SCIM_USER_END_POINT = "/Users";
-public const string SCIM_GROUP_END_POINT = "/Groups";
-public const string SCIM_PAYLOAD_DETAIL = "detail";
-public const string SCIM_FILTER_GROUP_BY_NAME = "filter=displayName+Eq+";
-public const string SCIM_FAIL_MESSAGE = "failed";
-public const string SCIM_CREATE_MESSAGE = "created";
-public const string SCIM_DELETE_MESSEGE = "deleted";
-public const string SCIM_FILTER_USER_BY_USERNAME = "filter=userName+Eq+";
-public const string SCIM_API_ERROR_MESSAGE = "urn:ietf:params:scim:api:messages:2.0:Error";
-public const string SCIM_TOTAL_RESULTS = "totalResults";
 public const string SCIM_CREATE_USER_BODY = "{" +
-                                          "                                              \"schemas\": [\"urn:ietf:params:scim:api:messages:2.0:PatchOp\"]," +
-                                          "                                              \"Operations\": [{" +
-                                          "                                                                 \"op\": \"add\"," +
-                                          "                                                                 \"value\": {" +
-                                          "                                                                              \"members\": [{" +
-                                          "                                                                                              \"display\": \"\"," +
-                                          "                                                                                              \"$ref\": \"\"," +
-                                          "                                                                                              \"value\": \"\"" +
-                                          "                                                                                          }]" +
-                                          "                                                                          }" +
-                                          "                                                             }]" +
-                                          "                                          }";
+                                            "                                              \"schemas\": [\"urn:ietf:params:scim:api:messages:2.0:PatchOp\"]," +
+                                            "                                              \"Operations\": [{" +
+                                            "                                                                 \"op\": \"add\"," +
+                                            "                                                                 \"value\": {" +
+                                            "                                                                              \"members\": [{" +
+                                            "                                                                                              \"display\": \"\"," +
+                                            "                                                                                              \"$ref\": \"\"," +
+                                            "                                                                                              \"value\": \"\"" +
+                                            "                                                                                          }]" +
+                                            "                                                                          }" +
+                                            "                                                             }]" +
+                                            "                                          }";
+
+public const string SCIM_DELETE_MESSEGE = "deleted";
+public const string SCIM_FILTER_GROUP_BY_NAME = "filter=displayName+Eq+";
+public const string SCIM_FILTER_USER_BY_USERNAME = "filter=userName+Eq+";
+public const string SCIM_GROUP_END_POINT = "/Groups";
+public const string SCIM_JSON = "application/json";
 public const string SCIM_REMOVE_USER_BODY = "{" +
                                             "                        \"schemas\": [\"urn:ietf:params:scim:api:messages:2.0:PatchOp\"]," +
                                             "                        \"Operations\": [{" +
@@ -33,3 +32,15 @@ public const string SCIM_REMOVE_USER_BODY = "{" +
                                             "                                           \"path\": \"\"" +
                                             "                                       }]" +
                                             "                    }";
+
+public const string SCIM_TOTAL_RESULTS = "totalResults";
+public const string SCIM_USER_END_POINT = "/Users";
+
+//Integer constants
+public const int SCIM_UNAUTHORIZED = 401;
+public const int SCIM_CREATED = 201;
+public const int SCIM_FOUND = 200;
+public const int SCIM_NOT_FOUND = 404;
+public const int SCIM_DELETED = 204;
+public const int SCIM_BAD_REQUEST = 400;
+

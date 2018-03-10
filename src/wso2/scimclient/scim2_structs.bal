@@ -2,6 +2,8 @@ package src.wso2.scimclient;
 
 import ballerina.net.http;
 
+//All the Struct objects that are used
+
 http:HttpClient scimHTTPClient =  create http:HttpClient(getURL(),getConnectionConfigs());
 
 public struct Group{
@@ -20,9 +22,37 @@ public struct User {
     string userName;
     string id;
     string password;
-    Group[] groups;
+    string externalId;
+    string displayName;
+    string nickName;
+    string profileUrl;
+    string userType;
+    string title;
+    string preferredLanguage;
+    string timezone;
+    string active;
+    string locale;
+    json[] schemas;
     Name name;
-    json details;
+    Meta meta;
+    X509Certificate[] x509Certificates;
+    Group[] groups;
+    Address [] addresses;
+    Email[] emails;
+    PhonePhotoIms [] phoneNumbers;
+    PhonePhotoIms [] ims;
+    PhonePhotoIms [] photos;
+    EnterpriseExtension |urn:scim:schemas:extension:enterprise:1.0|;
+}
+
+public struct Address{
+    string streetAddress;
+    string locality;
+    string postalCode;
+    string country;
+    string formatted;
+    string primary;
+    string region;
 }
 
 public struct Name{
@@ -40,6 +70,35 @@ public struct Meta{
     string lastModified;
 }
 
+public struct PhonePhotoIms{
+    string value;
+    string |type|;
+}
+
+public struct Email{
+    string value;
+    string |type|;
+    string primary;
+}
+
+public struct X509Certificate{
+    string value;
+}
+
+public struct EnterpriseExtension {
+    string employeeNumber;
+    string costCenter;
+    string organization;
+    string division;
+    string department;
+    Manager manager;
+}
+
+public struct Manager{
+    string managerId;
+    string displayName;
+}
+
 @Description {value: "Add the user to the group specified by its name"}
 @Param {value: "groupName: Name of the group"}
 @Param {value: "Group: Group struct"}
@@ -48,24 +107,23 @@ public function <User user> addToGroup (string groupName) (Group, error){
     endpoint <http:HttpClient> scimClient{
         scimHTTPClient;
     }
+    error Error;
     error connectorError;
+    http:OutRequest request = {};
+    http:InResponse response = {};
+    http:HttpConnectorError httpError;
 
     if(user == null || groupName == ""){
-        connectorError = {message:"User ang group name should be valid"};
+        connectorError = {message:"User and group name should be valid"};
         return null,connectorError;
     }
 
     http:OutRequest requestGroup = {};
     http:InResponse responseGroup = {};
-    http:OutRequest request = {};
-    http:InResponse response = {};
-    http:HttpConnectorError httpError;
     error groupError;
     Group group = {};
-    error Error;
-
     requestGroup.addHeader(SCIM_AUTHORIZATION,"Basic "+getAuthentication());
-    responseGroup, httpError = scimClient.get(SCIM_GROUP_END_POINT + "?attributes=displayName,id,members&" + SCIM_FILTER_GROUP_BY_NAME + groupName, requestGroup);
+    responseGroup, httpError = scimClient.get(SCIM_GROUP_END_POINT + "?" + SCIM_FILTER_GROUP_BY_NAME + groupName, requestGroup);
     group, groupError = resolveGroup(groupName, responseGroup, httpError);
     if (group ==null){
         return null,groupError;
@@ -83,11 +141,25 @@ public function <User user> addToGroup (string groupName) (Group, error){
     request.addHeader(SCIM_AUTHORIZATION,"Basic "+getAuthentication());
     request.addHeader(SCIM_CONTENT_TYPE, SCIM_JSON);
     request.setJsonPayload(body);
-
     response, httpError = scimClient.patch(url,request);
-    var stringPayload = response.getBinaryPayload().toString("UTF-8");
-    var payload, e = <json>stringPayload;
-    group, Error = <Group>payload;
+    if (httpError != null){
+        Error = {message:httpError.message,cause:httpError.cause};
+        return null, Error;
+    }
+    if (response.statusCode==SCIM_FOUND){
+        try{
+            var receivedBinaryPayload, _ = response.getBinaryPayload();
+            string receivedPayload = receivedBinaryPayload.toString("UTF-8");
+            var payload, _ = <json>receivedPayload;
+            group = <Group,convertJsonToGroup()>payload;
+            return group, Error;
+        }catch (error e) {
+            Error = {message:e.message, cause:e.cause};
+            return null, Error;
+        }
+    }
+
+    Error = {message:response.reasonPhrase};
     return group, Error;
 
 }
@@ -117,7 +189,7 @@ public function <User user> removeFromGroup(string groupName) (Group, error){
     http:HttpConnectorError httpError;
 
     groupRequest.addHeader(SCIM_AUTHORIZATION,"Basic "+getAuthentication());
-    groupResponse, httpError = scimClient.get(SCIM_GROUP_END_POINT+"?attributes=displayName,id,members&"+SCIM_FILTER_GROUP_BY_NAME+groupName, groupRequest);
+    groupResponse, httpError = scimClient.get(SCIM_GROUP_END_POINT+"?"+SCIM_FILTER_GROUP_BY_NAME+groupName, groupRequest);
     group, groupError = resolveGroup(groupName, groupResponse, httpError);
     if (group ==null){
         return null,groupError;
@@ -132,33 +204,30 @@ public function <User user> removeFromGroup(string groupName) (Group, error){
     request.addHeader(SCIM_AUTHORIZATION,"Basic "+getAuthentication());
     request.addHeader(SCIM_CONTENT_TYPE, SCIM_JSON);
     request.setJsonPayload(body);
-
     response, httpError = scimClient.patch(url,request);
 
     if(httpError != null){
         Error = {message:httpError.message,cause:httpError.cause};
         return null,Error;
     }
-    try{
-        var stringPayload = response.getBinaryPayload().toString("UTF-8");
-        var payload, e = <json>stringPayload;
-        if(payload.schemas.toString().equalsIgnoreCase(SCIM_API_ERROR_MESSAGE)){
-            var det = payload[SCIM_PAYLOAD_DETAIL];
-            Error = {message:det.toString(),cause:null};
-            return null,Error;
-        }
-        string[] groupKeyList = payload.getKeys();
-        if(lengthof groupKeyList <5){
-            var tempGroup = <Group,convertGroupInRemoveResponse()>payload;
-            return tempGroup,Error;
-        }else{
-            group, Error = <Group>payload;
-            return group, Error;
-        }
-    }catch (error e){
-        Error = {message:e.message,cause:e.cause};
+    if (httpError != null){
+        Error = {message:httpError.message,cause:httpError.cause};
         return null, Error;
     }
+    if (response.statusCode==SCIM_FOUND){
+        try{
+            var receivedBinaryPayload, _ = response.getBinaryPayload();
+            string receivedPayload = receivedBinaryPayload.toString("UTF-8");
+            var payload, _ = <json>receivedPayload;
+            group = <Group,convertJsonToGroup()>payload;
+            return group, Error;
+        }catch (error e) {
+            Error = {message:e.message, cause:e.cause};
+            return null, Error;
+        }
+    }
 
-    return group,Error;
+    Error = {message:response.reasonPhrase};
+    return group, Error;
+
 }
