@@ -18,6 +18,7 @@ public struct Member{
     string value;
 }
 
+
 public struct User {
     string userName;
     string id;
@@ -42,7 +43,7 @@ public struct User {
     PhonePhotoIms [] phoneNumbers;
     PhonePhotoIms [] ims;
     PhonePhotoIms [] photos;
-    EnterpriseExtension |urn:scim:schemas:extension:enterprise:1.0|;
+    EnterpriseUserExtension EnterpriseUser;
 }
 
 public struct Address{
@@ -85,7 +86,7 @@ public struct X509Certificate{
     string value;
 }
 
-public struct EnterpriseExtension {
+public struct EnterpriseUserExtension {
     string employeeNumber;
     string costCenter;
     string organization;

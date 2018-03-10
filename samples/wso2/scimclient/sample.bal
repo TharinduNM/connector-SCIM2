@@ -35,6 +35,12 @@ public function main(string[] args){
     //scimclient:User user = {};
     //scimclient:Email e1 = {};
     //scimclient:Email e2 = {};
+    //scimclient:EnterpriseUserExtension en = {};
+    //scimclient:Manager man = {};
+    //man.displayName = "manager";
+    //en.organization = "wso2";
+    //en.manager = man;
+    //user.EnterpriseUser = en;
     //user.userName = "dilh";
     //user.password = "fdajfkds";
     //e1.value = "emai.com";
@@ -49,7 +55,7 @@ public function main(string[] args){
 
     //Get an user in the IS user store using getUserbyUserName action===================================================
     //scimclient:User user = {};
-    //string userName = "DUL";
+    //string userName = "dilh";
     //error e;
     //user,e =userAdminConnector.getUserByUsername(userName);
     //

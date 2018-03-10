@@ -58,10 +58,10 @@ transformer <json j, User u> convertJsonToUser() {
                                           function (json j)(Group){
                                               return <Group , convertJsonToGroupRelatedToUser()>j;
                                           }) : [];
-    u.|urn:scim:schemas:extension:enterprise:1.0| = j.|urn:scim:schemas:extension:enterprise:1.0| != null ? <EnterpriseExtension, convertJsonToEnterpriseExtension()>j.|urn:scim:schemas:extension:enterprise:1.0| : null;
+    u.EnterpriseUser = j.EnterpriseUser != null ? <EnterpriseUserExtension, convertJsonToEnterpriseExtension()>j.EnterpriseUser : null;
 }
 
-transformer <json j, EnterpriseExtension e> convertJsonToEnterpriseExtension() {
+transformer <json j, EnterpriseUserExtension e> convertJsonToEnterpriseExtension() {
     e.costCenter = j.costCenter != null ? j.costCenter.toString() : "";
     e.department = j.department != null ? j.department.toString() : "";
     e.division = j.division != null ? j.division.toString() : "";
@@ -185,10 +185,19 @@ transformer <X509Certificate x, json j> convertCertificateToJson(){
     j.value = x.value;
 }
 
-transformer <EnterpriseExtension e, json j> convertEnterpriseExtensionToJson(){
-
+transformer <EnterpriseUserExtension e, json j> convertEnterpriseExtensionToJson() {
+    j.employeeNumber = e.employeeNumber != null ? e.employeeNumber : "";
+    j.costCenter = e.costCenter != null ? e.costCenter : "";
+    j.organization = e.organization != null ? e.organization : "";
+    j.division = e.division != null ? e.division : "";
+    j.department = e.department != null ? e.department : "";
+    j.manager = e.manager != null ? <json, convertManagerToJson()>e.manager : {};
 }
 
+transformer <Manager m, json j> convertManagerToJson(){
+    j.managerId = m.managerId != null ? m.managerId : "";
+    j.displayName = m.displayName != null ? m.displayName : "";
+}
 
 transformer <User u, json j> convertUserToJson(){
     j.userName = u.userName;
@@ -242,4 +251,6 @@ transformer <User u, json j> convertUserToJson(){
                                                        return <json, convertPhonePhotoImsToJson()>p;
                                                    }) : [];
     j.photos = listPhotos;
+
+    j.|urn:ietf:params:scim:schemas:extension:enterprise:2.0:User| = u.EnterpriseUser != null ? <json, convertEnterpriseExtensionToJson()>u.EnterpriseUser : {};
 }
