@@ -33,7 +33,6 @@ function getAuthentication() (string){
     return base64UserNamePasswword;
 }
 
-
 @Description {value: "Obtain User from the received http response"}
 @Param {value: "userName: User name of the user"}
 @Param {value: "response: The received http response"}
@@ -130,4 +129,12 @@ function resolveGroup (string groupName, http:InResponse response, http:HttpConn
     }
     Error = {message:response.reasonPhrase};
     return receivedGroup, Error;
+}
+
+function createRequest (json body) (http:OutRequest){
+    http:OutRequest request = {};
+    request.addHeader(SCIM_AUTHORIZATION,"Basic "+getAuthentication());
+    request.addHeader(SCIM_CONTENT_TYPE, SCIM_JSON);
+    request.setJsonPayload(body);
+    return request;
 }

@@ -41,7 +41,7 @@ public function main(string[] args){
     //en.organization = "wso2";
     //en.manager = man;
     //user.EnterpriseUser = en;
-    //user.userName = "dilh";
+    //user.userName = "siril";
     //user.password = "fdajfkds";
     //e1.value = "emai.com";
     //e1.|type| = "work";
@@ -95,7 +95,7 @@ public function main(string[] args){
     //==================================================================================================================
 
     //Delete an user from the user store================================================================================
-    //string userName = "HellO";
+    //string userName = "siril";
     //error e;
     //e = userAdminConnector.deleteUserByUsername(userName);
     //io:println(e);
@@ -147,6 +147,16 @@ public function main(string[] args){
     //io:println(group);
     //==================================================================================================================
 
+    scimclient:User user;
+    scimclient:Email email = {};
+    email.value = "effdsdddddaf.com";
+    email.|type| = "work";
+    string userName = "siril";
+    string sending = "ti";
+    error e;
+    user , e = userAdminConnector.getUserByUsername(userName);
+    e = user.updateEmails([email]);
+    io:println(e);
 }
 
 

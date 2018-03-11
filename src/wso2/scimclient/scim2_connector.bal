@@ -84,6 +84,15 @@ public connector ScimConnector (string base64UserNamePasswword) {
         http:HttpConnectorError httpError;
         error Error;
 
+        if (user.emails != null){
+            foreach email in user.emails{
+                if (!email.|type|.equalsIgnoreCase("work") && !email.|type|.equalsIgnoreCase("home")){
+                    Error = {message:"Email type should be defiend as either home or work"};
+                    return Error;
+                }
+            }
+        }
+
         json jsonPayload;
         try{
             jsonPayload = <json,convertUserToJson()>user;
@@ -165,7 +174,7 @@ public connector ScimConnector (string base64UserNamePasswword) {
         string ref = getURL()+SCIM_USER_END_POINT+"/" + value;
         string url = SCIM_GROUP_END_POINT+"/"+group.id;
         json body;
-        body, _ = <json>SCIM_CREATE_USER_BODY;
+        body, _ = <json>SCIM_GROUP_PATCH_ADD_BODY;
         body.Operations[0].value.members[0].display = userName;
         body.Operations[0].value.members[0]["$ref"] = ref;
         body.Operations[0].value.members[0].value = value;
@@ -225,7 +234,7 @@ public connector ScimConnector (string base64UserNamePasswword) {
         }
         //create request body
         json body;
-        body, _= <json>SCIM_REMOVE_USER_BODY;
+        body, _= <json>SCIM_GROUP_PATCH_REMOVE_BODY;
         string path = "members[display eq "+userName+"]";
         body.Operations[0].path = path;
         string url = SCIM_GROUP_END_POINT+"/"+group.id;
