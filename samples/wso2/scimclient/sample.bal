@@ -74,7 +74,7 @@ public function main(string[] args){
 
     //Get an user in the IS user store using getUserbyUserName action===================================================
     //scimclient:User user = {};
-    //string userName = "dilh";
+    //string userName = "sirilayya";
     //error Error;
     //user,Error =userAdminConnector.getUserByUsername(userName);
     //

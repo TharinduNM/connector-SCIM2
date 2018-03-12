@@ -45,7 +45,8 @@ transformer <json j, User u> convertJsonToUser() {
     u.meta = <Meta, convertJsonToMeta()>j.meta;
     u.x509Certificates = j.x509Certificates != null ? j.x509Certificates.map(
                                                                         function (json j)(X509Certificate){
-                                                                            return <X509Certificate, convertJsonToCertificate()>j;
+                                                                            return <X509Certificate,
+                                                                                   convertJsonToCertificate()>j;
                                                                         }) : [];
     u.schemas = j.schemas != null ? j.schemas.map(
                                              function (json j)(string){
@@ -75,7 +76,8 @@ transformer <json j, User u> convertJsonToUser() {
                                           function (json j)(Group){
                                               return <Group , convertJsonToGroupRelatedToUser()>j;
                                           }) : [];
-    u.EnterpriseUser = j.EnterpriseUser != null ? <EnterpriseUserExtension, convertJsonToEnterpriseExtension()>j.EnterpriseUser : null;
+    u.EnterpriseUser = j.EnterpriseUser != null ? <EnterpriseUserExtension, convertJsonToEnterpriseExtension()>
+                                                  j.EnterpriseUser : null;
 }
 
 transformer <json j, EnterpriseUserExtension e> convertJsonToEnterpriseExtension() {
@@ -148,7 +150,7 @@ transformer <json j, Member m> convertJsonToMember() {
 transformer <json j, X509Certificate x> convertJsonToCertificate(){
     x.value = j.value.toString();
 }
-//==========================================================================================================================================//
+//======================================================================================================================
 transformer <Group g, json j> convertGroupToJsonUserRelated() {
     j.display = g.displayName;
     j.value = g.id;
@@ -236,7 +238,8 @@ transformer <User u, json j> convertUserToJson(){
     j.meta = {};
     json[] listCertificates = u.x509Certificates != null ? u.x509Certificates.map(
                                                                              function (X509Certificate x)(json){
-                                                                                 return <json, convertCertificateToJson()>x;
+                                                                                 return <json,
+                                                                                        convertCertificateToJson()>x;
                                                                              }) : [];
     j.x509Certificates = listCertificates;
     json[] listGroups = u.groups != null ? u.groups.map(
