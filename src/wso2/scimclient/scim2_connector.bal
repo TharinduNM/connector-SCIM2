@@ -87,7 +87,23 @@ public connector ScimConnector (string base64UserNamePasswword) {
         if (user.emails != null){
             foreach email in user.emails{
                 if (!email.|type|.equalsIgnoreCase("work") && !email.|type|.equalsIgnoreCase("home")){
-                    Error = {message:"Email type should be defiend as either home or work"};
+                    Error = {message:"Email type is required and it should either be home or work"};
+                    return Error;
+                }
+            }
+        }
+        if (user.addresses != null){
+            foreach address in user.addresses{
+                if(!address.|type|.equalsIgnoreCase("work") && !address.|type|.equalsIgnoreCase("home")){
+                    Error = {message: "Address type is required and it should either be work or home"};
+                    return Error;
+                }
+            }
+        }
+        if (user.phoneNumbers != null){
+            foreach phone in user.phoneNumbers{
+                if(!phone.|type|.equalsIgnoreCase("work") && !phone.|type|.equalsIgnoreCase("home") && !phone.|type|.equalsIgnoreCase("mobile")){
+                    Error = {message: "Phone number type is required and it should be work,mobile or home"};
                     return Error;
                 }
             }

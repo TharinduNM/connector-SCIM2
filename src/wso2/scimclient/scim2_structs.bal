@@ -54,13 +54,13 @@ public struct Address{
     string formatted;
     string primary;
     string region;
+    string |type|;
 }
 
 public struct Name{
     string formatted;
     string givenName;
     string familyName;
-    string middleName;
     string honorificPrefix;
     string honorificSuffix;
 }

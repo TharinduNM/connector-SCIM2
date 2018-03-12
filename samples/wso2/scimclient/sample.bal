@@ -32,25 +32,44 @@ public function main(string[] args){
 
 
     //create user=======================================================================================================
-    //scimclient:User user = {};
-    //scimclient:Email e1 = {};
-    //scimclient:Email e2 = {};
-    //scimclient:EnterpriseUserExtension en = {};
-    //scimclient:Manager man = {};
-    //man.displayName = "manager";
-    //en.organization = "wso2";
-    //en.manager = man;
-    //user.EnterpriseUser = en;
-    //user.userName = "siril";
-    //user.password = "fdajfkds";
-    //e1.value = "emai.com";
-    //e1.|type| = "work";
-    //e2.value = "mail.com";
-    //e2.|type| = "home";
-    //user.emails = [e1,e2];
-    //error er;
-    //er = userAdminConnector.createUser(user);
-    //io:println(er);
+    scimclient:User user = {};
+    scimclient:Email e1 = {};
+    scimclient:Email e2 = {};
+    scimclient:EnterpriseUserExtension en = {};
+    scimclient:Manager man = {};
+    scimclient:Address address = {};
+    scimclient:Name name = {};
+    scimclient:PhonePhotoIms phone = {};
+    phone.|type| = "wo";
+    phone.value = "08344444";
+    name.givenName = "given";
+    name.familyName = "family";
+    name.formatted = "given middle";
+    address.postalCode = "81000";
+    address.streetAddress = "Mahesha Makandura East";
+    address.region = "matara";
+    address.locality = "southern";
+    address.country = "sl";
+    address.formatted = "Mahesha/Makandura East/Matara";
+    address.primary = "true";
+    address.|type| = "work";
+    man.displayName = "manager";
+    en.organization = "wso2";
+    en.manager = man;
+    user.EnterpriseUser = en;
+    user.userName = "sirilayya";
+    user.password = "fdajfkds";
+    user.addresses = [address];
+    user.name = name;
+    user.phoneNumbers = [phone];
+    e1.value = "emai.com";
+    e1.|type| = "work";
+    e2.value = "mail.com";
+    e2.|type| = "home";
+    user.emails = [e1,e2];
+    error er;
+    er = userAdminConnector.createUser(user);
+    io:println(er);
     //==================================================================================================================
 
     //Get an user in the IS user store using getUserbyUserName action===================================================
@@ -147,16 +166,19 @@ public function main(string[] args){
     //io:println(group);
     //==================================================================================================================
 
-    scimclient:User user;
-    scimclient:Email email = {};
-    email.value = "effdsdddddaf.com";
-    email.|type| = "work";
-    string userName = "siril";
-    string sending = "ti";
-    error e;
-    user , e = userAdminConnector.getUserByUsername(userName);
-    e = user.updateEmails([email]);
-    io:println(e);
+    //scimclient:User user;
+    //scimclient:Email email = {};
+    //email.value = "effdsdddddaf.com";
+    //email.|type| = "work";
+    //string userName = "siril";
+    //string sending = "ti";
+    //error e1;
+    //error e2;
+    //user , e1 = userAdminConnector.getUserByUsername(userName);
+    //e1 = user.updateNickname(sending);
+    //e2 = user.updateTitle("title");
+    //io:println(e1);
+    //io:println(e2);
 }
 
 

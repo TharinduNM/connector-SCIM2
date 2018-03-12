@@ -6,7 +6,6 @@ transformer <json j, Name n> convertJsonToName() {
     n.givenName = j.givenName != null ? j.givenName.toString() : "";
     n.familyName = j.familyName.toString();
     n.formatted = j.formatted != null ? j.formatted.toString() : "";
-    n.middleName = j.middleName != null ? j.middleName.toString() : "";
     n.honorificPrefix = j.honorificPrefix != null ? j.honorificPrefix.toString() : "";
     n.honorificSuffix = j.honorificSuffix != null ? j.honorificSuffix.toString() : "";
 }
@@ -83,6 +82,7 @@ transformer <json j, Address a> convertJsonToAddress() {
     a.postalCode = j.postalCode != null ? j.postalCode.toString() : "";
     a.primary = j.primary != null ? j.primary.toString() : "false";
     a.region = j.region != null ? j.region.toString() : "";
+    a.|type| = j.|type| != null ? j.|type|.toString() : "";
 }
 
 transformer <json j, Meta m> convertJsonToMeta() {
@@ -155,7 +155,6 @@ transformer <Name n, json j> convertNameToJson(){
     j.givenName = n.givenName;
     j.familyName = n.familyName;
     j.formatted = n.formatted;
-    j.middleName = n.middleName;
     j.honorificPrefix = n.honorificPrefix;
     j.honorificSuffix = n.honorificSuffix;
 }
@@ -168,6 +167,7 @@ transformer <Address a, json j> convertAddressToJson(){
     j.postalCode = a.postalCode;
     j.primary = a.primary;
     j.region = a.region;
+    j.|type| = a.|type|;
 }
 
 transformer <Email e, json j> convertEmailToJson(){
