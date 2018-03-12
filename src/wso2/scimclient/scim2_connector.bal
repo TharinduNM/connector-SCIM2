@@ -24,8 +24,6 @@ import ballerina.io;
 
 @Description { value : "User Administration client connector for wso2 Identity Server"}
 @Param { value : "base64UserNamePassword : The base 64 encoded string in the format username:password"}
-@Param { value : "ipAndPort: The string containing IP and the Port of the service in the format IP:Port"}
-@Param { value : "option: The http option object with the location and password of the Identity Server trust store file"}
 public connector ScimConnector (string base64UserNamePasswword) {
 
     endpoint<http:HttpClient> scim2EP{
@@ -120,7 +118,8 @@ public connector ScimConnector (string base64UserNamePasswword) {
         }
         if (user.phoneNumbers != null){
             foreach phone in user.phoneNumbers{
-                if(!phone.|type|.equalsIgnoreCase("work") && !phone.|type|.equalsIgnoreCase("home") && !phone.|type|.equalsIgnoreCase("mobile")){
+                if(!phone.|type|.equalsIgnoreCase("work") && !phone.|type|.equalsIgnoreCase("home")
+                                                              && !phone.|type|.equalsIgnoreCase("mobile")){
                     Error = {message: "Phone number type is required and it should be work,mobile or home"};
                     return Error;
                 }
@@ -195,7 +194,8 @@ public connector ScimConnector (string base64UserNamePasswword) {
         error userError;
         User user = {};
         requestUser.addHeader(SCIM_AUTHORIZATION,"Basic "+base64UserNamePasswword);
-        responseUser, httpError = scim2EP.get(SCIM_USER_END_POINT + "?" + SCIM_FILTER_USER_BY_USERNAME + userName, requestUser);
+        responseUser, httpError = scim2EP.get(SCIM_USER_END_POINT + "?" + SCIM_FILTER_USER_BY_USERNAME +
+                                              userName, requestUser);
         user, userError = resolveUser(userName, responseUser, httpError);
         if (user == null){
             return null,userError;
@@ -206,7 +206,8 @@ public connector ScimConnector (string base64UserNamePasswword) {
         error Error;
         Group group = {};
         requestGroup.addHeader(SCIM_AUTHORIZATION,"Basic "+base64UserNamePasswword);
-        responseGroup, httpError = scim2EP.get(SCIM_GROUP_END_POINT + "?" + SCIM_FILTER_GROUP_BY_NAME + groupName, requestGroup);
+        responseGroup, httpError = scim2EP.get(SCIM_GROUP_END_POINT + "?" + SCIM_FILTER_GROUP_BY_NAME +
+                                               groupName, requestGroup);
         group, groupError = resolveGroup(groupName, responseGroup, httpError);
         if (group ==null){
             return null,groupError;
@@ -269,7 +270,8 @@ public connector ScimConnector (string base64UserNamePasswword) {
         http:OutRequest groupRequest = {};
         http:InResponse groupResponse = {};
         groupRequest.addHeader(SCIM_AUTHORIZATION,"Basic "+base64UserNamePasswword);
-        groupResponse, httpError = scim2EP.get(SCIM_GROUP_END_POINT+"?"+SCIM_FILTER_GROUP_BY_NAME+groupName, groupRequest);
+        groupResponse, httpError = scim2EP.get(SCIM_GROUP_END_POINT+"?"+SCIM_FILTER_GROUP_BY_NAME+
+                                               groupName, groupRequest);
         group, groupError = resolveGroup(groupName, groupResponse, httpError);
         if (group ==null){
             return null,groupError;
@@ -363,7 +365,8 @@ public connector ScimConnector (string base64UserNamePasswword) {
         User user = {};
         error userE;
         userRequest.addHeader(SCIM_AUTHORIZATION, "Basic " + base64UserNamePasswword);
-        userResponse, userError = scim2EP.get(SCIM_USER_END_POINT+"?"+SCIM_FILTER_USER_BY_USERNAME + userName, userRequest);
+        userResponse, userError = scim2EP.get(SCIM_USER_END_POINT+"?"+SCIM_FILTER_USER_BY_USERNAME +
+                                              userName, userRequest);
         user, userE = resolveUser(userName, userResponse, userError);
         if(user == null){
             Error = {message:userE.message,cause:userE.cause};

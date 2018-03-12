@@ -32,44 +32,44 @@ public function main(string[] args){
 
 
     //create user=======================================================================================================
-    scimclient:User user = {};
-    scimclient:Email email1 = {};
-    scimclient:Email email2 = {};
-    scimclient:Address address = {};
-    scimclient:Name name = {};
-    scimclient:PhonePhotoIms phone = {};
-
-    phone.|type| = "work";
-    phone.value = "08344444";
-    user.phoneNumbers = [phone];
-
-    name.givenName = "given";
-    name.familyName = "family";
-    name.formatted = "given middle";
-    user.name = name;
-
-    address.postalCode = "81000";
-    address.streetAddress = "Mahesha Makandura East";
-    address.region = "matara";
-    address.locality = "southern";
-    address.country = "sl";
-    address.formatted = "Mahesha/Makandura East/Matara";
-    address.primary = "true";
-    address.|type| = "work";
-    user.addresses = [address];
-
-    user.userName = "sirilayya";
-    user.password = "fdajfkds";
-
-    email1.value = "emai.com";
-    email1.|type| = "work";
-    email2.value = "mail.com";
-    email2.|type| = "home";
-    user.emails = [email1,email2];
-
-    error Error;
-    Error = userAdminConnector.createUser(user);
-    io:println(Error);
+    //scimclient:User user = {};
+    //scimclient:Email email1 = {};
+    //scimclient:Email email2 = {};
+    //scimclient:Address address = {};
+    //scimclient:Name name = {};
+    //scimclient:PhonePhotoIms phone = {};
+    //
+    //phone.|type| = "work";
+    //phone.value = "08344444";
+    //user.phoneNumbers = [phone];
+    //
+    //name.givenName = "given";
+    //name.familyName = "family";
+    //name.formatted = "given middle";
+    //user.name = name;
+    //
+    //address.postalCode = "81000";
+    //address.streetAddress = "Mahesha Makandura East";
+    //address.region = "matara";
+    //address.locality = "southern";
+    //address.country = "sl";
+    //address.formatted = "Mahesha/Makandura East/Matara";
+    //address.primary = "true";
+    //address.|type| = "work";
+    //user.addresses = [address];
+    //
+    //user.userName = "sirilayya";
+    //user.password = "fdajfkds";
+    //
+    //email1.value = "emai.com";
+    //email1.|type| = "work";
+    //email2.value = "mail.com";
+    //email2.|type| = "home";
+    //user.emails = [email1,email2];
+    //
+    //error Error;
+    //Error = userAdminConnector.createUser(user);
+    //io:println(Error);
     //==================================================================================================================
 
     //Get an user in the IS user store using getUserbyUserName action===================================================
@@ -84,7 +84,6 @@ public function main(string[] args){
 
     //Add an existing user to a existing group==========================================================================
     // scimclient:Group group = {};
-    // scimclient:User user = {};
     // string userName = "tnm";
     // string groupName = "Leader3";
     // error Error;
@@ -104,7 +103,7 @@ public function main(string[] args){
     //==================================================================================================================
 
     //Check whether a user with certain user name is in a certain group=================================================
-    //string userName = "kim";
+    //string userName = "sirilayya";
     //string groupName = "BOSS";
     //error Error;
     //boolean x;
@@ -114,14 +113,14 @@ public function main(string[] args){
     //==================================================================================================================
 
     //Delete an user from the user store================================================================================
-    //string userName = "siril";
+    //string userName = "sirilayya";
     //error Error;
     //Error = userAdminConnector.deleteUserByUsername(userName);
     //io:println(Error);
     //==================================================================================================================
 
     //Delete a group====================================================================================================
-    //string groupName = "Leader";
+    //string groupName = "Leader3";
     //error Error;
     //Error = userAdminConnector.deleteGroupByName(groupName);
     //io:println(Error);
@@ -149,18 +148,18 @@ public function main(string[] args){
     //string userName = "tnm";
     //error Error;
     //user , Error = userAdminConnector.getUserByUsername(userName);
-    //string groupName = "Leader3";
+    //string groupName = "Leader2";
     //scimclient:Group group;
     //group , Error = user.addToGroup(groupName);
     //io:println(group);
-    //==================================================================================================================
+    ////==================================================================================================================
 
     //remove an user from a group using strut bound function============================================================
     //scimclient:User user;
     //string userName = "tnm";
     //error Error;
     //user , Error = userAdminConnector.getUserByUsername(userName);
-    //string groupName = "Leader3";
+    //string groupName = "Leader2";
     //scimclient:Group group;
     //group , Error = user.removeFromGroup(groupName);
     //io:println(group);
