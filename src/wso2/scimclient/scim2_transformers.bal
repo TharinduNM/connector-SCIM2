@@ -273,5 +273,7 @@ transformer <User u, json j> convertUserToJson(){
                                                    }) : [];
     j.photos = listPhotos;
 
-    j.|urn:ietf:params:scim:schemas:extension:enterprise:2.0:User| = u.EnterpriseUser != null ? <json, convertEnterpriseExtensionToJson()>u.EnterpriseUser : {};
+    j.|urn:ietf:params:scim:schemas:extension:enterprise:2.0:User| = u.EnterpriseUser != null ?
+                                                                     <json, convertEnterpriseExtensionToJson()>
+                                                                     u.EnterpriseUser : {};
 }

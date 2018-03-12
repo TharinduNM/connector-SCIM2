@@ -32,44 +32,44 @@ public function main(string[] args){
 
 
     //create user=======================================================================================================
-    //scimclient:User user = {};
-    //scimclient:Email email1 = {};
-    //scimclient:Email email2 = {};
-    //scimclient:Address address = {};
-    //scimclient:Name name = {};
-    //scimclient:PhonePhotoIms phone = {};
-    //
-    //phone.|type| = "work";
-    //phone.value = "08344444";
-    //user.phoneNumbers = [phone];
-    //
-    //name.givenName = "given";
-    //name.familyName = "family";
-    //name.formatted = "given middle";
-    //user.name = name;
-    //
-    //address.postalCode = "81000";
-    //address.streetAddress = "Mahesha Makandura East";
-    //address.region = "matara";
-    //address.locality = "southern";
-    //address.country = "sl";
-    //address.formatted = "Mahesha/Makandura East/Matara";
-    //address.primary = "true";
-    //address.|type| = "work";
-    //user.addresses = [address];
-    //
-    //user.userName = "sirilayya";
-    //user.password = "fdajfkds";
-    //
-    //email1.value = "emai.com";
-    //email1.|type| = "work";
-    //email2.value = "mail.com";
-    //email2.|type| = "home";
-    //user.emails = [email1,email2];
-    //
-    //error Error;
-    //Error = userAdminConnector.createUser(user);
-    //io:println(Error);
+    scimclient:User user = {};
+    scimclient:Email email1 = {};
+    scimclient:Email email2 = {};
+    scimclient:Address address = {};
+    scimclient:Name name = {};
+    scimclient:PhonePhotoIms phone = {};
+
+    phone.|type| = "work";
+    phone.value = "08344444";
+    user.phoneNumbers = [phone];
+
+    name.givenName = "given";
+    name.familyName = "family";
+    name.formatted = "given middle";
+    user.name = name;
+
+    address.postalCode = "81000";
+    address.streetAddress = "Mahesha Makandura East";
+    address.region = "matara";
+    address.locality = "southern";
+    address.country = "sl";
+    address.formatted = "Mahesha/Makandura East/Matara";
+    address.primary = "true";
+    address.|type| = "work";
+    user.addresses = [address];
+
+    user.userName = "sirilayya";
+    user.password = "fdajfkds";
+
+    email1.value = "emai.com";
+    email1.|type| = "work";
+    email2.value = "mail.com";
+    email2.|type| = "home";
+    user.emails = [email1,email2];
+
+    error Error;
+    Error = userAdminConnector.createUser(user);
+    io:println(Error);
     //==================================================================================================================
 
     //Get an user in the IS user store using getUserbyUserName action===================================================
