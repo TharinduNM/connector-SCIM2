@@ -22,8 +22,6 @@ import ballerina.net.http;
 
 //All the Struct objects that are used
 
-http:HttpClient scimHTTPClient =  create http:HttpClient(getURL(),getConnectionConfigs());
-
 public struct Group{
     string displayName;
     string id;
@@ -118,12 +116,16 @@ public struct Manager{
     string displayName;
 }
 
+//===========================all the struct bind functions are here=====================================================
+
+//===========================================add or remove user=========================================================
+
 @Description {value: "Add the user to the group specified by its name"}
 @Param {value: "groupName: Name of the group"}
 @Param {value: "Group: Group struct"}
 @Param {value: "error: Error"}
 public function <User user> addToGroup (string groupName) (Group, error){
-    endpoint <http:HttpClient> scimClient{
+    endpoint<http:HttpClient> scimClient {
         scimHTTPClient;
     }
     error Error;
@@ -166,7 +168,7 @@ public function <User user> addToGroup (string groupName) (Group, error){
         Error = {message:httpError.message,cause:httpError.cause};
         return null, Error;
     }
-    if (response.statusCode==SCIM_FOUND){
+    if (response.statusCode== HTTP_OK) {
         try{
             var receivedBinaryPayload, _ = response.getBinaryPayload();
             string receivedPayload = receivedBinaryPayload.toString("UTF-8");
@@ -235,7 +237,7 @@ public function <User user> removeFromGroup(string groupName) (Group, error){
         Error = {message:httpError.message,cause:httpError.cause};
         return null, Error;
     }
-    if (response.statusCode==SCIM_FOUND){
+    if (response.statusCode== HTTP_OK) {
         try{
             var receivedBinaryPayload, _ = response.getBinaryPayload();
             string receivedPayload = receivedBinaryPayload.toString("UTF-8");
@@ -253,6 +255,7 @@ public function <User user> removeFromGroup(string groupName) (Group, error){
 
 }
 
+//=====================================================updating User===================================================
 
 @Description {value: "Update the nick name of the user"}
 @Param {value: "nickName: New nick name"}
@@ -281,7 +284,7 @@ public function <User user> updateNickname(string nickName) (error){
     string url = SCIM_USER_END_POINT+"/"+user.id;
     response, httpError = scimClient.patch(url,request);
 
-    if(response.statusCode==SCIM_FOUND){
+    if(response.statusCode== HTTP_OK) {
         Error = {message:"Nick name updated"};
         return Error;
     }
@@ -315,7 +318,7 @@ public function <User user> updateTitle(string title) (error){
     string url = SCIM_USER_END_POINT+"/"+user.id;
     request = createRequest(body);
     response, httpError = scimClient.patch(url,request);
-    if(response.statusCode==SCIM_FOUND){
+    if(response.statusCode== HTTP_OK) {
         Error = {message:"title updated"};
         return Error;
     }
@@ -351,7 +354,7 @@ public function <User user> updatePassword(string password) (error){
     string url = SCIM_USER_END_POINT+"/"+user.id;
     response, httpError = scimClient.patch(url,request);
 
-    if(response.statusCode==SCIM_FOUND){
+    if(response.statusCode== HTTP_OK) {
         Error = {message:"password updated"};
         return Error;
     }
@@ -387,7 +390,7 @@ public function <User user> updateProfileUrl(string profileUrl) (error){
     string url = SCIM_USER_END_POINT+"/"+user.id;
     response, httpError = scimClient.patch(url,request);
 
-    if(response.statusCode==SCIM_FOUND){
+    if(response.statusCode== HTTP_OK) {
         Error = {message:"Profile URL updated"};
         return Error;
     }
@@ -423,7 +426,7 @@ public function <User user> updateLocale(string locale) (error){
     string url = SCIM_USER_END_POINT+"/"+user.id;
     response, httpError = scimClient.patch(url,request);
 
-    if(response.statusCode==SCIM_FOUND){
+    if(response.statusCode== HTTP_OK) {
         Error = {message:"Locale updated"};
         return Error;
     }
@@ -459,7 +462,7 @@ public function <User user> updateTimezone(string timezone) (error){
     string url = SCIM_USER_END_POINT+"/"+user.id;
     response, httpError = scimClient.patch(url,request);
 
-    if(response.statusCode==SCIM_FOUND){
+    if(response.statusCode== HTTP_OK) {
         Error = {message:"timezone updated"};
         return Error;
     }
@@ -502,7 +505,7 @@ public function <User user> updateActive(boolean active) (error){
     string url = SCIM_USER_END_POINT+"/"+user.id;
     response, httpError = scimClient.patch(url,request);
 
-    if(response.statusCode==SCIM_FOUND){
+    if(response.statusCode== HTTP_OK) {
         Error = {message:"active updated"};
         return Error;
     }
@@ -538,7 +541,7 @@ public function <User user> updatePreferredLanguage(string preferredLanguage) (e
     string url = SCIM_USER_END_POINT+"/"+user.id;
     response, httpError = scimClient.patch(url,request);
 
-    if(response.statusCode==SCIM_FOUND){
+    if(response.statusCode== HTTP_OK) {
         Error = {message:"Preferred language updated"};
         return Error;
     }
@@ -594,7 +597,7 @@ public function <User user> updateEmails(Email[] emails) (error){
     string url = SCIM_USER_END_POINT+"/"+user.id;
     response, httpError = scimClient.patch(url,request);
 
-    if(response.statusCode==SCIM_FOUND){
+    if(response.statusCode== HTTP_OK) {
         Error = {message:"Emails updated"};
         return Error;
     }
@@ -602,6 +605,55 @@ public function <User user> updateEmails(Email[] emails) (error){
     Error = {message:response.reasonPhrase};
     return Error;
 }
+
+@Description {value: "Update the addresses of the user"}
+@Param {value: "addresses: List of new Address structs"}
+@Param {value: "error: Error"}
+public function <User user> updateAddresses(Address [] addresses) (error){
+    endpoint <http:HttpClient> scimClient{
+        scimHTTPClient;
+    }
+    error Error;
+
+    if(user == null){
+        Error = {message:"User should be valid"};
+        return Error;
+    }
+
+    http:OutRequest request = {};
+    http:InResponse response = {};
+    http:HttpConnectorError httpError;
+
+    json[] addressList = [];
+    json element;
+    int i;
+    foreach address in addresses{
+        if(!address.|type|.equalsIgnoreCase("work") && !address.|type|.equalsIgnoreCase("home")){
+            Error = {message: "Address type is required and it should either be work or home"};
+            return Error;
+        }
+        element = <json,convertAddressToJson()>address;
+        addressList[i] = element;
+        i = i+1;
+    }
+    json body;
+    body, _ = <json>SCIM_PATCH_ADD_BODY;
+    body.Operations[0].value = {"addresses":addressList};
+
+    request = createRequest(body);
+
+    string url = SCIM_USER_END_POINT+"/"+user.id;
+    response, httpError = scimClient.patch(url,request);
+
+    if(response.statusCode== HTTP_OK) {
+        Error = {message:"Addressess updated"};
+        return Error;
+    }
+
+    Error = {message:response.reasonPhrase};
+    return Error;
+}
+
 //========================================================================================
 
 //all these 3 functions update the specified field only if the field is non existing and only if some
@@ -634,7 +686,7 @@ public function <User user> updateUserType(string userType) (error){
     string url = SCIM_USER_END_POINT+"/"+user.id;
     response, httpError = scimClient.patch(url,request);
 
-    if(response.statusCode==SCIM_FOUND){
+    if(response.statusCode== HTTP_OK) {
         Error = {message:"User type updated"};
         return Error;
     }
@@ -670,7 +722,7 @@ public function <User user> updateDisplayName(string displayName) (error){
     string url = SCIM_USER_END_POINT+"/"+user.id;
     response, httpError = scimClient.patch(url,request);
 
-    if(response.statusCode==SCIM_FOUND){
+    if(response.statusCode== HTTP_OK) {
         Error = {message:"Display name updated"};
         return Error;
     }
@@ -706,7 +758,7 @@ public function <User user> updateExternalId(string externalId) (error){
     string url = SCIM_USER_END_POINT+"/"+user.id;
     response, httpError = scimClient.patch(url,request);
 
-    if(response.statusCode==SCIM_FOUND){
+    if(response.statusCode== HTTP_OK) {
         Error = {message:"externalId updated"};
         return Error;
     }
@@ -715,3 +767,4 @@ public function <User user> updateExternalId(string externalId) (error){
     return Error;
 }
 //======================================================================================================================
+

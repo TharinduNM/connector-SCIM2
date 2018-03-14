@@ -19,19 +19,18 @@
 package src.wso2.scimclient;
 
 import ballerina.net.http;
-import ballerina.log;
 
-@Description {value: "Obtain the url of the server"}
-@Param {value: "URL of the server"}
-function getURL()(string){
+@Description {value:"Obtain the url of the server"}
+@Param {value:"URL of the server"}
+function getURL () (string) {
     string url;
     url = "https://localhost:9443/scim2";
     return url;
 }
 
-@Description {value: "Get the http:Option with the trust store file location to provide the http connector
+@Description {value:"Get the http:Option with the trust store file location to provide the http connector
  with the public certificate for ssl"}
-function getConnectionConfigs()(http:Options){
+function getConnectionConfigs () (http:Options) {
     http:Options option = {
                               ssl:{
                                       trustStoreFile:
@@ -44,112 +43,100 @@ function getConnectionConfigs()(http:Options){
     return option;
 }
 
-function getAuthentication() (string){
+function getAuthentication () (string) {
     string base64UserNamePasswword;
-    base64UserNamePasswword ="YWRtaW46YWRtaW4=";
+    base64UserNamePasswword = "YWRtaW46YWRtaW4=";
     return base64UserNamePasswword;
 }
 
-@Description {value: "Obtain User from the received http response"}
-@Param {value: "userName: User name of the user"}
-@Param {value: "response: The received http response"}
-@Param {value: "httpError: Received httpConnectorError object"}
-@Param {value: "User: User struct"}
-@Param {value: "error: Error"}
+@Description {value:"Obtain User from the received http response"}
+@Param {value:"userName: User name of the user"}
+@Param {value:"response: The received http response"}
+@Param {value:"connectorError: Received httpConnectorError object"}
+@Param {value:"User: User struct"}
+@Param {value:"error: Error"}
 function resolveUser (string userName, http:InResponse response, http:HttpConnectorError httpError) (User, error) {
-    User user ={};
+    User user;
     error Error;
+
+    string failedMessage;
+    failedMessage = "Resolving user:" + userName + " failed. ";
+
     if (httpError != null) {
-        Error = {message:httpError.message, cause:httpError.cause};
+        Error = {message:failedMessage + httpError.message, cause:httpError.cause};
         return null, Error;
     }
-    else if (response.statusCode==SCIM_UNAUTHORIZED){
-        Error = {message:"Unauthorized"};
-        return null, Error;
-    }
-    else if (response.statusCode==SCIM_FOUND){
+    //else if (response.statusCode == HTTP_UNAUTHORIZED) {
+    //    Error = {message:"Unauthorized"};
+    //    return null, Error;
+    //}
+    int statusCode = response.statusCode;
+    if (statusCode == HTTP_OK) {
         try {
             var receivedBinaryPayload, _ = response.getBinaryPayload();
             string receivedPayload = receivedBinaryPayload.toString("UTF-8");
             var payload, _ = <json>receivedPayload;
-            var noOfResults= payload[SCIM_TOTAL_RESULTS].toString();
-            if (noOfResults.equalsIgnoreCase("0")){
-                Error = {message:"No user with user name "+userName,cause:null};
-                return null,Error;
-            }else{
-                payload = payload["Resources"][0];
-                user = <User, convertJsonToUser()>payload;
+            user = <User, convertReceivedPayloadToUser()>payload;
+            if (user == null) {
+                Error = {message:failedMessage + "No User named " + userName, cause:null};
+                return user, Error;
+            } else {
+                return user, Error;
             }
-
         } catch (error e) {
-            Error = {message:e.message, cause:e.cause};
-            return null, Error;
+            Error = {message:failedMessage + e.message, cause:e.cause};
+            return user, Error;
         }
     }
-    else if (response.statusCode==SCIM_NOT_FOUND){
-        Error = {message:"Valid users are not found"};
-        return null, Error;
-    }
-    else{
-        Error = {message:response.reasonPhrase};
-        return null, Error;
-    }
+    Error = {message:failedMessage + response.reasonPhrase};
     return user, Error;
 }
 
-@Description {value: "Obtain Group from the received http response"}
-@Param {value: "groupName: Name of the group"}
-@Param {value: "response: The received http response"}
-@Param {value: "httpError: Received httpConnectorError object"}
-@Param {value: "User: Group struct"}
-@Param {value: "error: Error"}
+@Description {value:"Obtain Group from the received http response"}
+@Param {value:"groupName: Name of the group"}
+@Param {value:"response: The received http response"}
+@Param {value:"connectorError: Received httpConnectorError object"}
+@Param {value:"User: Group struct"}
+@Param {value:"error: Error"}
 function resolveGroup (string groupName, http:InResponse response, http:HttpConnectorError httpError) (Group, error) {
-    Group receivedGroup = {};
+    Group receivedGroup;
     error Error;
-    if (httpError != null){
-        Error = {message:httpError.message,cause:httpError.cause};
+
+    string failedMessage;
+    failedMessage = "Resolving group:" + groupName + " failed. ";
+
+    if (httpError != null) {
+        Error = {message:failedMessage + httpError.message, cause:httpError.cause};
         return null, Error;
     }
-    if (response.statusCode==SCIM_UNAUTHORIZED){
-        return null, {message:response.reasonPhrase};
-    }
-    if (response.statusCode==SCIM_FOUND){
-        try{
+    int statusCode = response.statusCode;
+    if (statusCode == HTTP_OK) {
+        try {
             var receivedBinaryPayload, _ = response.getBinaryPayload();
             string receivedPayload = receivedBinaryPayload.toString("UTF-8");
             var payload, _ = <json>receivedPayload;
-
-            var noOfResults= payload[SCIM_TOTAL_RESULTS].toString();
-            if (noOfResults.equalsIgnoreCase("0")){
-                Error = {message:"No Group named "+groupName,cause:null};
-                return null,Error;
-            }
-            else{
-                payload = payload["Resources"][0];
-                receivedGroup = <Group, convertJsonToGroup()>payload;
+            receivedGroup = <Group, convertReceivedPayloadToGroup()>payload;
+            if (receivedGroup == null) {
+                Error = {message:failedMessage + "No Group named " + groupName, cause:null};
+                return receivedGroup, Error;
+            } else {
                 return receivedGroup, Error;
             }
-        }catch (error e) {
-            Error = {message:e.message, cause:e.cause};
-            log:printError(Error.message);
+        } catch (error e) {
+            Error = {message:failedMessage + e.message, cause:e.cause};
             return null, Error;
         }
     }
-    if (response.statusCode==SCIM_BAD_REQUEST){
-        Error = {message:response.reasonPhrase};
-        return null, Error;
-    }
-    if (response.statusCode==SCIM_NOT_FOUND){
-        Error = {message:"Valid groups are not found"};
-        return null, Error;
-    }
-    Error = {message:response.reasonPhrase};
+    Error = {message:failedMessage + response.reasonPhrase};
     return receivedGroup, Error;
 }
 
-function createRequest (json body) (http:OutRequest){
+@Description {value:"Add the necessary headers and body to the request"}
+@Param {value:"body: the json payload to be sent"}
+@Param {value:"OutRequest: http:OutRequest"}
+function createRequest (json body) (http:OutRequest) {
     http:OutRequest request = {};
-    request.addHeader(SCIM_AUTHORIZATION,"Basic "+getAuthentication());
+    request.addHeader(SCIM_AUTHORIZATION, "Basic " + getAuthentication());
     request.addHeader(SCIM_CONTENT_TYPE, SCIM_JSON);
     request.setJsonPayload(body);
     return request;

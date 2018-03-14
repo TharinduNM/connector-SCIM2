@@ -58,7 +58,7 @@ public function main(string[] args){
     //address.|type| = "work";
     //user.addresses = [address];
     //
-    //user.userName = "sirilayya";
+    //user.userName = "sirilayya3";
     //user.password = "fdajfkds";
     //
     //email1.value = "emai.com";
@@ -74,7 +74,7 @@ public function main(string[] args){
 
     //Get an user in the IS user store using getUserbyUserName action===================================================
     //scimclient:User user = {};
-    //string userName = "sirilayya";
+    //string userName = "ayya7";
     //error Error;
     //user,Error =userAdminConnector.getUserByUsername(userName);
     //
@@ -85,7 +85,7 @@ public function main(string[] args){
     //Add an existing user to a existing group==========================================================================
     // scimclient:Group group = {};
     // string userName = "tnm";
-    // string groupName = "Leader3";
+    // string groupName = "BOSS";
     // error Error;
     // group,Error = userAdminConnector.addUserToGroup(userName, groupName);
     // io:println(Error);
@@ -95,7 +95,7 @@ public function main(string[] args){
     //Remove an user from a given group=================================================================================
     //scimclient:Group group = {};
     //string userName = "tnm";
-    //string groupName = "Leader3";
+    //string groupName = "BOSS";
     //error Error;
     //group,Error = userAdminConnector.removeUserFromGroup(userName, groupName);
     //io:println(Error);
@@ -103,8 +103,8 @@ public function main(string[] args){
     //==================================================================================================================
 
     //Check whether a user with certain user name is in a certain group=================================================
-    //string userName = "sirilayya";
-    //string groupName = "BOSS";
+    //string userName = "ayya1";
+    //string groupName = "Leader2";
     //error Error;
     //boolean x;
     //x,Error = userAdminConnector.isUserInGroup(userName,groupName);
@@ -120,7 +120,7 @@ public function main(string[] args){
     //==================================================================================================================
 
     //Delete a group====================================================================================================
-    //string groupName = "Leader3";
+    //string groupName = "Leader2";
     //error Error;
     //Error = userAdminConnector.deleteGroupByName(groupName);
     //io:println(Error);
@@ -152,7 +152,7 @@ public function main(string[] args){
     //scimclient:Group group;
     //group , Error = user.addToGroup(groupName);
     //io:println(group);
-    ////==================================================================================================================
+    ////================================================================================================================
 
     //remove an user from a group using strut bound function============================================================
     //scimclient:User user;
@@ -165,18 +165,28 @@ public function main(string[] args){
     //io:println(group);
     //==================================================================================================================
 
+    //get the user that is currently authenticated======================================================================
     //scimclient:User user;
-    //scimclient:Email email = {};
-    //email.value = "effdsdddddaf.com";
-    //email.|type| = "work";
-    //string userName = "siril";
+    //error Error;
+    //user,Error = userAdminConnector.getMe();
+    //io:println(user);
+    //==================================================================================================================
+
+    //scimclient:User user;
+    ////scimclient:Email email = {};
+    ////email.value = "effdsdddddaf.com";
+    ////email.|type| = "work";
+    //scimclient:Address address = {};
+    //address.|type| = "work";
+    //address.formatted = "heodddfd/fjds";
+    //string userName = "ayya";
     //string sending = "ti";
     //error Error1;
     //error Error2;
     //user , Error1 = userAdminConnector.getUserByUsername(userName);
-    //Error1 = user.updateNickname(sending);
-    //Error2 = user.updateTitle("title");
-    //io:println(Error1);
+    ////Error1 = user.updateNickname(sending);
+    //Error2 = user.updateAddresses([address]);
+    ////io:println(Error1);
     //io:println(Error2);
 }
 
