@@ -19,6 +19,24 @@
 package src.scimclient;
 
 import ballerina.net.http;
+import ballerina.config;
+
+
+@Description {value:"Get the http:Option with the trust store file location to provide the http connector
+ with the public certificate for ssl"}
+function getConnectionConfigs () (http:Options) {
+    string password = config:getGlobalValue("trustStorePassword");
+    string location = config:getGlobalValue("truststoreLocation");
+    http:Options option = {
+                              ssl:{
+                                      trustStoreFile:location,
+                                      trustStorePassword:password
+                                  },
+                              followRedirects:{}
+
+                          };
+    return option;
+}
 
 @Description {value:"Obtain User from the received http response"}
 @Param {value:"userName: User name of the user"}

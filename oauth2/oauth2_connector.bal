@@ -2,7 +2,6 @@ package oauth2;
 
 
 import ballerina.net.http;
-import ballerina.config;
 
 string accessTokenValue;
 
@@ -17,10 +16,11 @@ http:InResponse response = {};
 @Param {value:"refreshToken: The refresh token of the account"}
 @Param {value:"refreshTokenEP: The refresh token endpoint url"}
 public connector ClientConnector (string baseUrl, string accessToken, string clientId, string clientSecret,
-                                  string refreshToken, string refreshTokenEP, string refreshTokenPath) {
+                                  string refreshToken, string refreshTokenEP, string refreshTokenPath, http:Options
+                                                                                                       option) {
 
     endpoint<http:HttpClient> httpConnectorEP {
-        create http:HttpClient(baseUrl, getConnectionConfigs());
+        create http:HttpClient(baseUrl, option);
     }
 
 
@@ -172,21 +172,4 @@ function getAccessTokenFromRefreshToken (http:OutRequest request, string accessT
     request.setHeader("Authorization", "Bearer " + accessToken);
 
     return accessToken;
-}
-
-
-@Description {value:"Get the http:Option with the trust store file location to provide the http connector
- with the public certificate for ssl"}
-function getConnectionConfigs () (http:Options) {
-    string password = config:getGlobalValue("trustStorePassword");
-    string location = config:getGlobalValue("truststoreLocation");
-    http:Options option = {
-                              ssl:{
-                                      trustStoreFile:location,
-                                      trustStorePassword:password
-                                  },
-                              followRedirects:{}
-
-                          };
-    return option;
 }

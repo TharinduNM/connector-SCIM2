@@ -30,7 +30,7 @@ public connector ScimConnector (string baseUrl, string accessToken, string clien
 
     action iniit () {
         scimOAuthClient = create oauth2:ClientConnector(baseUrl, accessToken, clientId, clientSecret,
-                                                        refreshToken, refreshTokenEndpoint, refreshTokenPath);
+                                                        refreshToken, refreshTokenEndpoint, refreshTokenPath, getConnectionConfigs());
         isConnectorInitialized = true;
         baseURL = baseUrl;
     }
