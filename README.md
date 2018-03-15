@@ -62,8 +62,7 @@ To test this connector with WSO2 Identity Server you need to have the following 
 1. Download and deploy the wso2 Identity Server by following the installation guide 
 which can be found at 
 https://docs.wso2.com/display/IS540/Installation+Guide/.
-2. Follow the steps given in 
-https://docs.wso2.com/display/ISCONNECTORS/Configuring+SCIM+2.0+Provisioning+Connector
+2. Follow the steps given in https://docs.wso2.com/display/ISCONNECTORS/Configuring+SCIM+2.0+Provisioning+Connector
 to deploy the SCIM2 connector with WSO2 Identity Server. 
 3. Identify the URL for the SCIM2 connector. 
 (By default it should be `https://localhost:9443/scim2/`)
