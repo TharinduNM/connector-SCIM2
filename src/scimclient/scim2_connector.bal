@@ -19,15 +19,20 @@
 package src.scimclient;
 
 import ballerina.net.http;
+import oauth2;
 
-http:HttpClient scimHTTPClient =  create http:HttpClient(getURL(),getConnectionConfigs());
+oauth2:ClientConnector scimOAuthClient;
+boolean isConnectorInitialized = false;
+string baseURL;
 
-@Description {value:"SCIM 2.0 client connector"}
-@Param {value:"base64UserNamePassword : The base 64 encoded string in the format username:password"}
-public connector ScimConnector (string base64UserNamePasswword) {
+public connector ScimConnector (string baseUrl, string accessToken, string clientId, string clientSecret,
+                                string refreshToken, string refreshTokenEndpoint, string refreshTokenPath) {
 
-    endpoint<http:HttpClient> scim2EP {
-        scimHTTPClient;
+    action iniit () {
+        scimOAuthClient = create oauth2:ClientConnector(baseUrl, accessToken, clientId, clientSecret,
+                                                        refreshToken, refreshTokenEndpoint, refreshTokenPath);
+        isConnectorInitialized = true;
+        baseURL = baseUrl;
     }
 
     @Description {value:"Create a group in the user store"}
@@ -35,15 +40,22 @@ public connector ScimConnector (string base64UserNamePasswword) {
     @Param {value:"Group: Group struct"}
     @Param {value:"error: Error"}
     action createGroup (Group group) (error) {
+        endpoint<oauth2:ClientConnector> scim2EP {
+            scimOAuthClient;
+        }
         http:OutRequest request = {};
         http:InResponse response = {};
         error Error;
         http:HttpConnectorError connectorError;
 
+        if (!isConnectorInitialized) {
+            Error = {message:"error: Connector not initialized"};
+            return Error;
+        }
+
         string failedMessage;
         failedMessage = "Creating group:" + group.displayName + " failed. ";
 
-        request.addHeader(SCIM_AUTHORIZATION, "Basic " + base64UserNamePasswword);
         request.addHeader(SCIM_CONTENT_TYPE, SCIM_JSON);
 
         json jsonPayload = <json, convertGroupToJson()>group;
@@ -80,13 +92,20 @@ public connector ScimConnector (string base64UserNamePasswword) {
     @Param {value:"Group: Group struct"}
     @Param {value:"error: Error"}
     action getGroupByName (string groupName) (Group, error) {
+        endpoint<oauth2:ClientConnector> scim2EP {
+            scimOAuthClient;
+        }
+
         http:OutRequest request = {};
         http:InResponse response = {};
         error Error;
         http:HttpConnectorError connectorError;
         Group receivedGroup = {};
 
-        request.addHeader(SCIM_AUTHORIZATION, "Basic " + base64UserNamePasswword);
+        if (!isConnectorInitialized) {
+            Error = {message:"error: Connector not initialized"};
+            return null, Error;
+        }
 
         string s = SCIM_GROUP_END_POINT + "?" + SCIM_FILTER_GROUP_BY_NAME + groupName;
         response, connectorError = scim2EP.get(s, request);
@@ -100,10 +119,19 @@ public connector ScimConnector (string base64UserNamePasswword) {
     @Param {value:"string: string indicating whether user creation was successful or failed"}
     @Param {value:"error: Error"}
     action createUser (User user) (error) {
+        endpoint<oauth2:ClientConnector> scim2EP {
+            scimOAuthClient;
+        }
+
         http:OutRequest request = {};
         http:InResponse response = {};
         http:HttpConnectorError connectorError;
         error Error;
+
+        if (!isConnectorInitialized) {
+            Error = {message:"error: Connector not initialized"};
+            return Error;
+        }
 
         string failedMessage;
         failedMessage = "Creating user:" + user.userName + " failed. ";
@@ -155,7 +183,6 @@ public connector ScimConnector (string base64UserNamePasswword) {
             return Error;
         }
 
-        request.addHeader(SCIM_AUTHORIZATION, "Basic " + base64UserNamePasswword);
         request.addHeader(SCIM_CONTENT_TYPE, SCIM_JSON);
         request.setJsonPayload(jsonPayload);
         response, connectorError = scim2EP.post(SCIM_USER_END_POINT, request);
@@ -176,19 +203,24 @@ public connector ScimConnector (string base64UserNamePasswword) {
     @Param {value:"User: User struct"}
     @Param {value:"error: Error"}
     action getUserByUsername (string userName) (User, error) {
+        endpoint<oauth2:ClientConnector> scim2EP {
+            scimOAuthClient;
+        }
+
         http:OutRequest request = {};
         http:InResponse response = {};
         http:HttpConnectorError connectorError;
         error Error;
-        User user = {};
 
-        request.addHeader(SCIM_AUTHORIZATION, "Basic " + base64UserNamePasswword);
+        if (!isConnectorInitialized) {
+            Error = {message:"error: Connector not initialized"};
+            return null, Error;
+        }
 
         response, connectorError = scim2EP.get(SCIM_USER_END_POINT + "?" + SCIM_FILTER_USER_BY_USERNAME + userName, request);
-
+        User user = {};
         user, Error = resolveUser(userName, response, connectorError);
         return user, Error;
-
     }
 
     @Description {value:"Add an user in the user store to a existing group"}
@@ -197,10 +229,19 @@ public connector ScimConnector (string base64UserNamePasswword) {
     @Param {value:"Group: Group struct"}
     @Param {value:"error: Error"}
     action addUserToGroup (string userName, string groupName) (error) {
+        endpoint<oauth2:ClientConnector> scim2EP {
+            scimOAuthClient;
+        }
+
         http:OutRequest request = {};
         http:InResponse response = {};
         http:HttpConnectorError connectorError;
         error Error;
+
+        if (!isConnectorInitialized) {
+            Error = {message:"error: Connector not initialized"};
+            return Error;
+        }
 
         string failedMessage;
         failedMessage = "Adding user:" + userName + " to group:" + groupName + " failed.";
@@ -210,9 +251,8 @@ public connector ScimConnector (string base64UserNamePasswword) {
         http:InResponse responseUser = {};
         error userError;
         User user;
-        requestUser.addHeader(SCIM_AUTHORIZATION, "Basic " + base64UserNamePasswword);
         responseUser, connectorError = scim2EP.get(SCIM_USER_END_POINT + "?" + SCIM_FILTER_USER_BY_USERNAME +
-                                              userName, requestUser);
+                                                   userName, requestUser);
         user, userError = resolveUser(userName, responseUser, connectorError);
         if (user == null) {
             Error = {message:failedMessage + userError.message};
@@ -223,9 +263,8 @@ public connector ScimConnector (string base64UserNamePasswword) {
         http:InResponse responseGroup = {};
         Group group;
         error groupError;
-        requestGroup.addHeader(SCIM_AUTHORIZATION, "Basic " + base64UserNamePasswword);
         responseGroup, connectorError = scim2EP.get(SCIM_GROUP_END_POINT + "?" + SCIM_FILTER_GROUP_BY_NAME +
-                                               groupName, requestGroup);
+                                                    groupName, requestGroup);
         group, groupError = resolveGroup(groupName, responseGroup, connectorError);
         if (group == null) {
             Error = {message:failedMessage + groupError.message};
@@ -233,7 +272,7 @@ public connector ScimConnector (string base64UserNamePasswword) {
         }
         //create request body
         string value = user.id;
-        string ref = getURL() + SCIM_USER_END_POINT + "/" + value;
+        string ref = baseURL + SCIM_USER_END_POINT + "/" + value;
         string url = SCIM_GROUP_END_POINT + "/" + group.id;
         json body;
         body, _ = <json>SCIM_GROUP_PATCH_ADD_BODY;
@@ -241,7 +280,6 @@ public connector ScimConnector (string base64UserNamePasswword) {
         body.Operations[0].value.members[0]["$ref"] = ref;
         body.Operations[0].value.members[0].value = value;
 
-        request.addHeader(SCIM_AUTHORIZATION, "Basic " + base64UserNamePasswword);
         request.addHeader(SCIM_CONTENT_TYPE, SCIM_JSON);
         request.setJsonPayload(body);
         response, connectorError = scim2EP.patch(url, request);
@@ -250,13 +288,8 @@ public connector ScimConnector (string base64UserNamePasswword) {
             return Error;
         }
         if (response.statusCode == HTTP_OK) {
-            try {
-                Error = {message:"user added"};
-                return Error;
-            } catch (error e) {
-                Error = {message:failedMessage + e.message, cause:e.cause};
-                return Error;
-            }
+            Error = {message:"user added"};
+            return Error;
         }
         Error = {message:failedMessage + response.reasonPhrase};
         return Error;
@@ -268,10 +301,19 @@ public connector ScimConnector (string base64UserNamePasswword) {
     @Param {value:"Group: Group struct"}
     @Param {value:"error: Error"}
     action removeUserFromGroup (string userName, string groupName) (error) {
+        endpoint<oauth2:ClientConnector> scim2EP {
+            scimOAuthClient;
+        }
+
         http:OutRequest request = {};
         http:InResponse response = {};
-        error Error;
         http:HttpConnectorError connectorError;
+        error Error;
+
+        if (!isConnectorInitialized) {
+            Error = {message:"error: Connector not initialized"};
+            return Error;
+        }
 
         string failedMessage;
         failedMessage = "Removing user:" + userName + " from group:" + groupName + " failed.";
@@ -281,9 +323,8 @@ public connector ScimConnector (string base64UserNamePasswword) {
         http:InResponse responseUser = {};
         error userError;
         User user;
-        requestUser.addHeader(SCIM_AUTHORIZATION, "Basic " + base64UserNamePasswword);
         responseUser, connectorError = scim2EP.get(SCIM_USER_END_POINT + "?" + SCIM_FILTER_USER_BY_USERNAME +
-                                              userName, requestUser);
+                                                   userName, requestUser);
         user, userError = resolveUser(userName, responseUser, connectorError);
         if (user == null) {
             Error = {message:failedMessage + userError.message};
@@ -294,9 +335,8 @@ public connector ScimConnector (string base64UserNamePasswword) {
         error groupError;
         http:OutRequest groupRequest = {};
         http:InResponse groupResponse = {};
-        groupRequest.addHeader(SCIM_AUTHORIZATION, "Basic " + base64UserNamePasswword);
         groupResponse, connectorError = scim2EP.get(SCIM_GROUP_END_POINT + "?" + SCIM_FILTER_GROUP_BY_NAME +
-                                               groupName, groupRequest);
+                                                    groupName, groupRequest);
         group, groupError = resolveGroup(groupName, groupResponse, connectorError);
         if (group == null) {
             Error = {message:failedMessage + groupError.message};
@@ -309,7 +349,6 @@ public connector ScimConnector (string base64UserNamePasswword) {
         body.Operations[0].path = path;
         string url = SCIM_GROUP_END_POINT + "/" + group.id;
 
-        request.addHeader(SCIM_AUTHORIZATION, "Basic " + base64UserNamePasswword);
         request.addHeader(SCIM_CONTENT_TYPE, SCIM_JSON);
         request.setJsonPayload(body);
         response, connectorError = scim2EP.patch(url, request);
@@ -318,13 +357,8 @@ public connector ScimConnector (string base64UserNamePasswword) {
             return Error;
         }
         if (response.statusCode == HTTP_OK) {
-            try {
-                Error = {message:"removed"};
-                return Error;
-            } catch (error e) {
-                Error = {message:failedMessage + e.message, cause:e.cause};
-                return Error;
-            }
+            Error = {message:"removed"};
+            return Error;
         }
         Error = {message:failedMessage + response.reasonPhrase};
         return Error;
@@ -336,6 +370,10 @@ public connector ScimConnector (string base64UserNamePasswword) {
     @Param {value:"boolean: true/false"}
     @Param {value:"error: Error"}
     action isUserInGroup (string userName, string groupName) (boolean, error) {
+        endpoint<oauth2:ClientConnector> scim2EP {
+            scimOAuthClient;
+        }
+
         http:OutRequest request = {};
         http:InResponse response = {};
         http:HttpConnectorError connectorError;
@@ -343,7 +381,11 @@ public connector ScimConnector (string base64UserNamePasswword) {
         User user = {};
         error userE;
 
-        request.addHeader(SCIM_AUTHORIZATION, "Basic " + base64UserNamePasswword);
+        if (!isConnectorInitialized) {
+            Error = {message:"error: Connector not initialized"};
+            return false, Error;
+        }
+
         response, connectorError = scim2EP.get(SCIM_USER_END_POINT + "?" + SCIM_FILTER_USER_BY_USERNAME + userName, request);
         user, userE = resolveUser(userName, response, connectorError);
         if (user == null) {
@@ -368,10 +410,19 @@ public connector ScimConnector (string base64UserNamePasswword) {
     @Param {value:"string: string literal"}
     @Param {value:"error: Error"}
     action deleteUserByUsername (string userName) (error) {
+        endpoint<oauth2:ClientConnector> scim2EP {
+            scimOAuthClient;
+        }
+
         http:OutRequest request = {};
         http:InResponse response = {};
         http:HttpConnectorError connectorError;
         error Error;
+
+        if (!isConnectorInitialized) {
+            Error = {message:"error: Connector not initialized"};
+            return Error;
+        }
 
         string failedMessage;
         failedMessage = "Deleting user:" + userName + " failed. ";
@@ -382,7 +433,6 @@ public connector ScimConnector (string base64UserNamePasswword) {
         http:HttpConnectorError userError;
         User user;
         error userE;
-        userRequest.addHeader(SCIM_AUTHORIZATION, "Basic " + base64UserNamePasswword);
         userResponse, userError = scim2EP.get(SCIM_USER_END_POINT + "?" + SCIM_FILTER_USER_BY_USERNAME +
                                               userName, userRequest);
         user, userE = resolveUser(userName, userResponse, userError);
@@ -392,7 +442,6 @@ public connector ScimConnector (string base64UserNamePasswword) {
         }
 
         string userId = user.id;
-        request.addHeader(SCIM_AUTHORIZATION, "Basic " + base64UserNamePasswword);
         response, connectorError = scim2EP.delete(SCIM_USER_END_POINT + "/" + userId, request);
         if (connectorError != null) {
             Error = {message:failedMessage + connectorError.message, cause:connectorError.cause};
@@ -411,10 +460,19 @@ public connector ScimConnector (string base64UserNamePasswword) {
     @Param {value:"string: string literal"}
     @Param {value:"error: Error"}
     action deleteGroupByName (string groupName) (error) {
+        endpoint<oauth2:ClientConnector> scim2EP {
+            scimOAuthClient;
+        }
+
         http:OutRequest request = {};
         http:InResponse response = {};
         http:HttpConnectorError connectorError;
         error Error;
+
+        if (!isConnectorInitialized) {
+            Error = {message:"error: Connector not initialized"};
+            return Error;
+        }
 
         string failedMessage;
         failedMessage = "Deleting group:" + groupName + " failed. ";
@@ -425,7 +483,6 @@ public connector ScimConnector (string base64UserNamePasswword) {
         error groupE;
         http:HttpConnectorError groupError;
         Group group;
-        groupRequest.addHeader(SCIM_AUTHORIZATION, "Basic " + base64UserNamePasswword);
         string s = SCIM_GROUP_END_POINT + "?" + SCIM_FILTER_GROUP_BY_NAME + groupName;
         groupResponse, groupError = scim2EP.get(s, groupRequest);
         group, groupE = resolveGroup(groupName, groupResponse, groupError);
@@ -435,7 +492,6 @@ public connector ScimConnector (string base64UserNamePasswword) {
         }
 
         string groupId = group.id;
-        request.addHeader(SCIM_AUTHORIZATION, "Basic " + base64UserNamePasswword);
         response, connectorError = scim2EP.delete(SCIM_GROUP_END_POINT + "/" + groupId, request);
         if (connectorError != null) {
             Error = {message:failedMessage + connectorError.message, cause:connectorError.cause};
@@ -447,22 +503,29 @@ public connector ScimConnector (string base64UserNamePasswword) {
         }
         Error = {message:failedMessage + response.reasonPhrase};
         return Error;
-
     }
 
     @Description {value:"Get the whole list of users in the user store"}
     @Param {value:"User[]: Array of User structs"}
     @Param {value:"error: Error"}
     action getListOfUsers () (User[], error) {
+        endpoint<oauth2:ClientConnector> scim2EP {
+            scimOAuthClient;
+        }
+
         http:OutRequest request = {};
         http:InResponse response = {};
         http:HttpConnectorError connectorError;
         error Error;
 
+        if (!isConnectorInitialized) {
+            Error = {message:"error: Connector not initialized"};
+            return null, Error;
+        }
+
         string failedMessage;
         failedMessage = "Listing users failed. ";
 
-        request.addHeader(SCIM_AUTHORIZATION, "Basic " + base64UserNamePasswword);
         response, connectorError = scim2EP.get(SCIM_USER_END_POINT, request);
 
         if (connectorError != null) {
@@ -503,15 +566,23 @@ public connector ScimConnector (string base64UserNamePasswword) {
     @Param {value:"Group[]: Array of Group structs"}
     @Param {value:"error: Error"}
     action getListOfGroups () (Group[], error) {
+        endpoint<oauth2:ClientConnector> scim2EP {
+            scimOAuthClient;
+        }
+
         http:OutRequest request = {};
         http:InResponse response = {};
         http:HttpConnectorError connectorError;
         error Error;
 
+        if (!isConnectorInitialized) {
+            Error = {message:"error: Connector not initialized"};
+            return null, Error;
+        }
+
         string failedMessage;
         failedMessage = "Listing groups failed. ";
 
-        request.addHeader(SCIM_AUTHORIZATION, "Basic " + base64UserNamePasswword);
         response, connectorError = scim2EP.get(SCIM_GROUP_END_POINT, request);
         if (connectorError != null) {
             Error = {message:failedMessage + connectorError.message, cause:connectorError.cause};
@@ -551,16 +622,24 @@ public connector ScimConnector (string base64UserNamePasswword) {
     @Param {value:"User: User struct"}
     @Param {value:"error: Error"}
     action getMe () (User, error) {
+        endpoint<oauth2:ClientConnector> scim2EP {
+            scimOAuthClient;
+        }
+
         http:OutRequest request = {};
         http:InResponse response = {};
         http:HttpConnectorError connectorError;
         error Error;
+
+        if (!isConnectorInitialized) {
+            Error = {message:"error: Connector not initialized"};
+            return null, Error;
+        }
         User user;
 
         string failedMessage = "Getting currently authenticated user failed. ";
 
-        request.addHeader(SCIM_AUTHORIZATION, "Basic " + base64UserNamePasswword);
-        response, connectorError = scim2EP.get("/Me", request);
+        response, connectorError = scim2EP.get("/scim2/Me", request);
         if (connectorError != null) {
             Error = {message:failedMessage + connectorError.message, cause:connectorError.cause};
             return null, Error;
@@ -581,5 +660,8 @@ public connector ScimConnector (string base64UserNamePasswword) {
         Error = {message:failedMessage + response.reasonPhrase};
         return user, Error;
     }
+
+
+
 }
 

@@ -18,7 +18,9 @@
 
 package src.scimclient;
 
+
 import ballerina.net.http;
+import oauth2;
 
 //All the Struct objects that are used
 
@@ -122,37 +124,41 @@ public struct Manager {
 
 @Description {value:"Add the user to the group specified by its name"}
 @Param {value:"groupName: Name of the group"}
-@Param {value:"Group: Group struct"}
 @Param {value:"error: Error"}
-public function <User user> addToGroup (string groupName) (Group, error) {
-    endpoint<http:HttpClient> scimClient {
-        scimHTTPClient;
+public function <User user> addToGroup (string groupName) (error) {
+    endpoint<oauth2:ClientConnector> scimClient {
+        scimOAuthClient;
     }
+
     error Error;
     error connectorError;
     http:OutRequest request = {};
     http:InResponse response = {};
     http:HttpConnectorError httpError;
 
+    if (!isConnectorInitialized) {
+        Error = {message:"error: Connector not initialized"};
+        return Error;
+    }
+
     if (user == null || groupName == "") {
         connectorError = {message:"User and group names should be valid"};
-        return null, connectorError;
+        return connectorError;
     }
 
     http:OutRequest requestGroup = {};
     http:InResponse responseGroup = {};
     error groupError;
     Group group = {};
-    requestGroup.addHeader(SCIM_AUTHORIZATION, "Basic " + getAuthentication());
     responseGroup, httpError = scimClient.get(SCIM_GROUP_END_POINT + "?" + SCIM_FILTER_GROUP_BY_NAME +
                                               groupName, requestGroup);
     group, groupError = resolveGroup(groupName, responseGroup, httpError);
     if (group == null) {
-        return null, groupError;
+        return groupError;
     }
 
     string value = user.id;
-    string ref = getURL() + SCIM_USER_END_POINT + "/" + value;
+    string ref = baseURL + SCIM_USER_END_POINT + "/" + value;
     string url = SCIM_GROUP_END_POINT + "/" + group.id;
     json body;
     body, _ = <json>SCIM_GROUP_PATCH_ADD_BODY;
@@ -160,45 +166,37 @@ public function <User user> addToGroup (string groupName) (Group, error) {
     body.Operations[0].value.members[0]["$ref"] = ref;
     body.Operations[0].value.members[0].value = value;
 
-    request.addHeader(SCIM_AUTHORIZATION, "Basic " + getAuthentication());
     request.addHeader(SCIM_CONTENT_TYPE, SCIM_JSON);
     request.setJsonPayload(body);
     response, httpError = scimClient.patch(url, request);
     if (httpError != null) {
         Error = {message:httpError.message, cause:httpError.cause};
-        return null, Error;
+        return Error;
     }
     if (response.statusCode == HTTP_OK) {
-        try {
-            var receivedBinaryPayload, _ = response.getBinaryPayload();
-            string receivedPayload = receivedBinaryPayload.toString("UTF-8");
-            var payload, _ = <json>receivedPayload;
-            group = <Group, convertJsonToGroup()>payload;
-            return group, Error;
-        } catch (error e) {
-            Error = {message:e.message, cause:e.cause};
-            return null, Error;
-        }
+        Error = {message:"user added"};
+        return Error;
+
     }
 
     Error = {message:response.reasonPhrase};
-    return group, Error;
+    return Error;
 
 }
 
 @Description {value:"Remove the user from the group specified by its name"}
 @Param {value:"groupName: Name of the group"}
-@Param {value:"Group: Group struct"}
 @Param {value:"error: Error"}
-public function <User user> removeFromGroup (string groupName) (Group, error) {
-    endpoint<http:HttpClient> scimClient {
-        scimHTTPClient;
+public function <User user> removeFromGroup (string groupName) (error) {
+    endpoint<oauth2:ClientConnector> scimClient {
+        scimOAuthClient;
     }
+
     error connectorError;
 
     if (user == null || groupName == "") {
         connectorError = {message:"User and nick name should be valid"};
-        return null, connectorError;
+        return connectorError;
     }
 
     http:OutRequest groupRequest = {};
@@ -210,12 +208,16 @@ public function <User user> removeFromGroup (string groupName) (Group, error) {
     error Error;
     http:HttpConnectorError httpError;
 
-    groupRequest.addHeader(SCIM_AUTHORIZATION, "Basic " + getAuthentication());
+    if (!isConnectorInitialized) {
+        Error = {message:"error: Connector not initialized"};
+        return Error;
+    }
+
     groupResponse, httpError = scimClient.get(SCIM_GROUP_END_POINT + "?" + SCIM_FILTER_GROUP_BY_NAME + groupName,
                                               groupRequest);
     group, groupError = resolveGroup(groupName, groupResponse, httpError);
     if (group == null) {
-        return null, groupError;
+        return groupError;
     }
 
     json body;
@@ -224,34 +226,24 @@ public function <User user> removeFromGroup (string groupName) (Group, error) {
     body.Operations[0].path = path;
     string url = SCIM_GROUP_END_POINT + "/" + group.id;
 
-    request.addHeader(SCIM_AUTHORIZATION, "Basic " + getAuthentication());
     request.addHeader(SCIM_CONTENT_TYPE, SCIM_JSON);
     request.setJsonPayload(body);
     response, httpError = scimClient.patch(url, request);
 
     if (httpError != null) {
         Error = {message:httpError.message, cause:httpError.cause};
-        return null, Error;
+        return Error;
     }
     if (httpError != null) {
         Error = {message:httpError.message, cause:httpError.cause};
-        return null, Error;
+        return Error;
     }
     if (response.statusCode == HTTP_OK) {
-        try {
-            var receivedBinaryPayload, _ = response.getBinaryPayload();
-            string receivedPayload = receivedBinaryPayload.toString("UTF-8");
-            var payload, _ = <json>receivedPayload;
-            group = <Group, convertJsonToGroup()>payload;
-            return group, Error;
-        } catch (error e) {
-            Error = {message:e.message, cause:e.cause};
-            return null, Error;
-        }
+        Error = {message:"user removed"};
+        return Error;
     }
-
     Error = {message:response.reasonPhrase};
-    return group, Error;
+    return Error;
 
 }
 
@@ -261,8 +253,8 @@ public function <User user> removeFromGroup (string groupName) (Group, error) {
 @Param {value:"nickName: New nick name"}
 @Param {value:"error: Error"}
 public function <User user> updateNickname (string nickName) (error) {
-    endpoint<http:HttpClient> scimClient {
-        scimHTTPClient;
+    endpoint<oauth2:ClientConnector> scimClient {
+        scimOAuthClient;
     }
     error Error;
 
@@ -297,8 +289,8 @@ public function <User user> updateNickname (string nickName) (error) {
 @Param {value:"title: New title"}
 @Param {value:"error: Error"}
 public function <User user> updateTitle (string title) (error) {
-    endpoint<http:HttpClient> scimClient {
-        scimHTTPClient;
+    endpoint<oauth2:ClientConnector> scimClient {
+        scimOAuthClient;
     }
     error Error;
 
@@ -331,8 +323,8 @@ public function <User user> updateTitle (string title) (error) {
 @Param {value:"password: New password"}
 @Param {value:"error: Error"}
 public function <User user> updatePassword (string password) (error) {
-    endpoint<http:HttpClient> scimClient {
-        scimHTTPClient;
+    endpoint<oauth2:ClientConnector> scimClient {
+        scimOAuthClient;
     }
     error Error;
 
@@ -367,8 +359,8 @@ public function <User user> updatePassword (string password) (error) {
 @Param {value:"profileUrl: New profile URL"}
 @Param {value:"error: Error"}
 public function <User user> updateProfileUrl (string profileUrl) (error) {
-    endpoint<http:HttpClient> scimClient {
-        scimHTTPClient;
+    endpoint<oauth2:ClientConnector> scimClient {
+        scimOAuthClient;
     }
     error Error;
 
@@ -403,8 +395,8 @@ public function <User user> updateProfileUrl (string profileUrl) (error) {
 @Param {value:"locale: New locale"}
 @Param {value:"error: Error"}
 public function <User user> updateLocale (string locale) (error) {
-    endpoint<http:HttpClient> scimClient {
-        scimHTTPClient;
+    endpoint<oauth2:ClientConnector> scimClient {
+        scimOAuthClient;
     }
     error Error;
 
@@ -439,8 +431,8 @@ public function <User user> updateLocale (string locale) (error) {
 @Param {value:"timezone: New time zone"}
 @Param {value:"error: Error"}
 public function <User user> updateTimezone (string timezone) (error) {
-    endpoint<http:HttpClient> scimClient {
-        scimHTTPClient;
+    endpoint<oauth2:ClientConnector> scimClient {
+        scimOAuthClient;
     }
     error Error;
 
@@ -475,8 +467,8 @@ public function <User user> updateTimezone (string timezone) (error) {
 @Param {value:"active: New active"}
 @Param {value:"error: Error"}
 public function <User user> updateActive (boolean active) (error) {
-    endpoint<http:HttpClient> scimClient {
-        scimHTTPClient;
+    endpoint<oauth2:ClientConnector> scimClient {
+        scimOAuthClient;
     }
     error Error;
 
@@ -518,8 +510,8 @@ public function <User user> updateActive (boolean active) (error) {
 @Param {value:"preferredLanguage: New preferred language"}
 @Param {value:"error: Error"}
 public function <User user> updatePreferredLanguage (string preferredLanguage) (error) {
-    endpoint<http:HttpClient> scimClient {
-        scimHTTPClient;
+    endpoint<oauth2:ClientConnector> scimClient {
+        scimOAuthClient;
     }
     error Error;
 
@@ -554,8 +546,8 @@ public function <User user> updatePreferredLanguage (string preferredLanguage) (
 @Param {value:"emails: List of new email address structs"}
 @Param {value:"error: Error"}
 public function <User user> updateEmails (Email[] emails) (error) {
-    endpoint<http:HttpClient> scimClient {
-        scimHTTPClient;
+    endpoint<oauth2:ClientConnector> scimClient {
+        scimOAuthClient;
     }
     error Error;
 
@@ -602,8 +594,8 @@ public function <User user> updateEmails (Email[] emails) (error) {
 @Param {value:"addresses: List of new Address structs"}
 @Param {value:"error: Error"}
 public function <User user> updateAddresses (Address[] addresses) (error) {
-    endpoint<http:HttpClient> scimClient {
-        scimHTTPClient;
+    endpoint<oauth2:ClientConnector> scimClient {
+        scimOAuthClient;
     }
     error Error;
 
@@ -650,8 +642,8 @@ public function <User user> updateAddresses (Address[] addresses) (error) {
 @Param {value:"userType: New user type"}
 @Param {value:"error: Error"}
 public function <User user> updateUserType (string userType) (error) {
-    endpoint<http:HttpClient> scimClient {
-        scimHTTPClient;
+    endpoint<oauth2:ClientConnector> scimClient {
+        scimOAuthClient;
     }
     error Error;
 
@@ -686,8 +678,8 @@ public function <User user> updateUserType (string userType) (error) {
 @Param {value:"displayName: New display name"}
 @Param {value:"error: Error"}
 public function <User user> updateDisplayName (string displayName) (error) {
-    endpoint<http:HttpClient> scimClient {
-        scimHTTPClient;
+    endpoint<oauth2:ClientConnector> scimClient {
+        scimOAuthClient;
     }
     error Error;
 
@@ -722,8 +714,8 @@ public function <User user> updateDisplayName (string displayName) (error) {
 @Param {value:"externald: New external ID"}
 @Param {value:"error: Error"}
 public function <User user> updateExternalId (string externalId) (error) {
-    endpoint<http:HttpClient> scimClient {
-        scimHTTPClient;
+    endpoint<oauth2:ClientConnector> scimClient {
+        scimOAuthClient;
     }
     error Error;
 

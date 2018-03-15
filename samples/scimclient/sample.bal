@@ -4,12 +4,22 @@ package samples.scimclient;
 import ballerina.io;
 import src.scimclient;
 
+string baseUrl = "https://localhost:9443";
+string accessToken = "35eef98c-dad5-3d4c-8257-5f17f65de336";
+string clientId = "90jOtflC8pbJiNDxp7x0cYflCLYa";
+string clientSecret = "jii9D5itThoDEpXCPNROv5H4QJUa";
+string refreshToken = "8c3a31cf-2a65-3823-ac12-7d503f3f1b90";
+string refreshTokenEndpoint = "https://localhost:9443";
+string refreshTokenPath = "/oauth2/token";
+
 public function main (string[] args) {
     endpoint<scimclient:ScimConnector> userAdminConnector {
-        create scimclient:ScimConnector("YWRtaW46YWRtaW4=");
+        create scimclient:ScimConnector(baseUrl, accessToken, clientId, clientSecret, refreshToken,
+                                               refreshTokenEndpoint, refreshTokenPath);
     }
 
 
+    userAdminConnector.iniit();
     //create user=======================================================================================================
     scimclient:User user = {};
 
@@ -171,50 +181,31 @@ public function main (string[] args) {
 
 
     //add user to group using struct bound function=====================================================================
-    //scimclient:User user;
-    //string userName = "tnm";
-    //error Error;
-    //user , Error = userAdminConnector.getUserByUsername(userName);
-    //string groupName = "Leader2";
-    //scimclient:Group group;
-    //group , Error = user.addToGroup(groupName);
-    //io:println(group);
+    userName = "tnm";
+    user , Error = userAdminConnector.getUserByUsername(userName);
+    groupName = "BOSS";
+    Error = user.addToGroup(groupName);
+    io:println("");
+    io:println("adding user " + userName + " to " + groupName + " using struct bind functions");
+    io:print("error: ");
+    io:println( Error);
     ////================================================================================================================
 
     //remove an user from a group using strut bound function============================================================
-    //scimclient:User user;
-    //string userName = "tnm";
-    //error Error;
-    //user , Error = userAdminConnector.getUserByUsername(userName);
-    //string groupName = "Leader2";
-    //scimclient:Group group;
-    //group , Error = user.removeFromGroup(groupName);
-    //io:println(group);
+    user , Error = userAdminConnector.getUserByUsername(userName);
+    Error = user.removeFromGroup(groupName);
+    io:println("");
+    io:println("remove a user by struct bound functions");
+    io:print("error: ");
+    io:println(Error);
     //==================================================================================================================
 
     //get the user that is currently authenticated======================================================================
-    //scimclient:User user;
-    //error Error;
-    //user,Error = userAdminConnector.getMe();
-    //io:println(user);
+    user,Error = userAdminConnector.getMe();
+    io:println("");
+    io:println("get the currently authenticated user");
+    io:println(user);
     //==================================================================================================================
-
-    //scimclient:User user;
-    ////scimclient:Email email = {};
-    ////email.value = "effdsdddddaf.com";
-    ////email.|type| = "work";
-    //scimclient:Address address = {};
-    //address.|type| = "work";
-    //address.formatted = "heodddfd/fjds";
-    //string userName = "ayya";
-    //string sending = "ti";
-    //error Error1;
-    //error Error2;
-    //user , Error1 = userAdminConnector.getUserByUsername(userName);
-    ////Error1 = user.updateNickname(sending);
-    //Error2 = user.updateAddresses([address]);
-    ////io:println(Error1);
-    //io:println(Error2);
 }
 
 

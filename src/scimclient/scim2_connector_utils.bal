@@ -19,37 +19,6 @@
 package src.scimclient;
 
 import ballerina.net.http;
-import ballerina.config;
-
-
-@Description {value:"Obtain the url of the server"}
-@Param {value:"URL of the server"}
-function getURL () (string) {
-    string url = config:getGlobalValue("URL");
-    return url;
-}
-
-@Description {value:"Get the http:Option with the trust store file location to provide the http connector
- with the public certificate for ssl"}
-function getConnectionConfigs () (http:Options) {
-    string password = config:getGlobalValue("trustStorePassword");
-    string location = config:getGlobalValue("truststoreLocation");
-    http:Options option = {
-                              ssl:{
-                                      trustStoreFile:location,
-                                      trustStorePassword:password
-                                  },
-                              followRedirects:{}
-
-                          };
-    return option;
-}
-
-function getAuthentication () (string) {
-    string base64UserNamePasswword;
-    base64UserNamePasswword = config:getGlobalValue("base64EncodedUsernamePassword");
-    return base64UserNamePasswword;
-}
 
 @Description {value:"Obtain User from the received http response"}
 @Param {value:"userName: User name of the user"}
@@ -68,10 +37,6 @@ function resolveUser (string userName, http:InResponse response, http:HttpConnec
         Error = {message:failedMessage + connectorError.message, cause:connectorError.cause};
         return null, Error;
     }
-    //else if (response.statusCode == HTTP_UNAUTHORIZED) {
-    //    Error = {message:"Unauthorized"};
-    //    return null, Error;
-    //}
     int statusCode = response.statusCode;
     if (statusCode == HTTP_OK) {
         try {
@@ -138,7 +103,6 @@ function resolveGroup (string groupName, http:InResponse response, http:HttpConn
 @Param {value:"OutRequest: http:OutRequest"}
 function createRequest (json body) (http:OutRequest) {
     http:OutRequest request = {};
-    request.addHeader(SCIM_AUTHORIZATION, "Basic " + getAuthentication());
     request.addHeader(SCIM_CONTENT_TYPE, SCIM_JSON);
     request.setJsonPayload(body);
     return request;
