@@ -28,7 +28,8 @@ string baseURL;
 public connector ScimConnector (string baseUrl, string accessToken, string clientId, string clientSecret,
                                 string refreshToken, string refreshTokenEndpoint, string refreshTokenPath) {
 
-    action iniit () {
+    @Description {value:"Initialize the connector"}
+    action init () {
         scimOAuthClient = create oauth2:ClientConnector(baseUrl, accessToken, clientId, clientSecret,
                                                         refreshToken, refreshTokenEndpoint, refreshTokenPath, getConnectionConfigs());
         isConnectorInitialized = true;

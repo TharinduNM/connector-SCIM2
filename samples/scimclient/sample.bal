@@ -19,7 +19,7 @@ public function main (string[] args) {
     }
 
 
-    userAdminConnector.iniit();
+    userAdminConnector.init();
     //create user=======================================================================================================
     scimclient:User user = {};
 

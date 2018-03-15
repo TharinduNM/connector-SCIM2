@@ -91,9 +91,304 @@ endpoint and then initialize it.
 endpoint<scimclient:ScimConnector> userAdminConnector {
         create scimclient:ScimConnector(baseUrl, accessToken, clientId, clientSecret, refreshToken,
                                                refreshTokenEndpoint, refreshTokenPath);
-    }
-    userAdminConnector.iniit();
+}
+userAdminConnector.iniit();
+```
+## createUser
+
+Create a user in the user store.
+
+#### Parameters
+
+ 1. `User` - User struct with the details of the user
+
+#### Returns
+
+- `error` - error struct with the status message.
+
+#### Example
+
+```ballerina
+    scimclient:User user = {};
+
+    scimclient:PhonePhotoIms phone = {};
+    phone.|type| = "work";
+    phone.value = "0777777777";
+    user.phoneNumbers = [phone];
+
+    scimclient:Name name = {};
+    name.givenName = "Leo";
+    name.familyName = "Messi";
+    name.formatted = "Lionel Messi";
+    user.name = name;
+
+    user.addresses = [address];
+
+    user.userName = "leoMessi";
+    user.password = "greatest";
+
+    scimclient:Email email1 = {};
+    email1.value = "messi@barca.com";
+    email1.|type| = "work";
+
+    scimclient:Email email2 = {};
+    email2.value = "messi@gg.com";
+    email2.|type| = "home";
+
+    user.emails = [email1, email2];
+
+    error Error;
+    Error = userAdminConnector.createUser(user);
+    io:println("creating user " + user.userName);
+    io:println(Error);
 ```
 
+`creating user leoMessi
+ {message:"Created", cause:null}
+`
 
+## createGroup
+
+Create a group in the user store.
+
+#### Parameters
+
+ 1. `Group` - group struct with the group details
+
+#### Returns
+
+- `error` struct with the status message.
+
+#### Example
+
+```ballerina
+    scimclient:Group group = {};
+    group.displayName = "Captain";
+    Error = userAdminConnector.createGroup(group);
+    io:println(Error);
+```
+
+if successfull `{message:"Created", cause:null}`
+
+## getUser() 
+
+Get an user from the user store using the userName.
+
+#### Parameters
+ 1. `string` - userName
+
+#### Returns
+- `User` struct with the resolved user
+- `error` struct with the status message. Null if valid user found.
+
+#### Example
+
+
+````ballerina
+    error Error;
+    scimclient:User getUser = {};
+    string userName = "iniesta";
+    getUser, Error = userAdminConnector.getUserByUsername(userName);
+`````
+
+## getGroup()
+
+Get a group from the user store using groupName.
+
+#### Parameters
+ 1. `string` - groupName
+
+#### Returns
+- `Group` struct with the resolved group
+- `error` struct with the status message. Null if valid group found.
+
+#### Example
+
+````ballerina
+    error Error;
+    scimclient:Group getGroup = {};
+    getGroup, Error = userAdminConnector.getGroupByName("Captain");
+````
+
+## addUserToGroup
+
+Add a user specified by user name to a group specified by group name. 
+
+#### Parameters
+ 1. `string` - userName
+ 2. `string` - groupName
+ 
+#### Returns
+- `error` struct with status message.
+
+#### Example
+
+````ballerina
+    userName = "leoMessi";
+    string groupName = "Captain";
+    Error = userAdminConnector.addUserToGroup(userName, groupName);
+````
+ 
+## removeUserFromGroup
+
+Remove an user specifed by user name from a group specified by group name.
+
+#### Parameters
+ 1. `string` - userName
+ 2. `string` - groupName
+ 
+#### Returns
+- `error` struct with status message.
+
+#### Example
+
+````ballerina
+    userName = "iniesta";
+    groupName = "Captain";
+
+    Error = userAdminConnector.removeUserFromGroup(userName, groupName);
+````
+
+## isUserInGroup
+
+Check whether the specified user is in the specified group.
+
+#### Parameters
+ 1. `string` - userName
+ 2. `string` - groupName
+ 
+#### Returns
+- `boolean` value indicating whether the user is in the group or not.
+- `error` struct with the status message.
+
+#### Example
+
+````ballerina
+    userName = "leoMessi";
+    groupName = "Captain";
+    boolean x;
+    x, Error = userAdminConnector.isUserInGroup(userName, groupName);
+````
+
+## deleteUserByUserName
+
+Delete an user in the user store using his user name.
+
+#### Parameters
+ 1. `string` - userName
+ 
+#### Returns
+- `error` struct with the status message.
+
+#### Example
+
+````ballerina
+    userName = "leoMessi";
+    Error = userAdminConnector.deleteUserByUsername(userName);
+````
+
+## deleteGroupByName
+
+Delete an group using its group name
+
+#### Parameters
+ 1. `string` - groupName
+ 
+#### Returns
+- `error` struct with the status message.
+
+#### Examples
+
+````ballerina
+    groupName = "Captain";
+    Error = userAdminConnector.deleteGroupByName(groupName);
+````
+
+## getListOfUsers
+
+Get the list of users in the user store.
+
+#### Returns
+- `User[]` struct list
+- `error` struct with status message
+
+#### Examples
+
+````ballerina
+    scimclient:User[] userList;
+    userList, Error = userAdminConnector.getListOfUsers();
+````
+
+## getListOfGroups
+
+Get the list of groups.
+
+#### Returns
+- `Group[]` struct list
+- `error` struct with status message
+
+#### Examples
+
+````ballerina
+    scimclient:Group[] groupList;
+    groupList, Error = userAdminConnector.getListOfGroups();
+````
+
+## getMe
+
+Get the currently authenticated user.
+
+#### Returns
+- `User` struct with the response.
+- `error` struct with status message.
+
+#### Example
+
+````ballerina
+user,Error = userAdminConnector.getMe();
+````
+
+## Using User struct bound functions
+
+First get a user.
+
+```ballerina
+    userName = "tnm";
+    user , Error = userAdminConnector.getUserByUsername(userName);
+
+```
+
+### addToGroup
+
+Add the user to group specified by the groupName;
+
+#### Parameters
+1. `string` - groupName
+
+#### Returns
+- `error` struct with the status message.
+
+#### Example
+
+````ballerina
+    groupName = "BOSS";
+    Error = user.addToGroup(groupName);
+````
+
+### removeFromGroup
+
+Remove the user from the group specified by the groupName;
+
+#### Parameters
+1. `string` - groupName
+
+#### Returns
+- `error` struct with the status message.
+
+#### Example
+
+````ballerina
+    groupName = "BOSS";
+    Error = user.removeFromGroup(groupName);
+````
 
