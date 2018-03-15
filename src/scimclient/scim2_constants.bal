@@ -17,7 +17,7 @@
 //
 
 
-package src.wso2.scimclient;
+package src.scimclient;
 
 //These are the constants that are used
 

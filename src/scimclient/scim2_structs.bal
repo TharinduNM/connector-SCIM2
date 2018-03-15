@@ -16,20 +16,20 @@
 // under the License.
 //
 
-package src.wso2.scimclient;
+package src.scimclient;
 
 import ballerina.net.http;
 
 //All the Struct objects that are used
 
-public struct Group{
+public struct Group {
     string displayName;
     string id;
     Member[] members;
     Meta meta;
 }
 
-public struct Member{
+public struct Member {
     string display;
     string value;
 }
@@ -54,15 +54,15 @@ public struct User {
     Meta meta;
     X509Certificate[] x509Certificates;
     Group[] groups;
-    Address [] addresses;
+    Address[] addresses;
     Email[] emails;
-    PhonePhotoIms [] phoneNumbers;
-    PhonePhotoIms [] ims;
-    PhonePhotoIms [] photos;
+    PhonePhotoIms[] phoneNumbers;
+    PhonePhotoIms[] ims;
+    PhonePhotoIms[] photos;
     EnterpriseUserExtension EnterpriseUser;
 }
 
-public struct Address{
+public struct Address {
     string streetAddress;
     string locality;
     string postalCode;
@@ -73,7 +73,7 @@ public struct Address{
     string |type|;
 }
 
-public struct Name{
+public struct Name {
     string formatted;
     string givenName;
     string familyName;
@@ -81,24 +81,24 @@ public struct Name{
     string honorificSuffix;
 }
 
-public struct Meta{
+public struct Meta {
     string created;
     string location;
     string lastModified;
 }
 
-public struct PhonePhotoIms{
+public struct PhonePhotoIms {
     string value;
     string |type|;
 }
 
-public struct Email{
+public struct Email {
     string value;
     string |type|;
     string primary;
 }
 
-public struct X509Certificate{
+public struct X509Certificate {
     string value;
 }
 
@@ -111,7 +111,7 @@ public struct EnterpriseUserExtension {
     Manager manager;
 }
 
-public struct Manager{
+public struct Manager {
     string managerId;
     string displayName;
 }
@@ -120,11 +120,11 @@ public struct Manager{
 
 //===========================================add or remove user=========================================================
 
-@Description {value: "Add the user to the group specified by its name"}
-@Param {value: "groupName: Name of the group"}
-@Param {value: "Group: Group struct"}
-@Param {value: "error: Error"}
-public function <User user> addToGroup (string groupName) (Group, error){
+@Description {value:"Add the user to the group specified by its name"}
+@Param {value:"groupName: Name of the group"}
+@Param {value:"Group: Group struct"}
+@Param {value:"error: Error"}
+public function <User user> addToGroup (string groupName) (Group, error) {
     endpoint<http:HttpClient> scimClient {
         scimHTTPClient;
     }
@@ -134,48 +134,48 @@ public function <User user> addToGroup (string groupName) (Group, error){
     http:InResponse response = {};
     http:HttpConnectorError httpError;
 
-    if(user == null || groupName == ""){
-        connectorError = {message:"User and group name should be valid"};
-        return null,connectorError;
+    if (user == null || groupName == "") {
+        connectorError = {message:"User and group names should be valid"};
+        return null, connectorError;
     }
 
     http:OutRequest requestGroup = {};
     http:InResponse responseGroup = {};
     error groupError;
     Group group = {};
-    requestGroup.addHeader(SCIM_AUTHORIZATION,"Basic "+getAuthentication());
+    requestGroup.addHeader(SCIM_AUTHORIZATION, "Basic " + getAuthentication());
     responseGroup, httpError = scimClient.get(SCIM_GROUP_END_POINT + "?" + SCIM_FILTER_GROUP_BY_NAME +
                                               groupName, requestGroup);
     group, groupError = resolveGroup(groupName, responseGroup, httpError);
-    if (group ==null){
-        return null,groupError;
+    if (group == null) {
+        return null, groupError;
     }
 
     string value = user.id;
-    string ref = getURL()+SCIM_USER_END_POINT+"/" + value;
-    string url = SCIM_GROUP_END_POINT+"/"+group.id;
+    string ref = getURL() + SCIM_USER_END_POINT + "/" + value;
+    string url = SCIM_GROUP_END_POINT + "/" + group.id;
     json body;
     body, _ = <json>SCIM_GROUP_PATCH_ADD_BODY;
     body.Operations[0].value.members[0].display = user.userName;
     body.Operations[0].value.members[0]["$ref"] = ref;
     body.Operations[0].value.members[0].value = value;
 
-    request.addHeader(SCIM_AUTHORIZATION,"Basic "+getAuthentication());
+    request.addHeader(SCIM_AUTHORIZATION, "Basic " + getAuthentication());
     request.addHeader(SCIM_CONTENT_TYPE, SCIM_JSON);
     request.setJsonPayload(body);
-    response, httpError = scimClient.patch(url,request);
-    if (httpError != null){
-        Error = {message:httpError.message,cause:httpError.cause};
+    response, httpError = scimClient.patch(url, request);
+    if (httpError != null) {
+        Error = {message:httpError.message, cause:httpError.cause};
         return null, Error;
     }
-    if (response.statusCode== HTTP_OK) {
-        try{
+    if (response.statusCode == HTTP_OK) {
+        try {
             var receivedBinaryPayload, _ = response.getBinaryPayload();
             string receivedPayload = receivedBinaryPayload.toString("UTF-8");
             var payload, _ = <json>receivedPayload;
-            group = <Group,convertJsonToGroup()>payload;
+            group = <Group, convertJsonToGroup()>payload;
             return group, Error;
-        }catch (error e) {
+        } catch (error e) {
             Error = {message:e.message, cause:e.cause};
             return null, Error;
         }
@@ -186,19 +186,19 @@ public function <User user> addToGroup (string groupName) (Group, error){
 
 }
 
-@Description {value: "Remove the user from the group specified by its name"}
-@Param {value: "groupName: Name of the group"}
-@Param {value: "Group: Group struct"}
-@Param {value: "error: Error"}
-public function <User user> removeFromGroup(string groupName) (Group, error){
-    endpoint <http:HttpClient> scimClient{
+@Description {value:"Remove the user from the group specified by its name"}
+@Param {value:"groupName: Name of the group"}
+@Param {value:"Group: Group struct"}
+@Param {value:"error: Error"}
+public function <User user> removeFromGroup (string groupName) (Group, error) {
+    endpoint<http:HttpClient> scimClient {
         scimHTTPClient;
     }
     error connectorError;
 
-    if(user == null || groupName == ""){
+    if (user == null || groupName == "") {
         connectorError = {message:"User and nick name should be valid"};
-        return null,connectorError;
+        return null, connectorError;
     }
 
     http:OutRequest groupRequest = {};
@@ -210,41 +210,41 @@ public function <User user> removeFromGroup(string groupName) (Group, error){
     error Error;
     http:HttpConnectorError httpError;
 
-    groupRequest.addHeader(SCIM_AUTHORIZATION,"Basic "+getAuthentication());
-    groupResponse, httpError = scimClient.get(SCIM_GROUP_END_POINT+"?"+SCIM_FILTER_GROUP_BY_NAME+groupName,
+    groupRequest.addHeader(SCIM_AUTHORIZATION, "Basic " + getAuthentication());
+    groupResponse, httpError = scimClient.get(SCIM_GROUP_END_POINT + "?" + SCIM_FILTER_GROUP_BY_NAME + groupName,
                                               groupRequest);
     group, groupError = resolveGroup(groupName, groupResponse, httpError);
-    if (group ==null){
-        return null,groupError;
+    if (group == null) {
+        return null, groupError;
     }
 
     json body;
-    body, _= <json>SCIM_GROUP_PATCH_REMOVE_BODY;
-    string path = "members[display eq "+user.userName+"]";
+    body, _ = <json>SCIM_GROUP_PATCH_REMOVE_BODY;
+    string path = "members[display eq " + user.userName + "]";
     body.Operations[0].path = path;
-    string url = SCIM_GROUP_END_POINT+"/"+group.id;
+    string url = SCIM_GROUP_END_POINT + "/" + group.id;
 
-    request.addHeader(SCIM_AUTHORIZATION,"Basic "+getAuthentication());
+    request.addHeader(SCIM_AUTHORIZATION, "Basic " + getAuthentication());
     request.addHeader(SCIM_CONTENT_TYPE, SCIM_JSON);
     request.setJsonPayload(body);
-    response, httpError = scimClient.patch(url,request);
+    response, httpError = scimClient.patch(url, request);
 
-    if(httpError != null){
-        Error = {message:httpError.message,cause:httpError.cause};
-        return null,Error;
-    }
-    if (httpError != null){
-        Error = {message:httpError.message,cause:httpError.cause};
+    if (httpError != null) {
+        Error = {message:httpError.message, cause:httpError.cause};
         return null, Error;
     }
-    if (response.statusCode== HTTP_OK) {
-        try{
+    if (httpError != null) {
+        Error = {message:httpError.message, cause:httpError.cause};
+        return null, Error;
+    }
+    if (response.statusCode == HTTP_OK) {
+        try {
             var receivedBinaryPayload, _ = response.getBinaryPayload();
             string receivedPayload = receivedBinaryPayload.toString("UTF-8");
             var payload, _ = <json>receivedPayload;
-            group = <Group,convertJsonToGroup()>payload;
+            group = <Group, convertJsonToGroup()>payload;
             return group, Error;
-        }catch (error e) {
+        } catch (error e) {
             Error = {message:e.message, cause:e.cause};
             return null, Error;
         }
@@ -257,16 +257,16 @@ public function <User user> removeFromGroup(string groupName) (Group, error){
 
 //=====================================================updating User===================================================
 
-@Description {value: "Update the nick name of the user"}
-@Param {value: "nickName: New nick name"}
-@Param {value: "error: Error"}
-public function <User user> updateNickname(string nickName) (error){
-    endpoint <http:HttpClient> scimClient{
+@Description {value:"Update the nick name of the user"}
+@Param {value:"nickName: New nick name"}
+@Param {value:"error: Error"}
+public function <User user> updateNickname (string nickName) (error) {
+    endpoint<http:HttpClient> scimClient {
         scimHTTPClient;
     }
     error Error;
 
-    if(user == null || nickName == ""){
+    if (user == null || nickName == "") {
         Error = {message:"User and group name should be valid"};
         return Error;
     }
@@ -281,10 +281,10 @@ public function <User user> updateNickname(string nickName) (error){
 
     request = createRequest(body);
 
-    string url = SCIM_USER_END_POINT+"/"+user.id;
-    response, httpError = scimClient.patch(url,request);
+    string url = SCIM_USER_END_POINT + "/" + user.id;
+    response, httpError = scimClient.patch(url, request);
 
-    if(response.statusCode== HTTP_OK) {
+    if (response.statusCode == HTTP_OK) {
         Error = {message:"Nick name updated"};
         return Error;
     }
@@ -293,16 +293,16 @@ public function <User user> updateNickname(string nickName) (error){
     return Error;
 }
 
-@Description {value: "Update the title of the user"}
-@Param {value: "title: New title"}
-@Param {value: "error: Error"}
-public function <User user> updateTitle(string title) (error){
-    endpoint <http:HttpClient> scimClient{
+@Description {value:"Update the title of the user"}
+@Param {value:"title: New title"}
+@Param {value:"error: Error"}
+public function <User user> updateTitle (string title) (error) {
+    endpoint<http:HttpClient> scimClient {
         scimHTTPClient;
     }
     error Error;
 
-    if(user == null || title == ""){
+    if (user == null || title == "") {
         Error = {message:"User and title name should be valid"};
         return Error;
     }
@@ -315,10 +315,10 @@ public function <User user> updateTitle(string title) (error){
     body, _ = <json>SCIM_PATCH_ADD_BODY;
     body.Operations[0].value = {"title":title};
 
-    string url = SCIM_USER_END_POINT+"/"+user.id;
+    string url = SCIM_USER_END_POINT + "/" + user.id;
     request = createRequest(body);
-    response, httpError = scimClient.patch(url,request);
-    if(response.statusCode== HTTP_OK) {
+    response, httpError = scimClient.patch(url, request);
+    if (response.statusCode == HTTP_OK) {
         Error = {message:"title updated"};
         return Error;
     }
@@ -327,16 +327,16 @@ public function <User user> updateTitle(string title) (error){
     return Error;
 }
 
-@Description {value: "Update the password of the user"}
-@Param {value: "password: New password"}
-@Param {value: "error: Error"}
-public function <User user> updatePassword(string password) (error){
-    endpoint <http:HttpClient> scimClient{
+@Description {value:"Update the password of the user"}
+@Param {value:"password: New password"}
+@Param {value:"error: Error"}
+public function <User user> updatePassword (string password) (error) {
+    endpoint<http:HttpClient> scimClient {
         scimHTTPClient;
     }
     error Error;
 
-    if(user == null || password == ""){
+    if (user == null || password == "") {
         Error = {message:"User and password should be valid"};
         return Error;
     }
@@ -351,10 +351,10 @@ public function <User user> updatePassword(string password) (error){
 
     request = createRequest(body);
 
-    string url = SCIM_USER_END_POINT+"/"+user.id;
-    response, httpError = scimClient.patch(url,request);
+    string url = SCIM_USER_END_POINT + "/" + user.id;
+    response, httpError = scimClient.patch(url, request);
 
-    if(response.statusCode== HTTP_OK) {
+    if (response.statusCode == HTTP_OK) {
         Error = {message:"password updated"};
         return Error;
     }
@@ -363,16 +363,16 @@ public function <User user> updatePassword(string password) (error){
     return Error;
 }
 
-@Description {value: "Update the profile URL of the user"}
-@Param {value: "profileUrl: New profile URL"}
-@Param {value: "error: Error"}
-public function <User user> updateProfileUrl(string profileUrl) (error){
-    endpoint <http:HttpClient> scimClient{
+@Description {value:"Update the profile URL of the user"}
+@Param {value:"profileUrl: New profile URL"}
+@Param {value:"error: Error"}
+public function <User user> updateProfileUrl (string profileUrl) (error) {
+    endpoint<http:HttpClient> scimClient {
         scimHTTPClient;
     }
     error Error;
 
-    if(user == null || profileUrl == ""){
+    if (user == null || profileUrl == "") {
         Error = {message:"User and profile url should be valid"};
         return Error;
     }
@@ -387,10 +387,10 @@ public function <User user> updateProfileUrl(string profileUrl) (error){
 
     request = createRequest(body);
 
-    string url = SCIM_USER_END_POINT+"/"+user.id;
-    response, httpError = scimClient.patch(url,request);
+    string url = SCIM_USER_END_POINT + "/" + user.id;
+    response, httpError = scimClient.patch(url, request);
 
-    if(response.statusCode== HTTP_OK) {
+    if (response.statusCode == HTTP_OK) {
         Error = {message:"Profile URL updated"};
         return Error;
     }
@@ -399,16 +399,16 @@ public function <User user> updateProfileUrl(string profileUrl) (error){
     return Error;
 }
 
-@Description {value: "Update the locale of the user"}
-@Param {value: "locale: New locale"}
-@Param {value: "error: Error"}
-public function <User user> updateLocale(string locale) (error){
-    endpoint <http:HttpClient> scimClient{
+@Description {value:"Update the locale of the user"}
+@Param {value:"locale: New locale"}
+@Param {value:"error: Error"}
+public function <User user> updateLocale (string locale) (error) {
+    endpoint<http:HttpClient> scimClient {
         scimHTTPClient;
     }
     error Error;
 
-    if(user == null || locale == ""){
+    if (user == null || locale == "") {
         Error = {message:"User and profile url should be valid"};
         return Error;
     }
@@ -423,10 +423,10 @@ public function <User user> updateLocale(string locale) (error){
 
     request = createRequest(body);
 
-    string url = SCIM_USER_END_POINT+"/"+user.id;
-    response, httpError = scimClient.patch(url,request);
+    string url = SCIM_USER_END_POINT + "/" + user.id;
+    response, httpError = scimClient.patch(url, request);
 
-    if(response.statusCode== HTTP_OK) {
+    if (response.statusCode == HTTP_OK) {
         Error = {message:"Locale updated"};
         return Error;
     }
@@ -435,16 +435,16 @@ public function <User user> updateLocale(string locale) (error){
     return Error;
 }
 
-@Description {value: "Update the time zone of the user"}
-@Param {value: "timezone: New time zone"}
-@Param {value: "error: Error"}
-public function <User user> updateTimezone(string timezone) (error){
-    endpoint <http:HttpClient> scimClient{
+@Description {value:"Update the time zone of the user"}
+@Param {value:"timezone: New time zone"}
+@Param {value:"error: Error"}
+public function <User user> updateTimezone (string timezone) (error) {
+    endpoint<http:HttpClient> scimClient {
         scimHTTPClient;
     }
     error Error;
 
-    if(user == null || timezone == ""){
+    if (user == null || timezone == "") {
         Error = {message:"User and time zone should be valid"};
         return Error;
     }
@@ -459,10 +459,10 @@ public function <User user> updateTimezone(string timezone) (error){
 
     request = createRequest(body);
 
-    string url = SCIM_USER_END_POINT+"/"+user.id;
-    response, httpError = scimClient.patch(url,request);
+    string url = SCIM_USER_END_POINT + "/" + user.id;
+    response, httpError = scimClient.patch(url, request);
 
-    if(response.statusCode== HTTP_OK) {
+    if (response.statusCode == HTTP_OK) {
         Error = {message:"timezone updated"};
         return Error;
     }
@@ -471,24 +471,24 @@ public function <User user> updateTimezone(string timezone) (error){
     return Error;
 }
 
-@Description {value: "Update the active of the user"}
-@Param {value: "active: New active"}
-@Param {value: "error: Error"}
-public function <User user> updateActive(boolean active) (error){
-    endpoint <http:HttpClient> scimClient{
+@Description {value:"Update the active of the user"}
+@Param {value:"active: New active"}
+@Param {value:"error: Error"}
+public function <User user> updateActive (boolean active) (error) {
+    endpoint<http:HttpClient> scimClient {
         scimHTTPClient;
     }
     error Error;
 
-    if(user == null ){
+    if (user == null) {
         Error = {message:"User should be valid"};
         return Error;
     }
 
     string isActive;
-    if(active){
+    if (active) {
         isActive = "true";
-    }else {
+    } else {
         isActive = "false";
     }
 
@@ -502,10 +502,10 @@ public function <User user> updateActive(boolean active) (error){
 
     request = createRequest(body);
 
-    string url = SCIM_USER_END_POINT+"/"+user.id;
-    response, httpError = scimClient.patch(url,request);
+    string url = SCIM_USER_END_POINT + "/" + user.id;
+    response, httpError = scimClient.patch(url, request);
 
-    if(response.statusCode== HTTP_OK) {
+    if (response.statusCode == HTTP_OK) {
         Error = {message:"active updated"};
         return Error;
     }
@@ -514,16 +514,16 @@ public function <User user> updateActive(boolean active) (error){
     return Error;
 }
 
-@Description {value: "Update the preferred language of the user"}
-@Param {value: "preferredLanguage: New preferred language"}
-@Param {value: "error: Error"}
-public function <User user> updatePreferredLanguage(string preferredLanguage) (error){
-    endpoint <http:HttpClient> scimClient{
+@Description {value:"Update the preferred language of the user"}
+@Param {value:"preferredLanguage: New preferred language"}
+@Param {value:"error: Error"}
+public function <User user> updatePreferredLanguage (string preferredLanguage) (error) {
+    endpoint<http:HttpClient> scimClient {
         scimHTTPClient;
     }
     error Error;
 
-    if(user == null || preferredLanguage == ""){
+    if (user == null || preferredLanguage == "") {
         Error = {message:"User and profile url should be valid"};
         return Error;
     }
@@ -538,10 +538,10 @@ public function <User user> updatePreferredLanguage(string preferredLanguage) (e
 
     request = createRequest(body);
 
-    string url = SCIM_USER_END_POINT+"/"+user.id;
-    response, httpError = scimClient.patch(url,request);
+    string url = SCIM_USER_END_POINT + "/" + user.id;
+    response, httpError = scimClient.patch(url, request);
 
-    if(response.statusCode== HTTP_OK) {
+    if (response.statusCode == HTTP_OK) {
         Error = {message:"Preferred language updated"};
         return Error;
     }
@@ -550,24 +550,16 @@ public function <User user> updatePreferredLanguage(string preferredLanguage) (e
     return Error;
 }
 
-
-//The functionality of the following functions are questionable. gives weird results time to time
-//All these attributes are mapped to enterprise user claims?????????
-//if these fields are present in the user already, this crashes
-
-
-//This works fine when replacing emails of users created without initial emails.
-//crashes and remove all existing emails when try to update email address of user created with emails
-@Description {value: "Update the email addresses of the user"}
-@Param {value: "emails: List of new email address structs"}
-@Param {value: "error: Error"}
-public function <User user> updateEmails(Email[] emails) (error){
-    endpoint <http:HttpClient> scimClient{
+@Description {value:"Update the email addresses of the user"}
+@Param {value:"emails: List of new email address structs"}
+@Param {value:"error: Error"}
+public function <User user> updateEmails (Email[] emails) (error) {
+    endpoint<http:HttpClient> scimClient {
         scimHTTPClient;
     }
     error Error;
 
-    if(user == null){
+    if (user == null) {
         Error = {message:"User should be valid"};
         return Error;
     }
@@ -579,14 +571,14 @@ public function <User user> updateEmails(Email[] emails) (error){
     json[] emailList = [];
     json email;
     int i;
-    foreach emailAddress in emails{
-        if (!emailAddress.|type|.equalsIgnoreCase("work") && !emailAddress.|type|.equalsIgnoreCase("home")){
-            Error = {message: "Email type should be defiend as either home or work"};
+    foreach emailAddress in emails {
+        if (!emailAddress.|type|.equalsIgnoreCase("work") && !emailAddress.|type|.equalsIgnoreCase("home")) {
+            Error = {message:"Email type should be defiend as either home or work"};
             return Error;
         }
-        email = <json,convertEmailToJson()>emailAddress;
+        email = <json, convertEmailToJson()>emailAddress;
         emailList[i] = email;
-        i = i+1;
+        i = i + 1;
     }
     json body;
     body, _ = <json>SCIM_PATCH_ADD_BODY;
@@ -594,10 +586,10 @@ public function <User user> updateEmails(Email[] emails) (error){
 
     request = createRequest(body);
 
-    string url = SCIM_USER_END_POINT+"/"+user.id;
-    response, httpError = scimClient.patch(url,request);
+    string url = SCIM_USER_END_POINT + "/" + user.id;
+    response, httpError = scimClient.patch(url, request);
 
-    if(response.statusCode== HTTP_OK) {
+    if (response.statusCode == HTTP_OK) {
         Error = {message:"Emails updated"};
         return Error;
     }
@@ -606,16 +598,16 @@ public function <User user> updateEmails(Email[] emails) (error){
     return Error;
 }
 
-@Description {value: "Update the addresses of the user"}
-@Param {value: "addresses: List of new Address structs"}
-@Param {value: "error: Error"}
-public function <User user> updateAddresses(Address [] addresses) (error){
-    endpoint <http:HttpClient> scimClient{
+@Description {value:"Update the addresses of the user"}
+@Param {value:"addresses: List of new Address structs"}
+@Param {value:"error: Error"}
+public function <User user> updateAddresses (Address[] addresses) (error) {
+    endpoint<http:HttpClient> scimClient {
         scimHTTPClient;
     }
     error Error;
 
-    if(user == null){
+    if (user == null) {
         Error = {message:"User should be valid"};
         return Error;
     }
@@ -627,14 +619,14 @@ public function <User user> updateAddresses(Address [] addresses) (error){
     json[] addressList = [];
     json element;
     int i;
-    foreach address in addresses{
-        if(!address.|type|.equalsIgnoreCase("work") && !address.|type|.equalsIgnoreCase("home")){
-            Error = {message: "Address type is required and it should either be work or home"};
+    foreach address in addresses {
+        if (!address.|type|.equalsIgnoreCase("work") && !address.|type|.equalsIgnoreCase("home")) {
+            Error = {message:"Address type is required and it should either be work or home"};
             return Error;
         }
-        element = <json,convertAddressToJson()>address;
+        element = <json, convertAddressToJson()>address;
         addressList[i] = element;
-        i = i+1;
+        i = i + 1;
     }
     json body;
     body, _ = <json>SCIM_PATCH_ADD_BODY;
@@ -642,10 +634,10 @@ public function <User user> updateAddresses(Address [] addresses) (error){
 
     request = createRequest(body);
 
-    string url = SCIM_USER_END_POINT+"/"+user.id;
-    response, httpError = scimClient.patch(url,request);
+    string url = SCIM_USER_END_POINT + "/" + user.id;
+    response, httpError = scimClient.patch(url, request);
 
-    if(response.statusCode== HTTP_OK) {
+    if (response.statusCode == HTTP_OK) {
         Error = {message:"Addressess updated"};
         return Error;
     }
@@ -654,21 +646,16 @@ public function <User user> updateAddresses(Address [] addresses) (error){
     return Error;
 }
 
-//========================================================================================
-
-//all these 3 functions update the specified field only if the field is non existing and only if some
-//                                                                                        other fields are non existing
-//if the specified attribute or some other attributes are present, then this will remove all those fields
-@Description {value: "Update the user type of the user"}
-@Param {value: "userType: New user type"}
-@Param {value: "error: Error"}
-public function <User user> updateUserType(string userType) (error){
-    endpoint <http:HttpClient> scimClient{
+@Description {value:"Update the user type of the user"}
+@Param {value:"userType: New user type"}
+@Param {value:"error: Error"}
+public function <User user> updateUserType (string userType) (error) {
+    endpoint<http:HttpClient> scimClient {
         scimHTTPClient;
     }
     error Error;
 
-    if(user == null || userType == ""){
+    if (user == null || userType == "") {
         Error = {message:"User and user type should be valid"};
         return Error;
     }
@@ -683,10 +670,10 @@ public function <User user> updateUserType(string userType) (error){
 
     request = createRequest(body);
 
-    string url = SCIM_USER_END_POINT+"/"+user.id;
-    response, httpError = scimClient.patch(url,request);
+    string url = SCIM_USER_END_POINT + "/" + user.id;
+    response, httpError = scimClient.patch(url, request);
 
-    if(response.statusCode== HTTP_OK) {
+    if (response.statusCode == HTTP_OK) {
         Error = {message:"User type updated"};
         return Error;
     }
@@ -695,16 +682,16 @@ public function <User user> updateUserType(string userType) (error){
     return Error;
 }
 
-@Description {value: "Update the display name of the user"}
-@Param {value: "displayName: New display name"}
-@Param {value: "error: Error"}
-public function <User user> updateDisplayName(string displayName) (error){
-    endpoint <http:HttpClient> scimClient{
+@Description {value:"Update the display name of the user"}
+@Param {value:"displayName: New display name"}
+@Param {value:"error: Error"}
+public function <User user> updateDisplayName (string displayName) (error) {
+    endpoint<http:HttpClient> scimClient {
         scimHTTPClient;
     }
     error Error;
 
-    if(user == null || displayName == ""){
+    if (user == null || displayName == "") {
         Error = {message:"User and profile url should be valid"};
         return Error;
     }
@@ -719,10 +706,10 @@ public function <User user> updateDisplayName(string displayName) (error){
 
     request = createRequest(body);
 
-    string url = SCIM_USER_END_POINT+"/"+user.id;
-    response, httpError = scimClient.patch(url,request);
+    string url = SCIM_USER_END_POINT + "/" + user.id;
+    response, httpError = scimClient.patch(url, request);
 
-    if(response.statusCode== HTTP_OK) {
+    if (response.statusCode == HTTP_OK) {
         Error = {message:"Display name updated"};
         return Error;
     }
@@ -731,16 +718,16 @@ public function <User user> updateDisplayName(string displayName) (error){
     return Error;
 }
 
-@Description {value: "Update the external ID of the user"}
-@Param {value: "externald: New external ID"}
-@Param {value: "error: Error"}
-public function <User user> updateExternalId(string externalId) (error){
-    endpoint <http:HttpClient> scimClient{
+@Description {value:"Update the external ID of the user"}
+@Param {value:"externald: New external ID"}
+@Param {value:"error: Error"}
+public function <User user> updateExternalId (string externalId) (error) {
+    endpoint<http:HttpClient> scimClient {
         scimHTTPClient;
     }
     error Error;
 
-    if(user == null || externalId == ""){
+    if (user == null || externalId == "") {
         Error = {message:"User and external ID should be valid"};
         return Error;
     }
@@ -755,10 +742,10 @@ public function <User user> updateExternalId(string externalId) (error){
 
     request = createRequest(body);
 
-    string url = SCIM_USER_END_POINT+"/"+user.id;
-    response, httpError = scimClient.patch(url,request);
+    string url = SCIM_USER_END_POINT + "/" + user.id;
+    response, httpError = scimClient.patch(url, request);
 
-    if(response.statusCode== HTTP_OK) {
+    if (response.statusCode == HTTP_OK) {
         Error = {message:"externalId updated"};
         return Error;
     }

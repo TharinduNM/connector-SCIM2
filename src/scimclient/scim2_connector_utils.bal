@@ -16,26 +16,28 @@
 // under the License.
 //
 
-package src.wso2.scimclient;
+package src.scimclient;
 
 import ballerina.net.http;
+import ballerina.config;
+
 
 @Description {value:"Obtain the url of the server"}
 @Param {value:"URL of the server"}
 function getURL () (string) {
-    string url;
-    url = "https://localhost:9443/scim2";
+    string url = config:getGlobalValue("URL");
     return url;
 }
 
 @Description {value:"Get the http:Option with the trust store file location to provide the http connector
  with the public certificate for ssl"}
 function getConnectionConfigs () (http:Options) {
+    string password = config:getGlobalValue("trustStorePassword");
+    string location = config:getGlobalValue("truststoreLocation");
     http:Options option = {
                               ssl:{
-                                      trustStoreFile:
-                                      "/home/tharindu/Documents/IS_HOME/repository/resources/security/truststore.p12",
-                                      trustStorePassword:"wso2carbon"
+                                      trustStoreFile:location,
+                                      trustStorePassword:password
                                   },
                               followRedirects:{}
 
@@ -45,7 +47,7 @@ function getConnectionConfigs () (http:Options) {
 
 function getAuthentication () (string) {
     string base64UserNamePasswword;
-    base64UserNamePasswword = "YWRtaW46YWRtaW4=";
+    base64UserNamePasswword = config:getGlobalValue("base64EncodedUsernamePassword");
     return base64UserNamePasswword;
 }
 
@@ -55,15 +57,15 @@ function getAuthentication () (string) {
 @Param {value:"connectorError: Received httpConnectorError object"}
 @Param {value:"User: User struct"}
 @Param {value:"error: Error"}
-function resolveUser (string userName, http:InResponse response, http:HttpConnectorError httpError) (User, error) {
+function resolveUser (string userName, http:InResponse response, http:HttpConnectorError connectorError) (User, error) {
     User user;
     error Error;
 
     string failedMessage;
     failedMessage = "Resolving user:" + userName + " failed. ";
 
-    if (httpError != null) {
-        Error = {message:failedMessage + httpError.message, cause:httpError.cause};
+    if (connectorError != null) {
+        Error = {message:failedMessage + connectorError.message, cause:connectorError.cause};
         return null, Error;
     }
     //else if (response.statusCode == HTTP_UNAUTHORIZED) {
@@ -98,15 +100,15 @@ function resolveUser (string userName, http:InResponse response, http:HttpConnec
 @Param {value:"connectorError: Received httpConnectorError object"}
 @Param {value:"User: Group struct"}
 @Param {value:"error: Error"}
-function resolveGroup (string groupName, http:InResponse response, http:HttpConnectorError httpError) (Group, error) {
+function resolveGroup (string groupName, http:InResponse response, http:HttpConnectorError connectorE) (Group, error) {
     Group receivedGroup;
     error Error;
 
     string failedMessage;
     failedMessage = "Resolving group:" + groupName + " failed. ";
 
-    if (httpError != null) {
-        Error = {message:failedMessage + httpError.message, cause:httpError.cause};
+    if (connectorE != null) {
+        Error = {message:failedMessage + connectorE.message, cause:connectorE.cause};
         return null, Error;
     }
     int statusCode = response.statusCode;
