@@ -4,8 +4,7 @@
  is designed to make managing user identities in cloud-based applications 
  and services easier.*
 
-### Why do you need a SCIM 
-
+### Why do you need SCIM
 
 The SCIM protocol is an application-level HTTP-based protocol for provisioning and managing 
 identity data on the web and in cross-domain environments such as enterprise-to-cloud 
@@ -17,7 +16,6 @@ and Groups, as well as custom resources and resource extensions.
 
 Ballerina makes integration with data sources, services, or network-connect APIs much easier than
 ever before. Ballerina can be used to easily integrate the SCIM REST API with other endpoints.
-
 The SCIM connector enables you to access the SCIM REST API through Ballerina. The actions of the
 SCIM connector are invoked using a Ballerina main function. 
 
@@ -33,7 +31,6 @@ The following sections provide you with information on how to use the Ballerina 
 
 - [Getting started](#getting-started)
 - [Running Samples](#running-samples)
-- [Quick Testing](#quick-testing)
 - [Working with SCIM connector actions](#working-with-SCIM-connector-actions)
 
 ## Getting started
@@ -81,5 +78,22 @@ charset=UTF-8' -k -d 'grant_type=password&username=admin&password=admin' https:/
 https://localhost:9443/oauth2/token
 
 ## Running Samples
+
+You can easily test the SCIM2 connector actions by running the `sample.bal` file.
+ - Run `ballerina run /samples/scimclient Bballerina.conf=path/to/conf/file/server-config-file-name.conf`
+
+## Working with SCIM connector actions
+
+In order for you to use the SCIM connector, first you need to create a ScimConnector 
+endpoint and then initialize it.
+
+```ballerina
+endpoint<scimclient:ScimConnector> userAdminConnector {
+        create scimclient:ScimConnector(baseUrl, accessToken, clientId, clientSecret, refreshToken,
+                                               refreshTokenEndpoint, refreshTokenPath);
+    }
+    userAdminConnector.iniit();
+```
+
 
 
