@@ -170,7 +170,7 @@ Create a group in the user store.
 
 if successfull `{message:"Created", cause:null}`
 
-## getUser() 
+## getUser 
 
 Get an user from the user store using the userName.
 
@@ -191,7 +191,7 @@ Get an user from the user store using the userName.
     getUser, Error = userAdminConnector.getUserByUsername(userName);
 `````
 
-## getGroup()
+## getGroup
 
 Get a group from the user store using groupName.
 
@@ -350,7 +350,7 @@ user,Error = userAdminConnector.getMe();
 
 ## Using User struct bound functions
 
-First get a user.
+First get a user using connector action `getUserByUsername`.
 
 ```ballerina
     userName = "tnm";
@@ -392,3 +392,4 @@ Remove the user from the group specified by the groupName;
     Error = user.removeFromGroup(groupName);
 ````
 
+###

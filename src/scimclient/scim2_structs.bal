@@ -79,6 +79,7 @@ public struct Name {
     string formatted;
     string givenName;
     string familyName;
+    string middleName;
     string honorificPrefix;
     string honorificSuffix;
 }

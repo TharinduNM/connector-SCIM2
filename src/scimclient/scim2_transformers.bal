@@ -30,6 +30,7 @@ transformer <json sourceJsonObject, Name targetNameStruct> convertJsonToName() {
                                        sourceJsonObject.honorificPrefix.toString() : "";
     targetNameStruct.honorificSuffix = sourceJsonObject.honorificSuffix != null ?
                                        sourceJsonObject.honorificSuffix.toString() : "";
+    targetNameStruct.middleName = sourceJsonObject.middleName != null ? sourceJsonObject.middleName.toString() : "";
 }
 
 transformer <json sourceJsonObject, User targetUserStruct> convertJsonToUser() {
@@ -224,6 +225,7 @@ transformer <Name sourceNameStruct, json targetJsonObject> convertNameToJson() {
     targetJsonObject.givenName = sourceNameStruct.givenName;
     targetJsonObject.familyName = sourceNameStruct.familyName;
     targetJsonObject.formatted = sourceNameStruct.formatted;
+    targetJsonObject.middleName = sourceNameStruct.middleName;
     targetJsonObject.honorificPrefix = sourceNameStruct.honorificPrefix;
     targetJsonObject.honorificSuffix = sourceNameStruct.honorificSuffix;
 }
