@@ -392,4 +392,235 @@ Remove the user from the group specified by the groupName;
     Error = user.removeFromGroup(groupName);
 ````
 
-###
+### updateActive
+
+Update active status of the user
+
+#### Parameters
+1. `boolean` - active
+
+#### Returns
+- `error` struct with the status message.
+
+#### Example
+
+````ballerina
+    boolean active = true;
+    Error = user.updateActive(active);
+````
+
+### updateAddress
+
+Update addresses of of the user
+
+#### Parameters
+1. `Address[]` - addresses
+
+#### Returns
+- `error` struct with the status message.
+
+#### Example
+
+````ballerina
+    Address address1 = {};
+    Address address2 = {};
+    address1.formatted = "no-123,st.peters',colombo";
+    address1.|type| = "home"
+    address2.streetAddress = "2/4,avenue";
+    address2.|type| = "work";
+    
+    Address[] addresses = [address1,address2];
+    Error = user.updateAddress(addresses);
+````
+
+### updateDisplayName
+
+Update the display name of the user
+
+#### Parameters
+1. `string` - displayName
+
+#### Returns
+- `error` struct with the status message.
+
+#### Example
+
+````ballerina
+    string displayName = "Lionel Messi";
+    Error = user.updateDisplayName(displayName);
+````
+
+### updateEmails
+
+Update the emails of the user
+
+#### Parameters
+1. `Email[]` - emails
+
+#### Returns
+- `error` struct with the status message.
+
+#### Example
+
+````ballerina
+    Email email1 = {};
+    Email email2 = {};
+    email1.value = "mail.com";
+    email1.|type| = "home";
+    email2.value = "email@cc.org";
+    email2.|type| = "work";
+    
+    Email[] emails = [email1,email2];
+    Error = user.updateAddress(emails);
+````
+
+### updateExternalId
+
+Update the external id of the user
+
+#### Parameters
+1. `string` - externalId
+
+#### Returns
+- `error` struct with the status message.
+
+#### Example
+
+````ballerina
+    string externalId = "12321313ddddd";
+    Error = user.updateExternalId(externalId);
+````````
+### updateLocale
+
+Update locale of the user
+
+#### Parameters
+1. `string` - locale
+
+#### Returns
+- `error` struct with the status message.
+
+#### Example
+
+````ballerina
+    string locale = "Colombo";
+    Error = user.updateLocale("locale");
+````
+### updateNickname
+
+Update the nick name of the user
+
+#### Parameters
+1. `string` - nickName
+
+#### Returns
+- `error` struct with the status message.
+
+#### Example
+
+````ballerina
+    string nickName = "leo";
+    Error = user.updateNickname(nickName);
+````
+
+### updatePassword
+
+Update the password of the user
+
+#### Parameters
+1. `string` - password
+
+#### Returns
+- `error` struct with the status message.
+
+#### Example
+
+````ballerina
+    string password = "password";
+    Error = user.updatePassword(password);
+````
+
+### updatePrefferedLanguage
+
+Update the preferred language of the user
+
+#### Parameters
+1. `string` - preferredLanguage
+
+#### Returns
+- `error` struct with the status message.
+
+#### Example
+
+````ballerina
+    string preferredLanguage = "English";
+    Error = user.updateDisplayName(preferredLanguage);
+````
+
+### updateProfileUrl
+
+Update the profile URL of the user
+
+#### Parameters
+1. `string` - profileUrl
+
+#### Returns
+- `error` struct with the status message.
+
+#### Example
+
+````ballerina
+    string profileUrl = "1.1.1.1";
+    Error = user.updateProfileUrl(profileUrl);
+````
+
+### updateTimezone
+
+Update the timezone of the user
+
+#### Parameters
+1. `string` - timezone
+
+#### Returns
+- `error` struct with the status message.
+
+#### Example
+
+````ballerina
+    string timezone = "Indian";
+    Error = user.updateTimezone(timezone);
+````
+
+### updateTitle
+
+Update the title of the user
+
+#### Parameters
+1. `string` - title
+
+#### Returns
+- `error` struct with the status message.
+
+#### Example
+
+````ballerina
+    string title = "GOAT";
+    Error = user.updateTitle(title);
+````
+
+### updateUserType
+
+Update the user type of the user
+
+#### Parameters
+1. `string` - userType
+
+#### Returns
+- `error` struct with the status message.
+
+#### Example
+
+````ballerina
+    string userType = "Lionel Messi";
+    Error = user.updateUserType(userType);
+````
